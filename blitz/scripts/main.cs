@@ -33,7 +33,7 @@ public partial class main : Node
 		var player = GetNode<Plane>("Plane");
 		var pos = GetNode<Marker2D>("startpoint");
 		player.Start(pos.Position);
-		//Build();
+		Build();
 	}
 	
 	private void Build()
@@ -75,14 +75,12 @@ public partial class main : Node
 	
 	private void _on_plane_plane_hit(Node body)
 	{
-		if(body.Name == "Goal")
-		{
-			GD.Print("Hooray!");
-		}
-		else
-		{
 			GD.Print("Crash");
-		}
+	}
+
+	private void _on_plane_plane_landed()
+	{
+		GD.Print("Landed");
 	}
 
 	private void _on_bomb_hit(Node2D body)

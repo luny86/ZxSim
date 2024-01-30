@@ -24,7 +24,7 @@ scale = Vector2(20.44, 10.56)
 texture = ExtResource("1_uh8ls")
 
 [node name="startpoint" type="Marker2D" parent="."]
-position = Vector2(-64, 75)
+position = Vector2(-64, 61)
 scale = Vector2(1, 0.96)
 
 [node name="StartTimer" type="Timer" parent="."]
@@ -63,3 +63,4 @@ shape = SubResource("RectangleShape2D_nyu54")
 [connection signal="Hit" from="Bomb" to="." method="_on_bomb_hit"]
 [connection signal="Fire" from="Plane" to="." method="OnPlaneFire"]
 [connection signal="PlaneHit" from="Plane" to="." method="_on_plane_plane_hit"]
+[connection signal="PlaneLanded" from="Plane" to="." method="_on_plane_plane_landed"]

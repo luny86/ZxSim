@@ -17,6 +17,9 @@ public partial class Plane : Area2D
 	[Signal]
 	public delegate void PlaneHitEventHandler(Node body);
 	
+	[Signal]
+	public delegate void PlaneLandedEventHandler();
+	
 	private readonly int speed = 200;
 	private Vector2 screenSize;
 	private Mode	hit;
@@ -94,16 +97,28 @@ public partial class Plane : Area2D
 
 	private void _on_body_entered(Node body)
 	{
-		switch(hit)
+		if(body.Name == "grass")
 		{
-			case Mode.Fly:
-				SetAsCrashing();
-				break;
-				
-			case Mode.Fall:
-				hit = Mode.Stop;
-				EmitSignal(SignalName.PlaneHit, body);
-				break;
+			// Do nothing
+		}
+		else if(body.Name == "Goal")
+		{
+			hit = Mode.Stop;
+			EmitSignal(SignalName.PlaneLanded);		
+		}
+		else
+		{
+			switch(hit)
+			{
+				case Mode.Fly:
+					SetAsCrashing();
+					break;
+					
+				case Mode.Fall:
+					hit = Mode.Stop;
+					EmitSignal(SignalName.PlaneHit, body);
+					break;
+			}
 		}
 	}
 	
