@@ -1,0 +1,65 @@
+[gd_scene load_steps=9 format=3 uid="uid://d1imif88kenqe"]
+
+[ext_resource type="PackedScene" uid="uid://g3ym7txjqcng" path="res://plane.tscn" id="1_kjjhy"]
+[ext_resource type="Script" path="res://scripts/main.cs" id="1_uas02"]
+[ext_resource type="Texture2D" uid="uid://bvw5d0wq32b0n" path="res://images/sky1.png" id="1_uh8ls"]
+[ext_resource type="PackedScene" uid="uid://pe4d56oa431m" path="res://Block.tscn" id="2_hxtj2"]
+[ext_resource type="PackedScene" uid="uid://djoy5emqyvlgh" path="res://bomb.tscn" id="3_8b72x"]
+[ext_resource type="Texture2D" uid="uid://dk3087vf7fv58" path="res://images/grass.png" id="4_n3h3r"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_mh6ve"]
+size = Vector2(1530, 15)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_nyu54"]
+size = Vector2(63, 18)
+
+[node name="main" type="Node"]
+script = ExtResource("1_uas02")
+BlockScene = ExtResource("2_hxtj2")
+BombScene = ExtResource("3_8b72x")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+position = Vector2(579, 318)
+scale = Vector2(20.44, 10.56)
+texture = ExtResource("1_uh8ls")
+
+[node name="startpoint" type="Marker2D" parent="."]
+position = Vector2(-64, 75)
+scale = Vector2(1, 0.96)
+
+[node name="StartTimer" type="Timer" parent="."]
+
+[node name="buildings" type="Marker2D" parent="."]
+position = Vector2(221, 618)
+
+[node name="grass" type="RigidBody2D" parent="."]
+gravity_scale = 0.0
+
+[node name="grassSprite" type="Sprite2D" parent="grass"]
+position = Vector2(579, 636)
+scale = Vector2(18.24, 1)
+texture = ExtResource("4_n3h3r")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="grass"]
+position = Vector2(505, 635.5)
+shape = SubResource("RectangleShape2D_mh6ve")
+
+[node name="Bomb" parent="." instance=ExtResource("3_8b72x")]
+position = Vector2(-44, 0)
+collision_mask = 1
+
+[node name="Plane" parent="." instance=ExtResource("1_kjjhy")]
+position = Vector2(175, 221)
+
+[node name="Goal" type="RigidBody2D" parent="."]
+position = Vector2(1090, 582)
+mass = 0.01
+gravity_scale = 0.0
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Goal"]
+position = Vector2(2.5, 50)
+shape = SubResource("RectangleShape2D_nyu54")
+
+[connection signal="Hit" from="Bomb" to="." method="_on_bomb_hit"]
+[connection signal="Fire" from="Plane" to="." method="OnPlaneFire"]
+[connection signal="PlaneHit" from="Plane" to="." method="_on_plane_plane_hit"]
