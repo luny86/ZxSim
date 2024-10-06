@@ -21,7 +21,7 @@ namespace KUi
 
         private static Image CreateImage()
         {
-            return Image.Create(
+            return Image.CreateEmpty(
                 (TileWidth * PixelScale) + (Margin * 10),
                 (TileHeight * PixelScale)+ (Margin * 10),
                 true,

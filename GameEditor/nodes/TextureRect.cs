@@ -5,6 +5,9 @@ using KUi;
 
 public partial class TextureRect : Godot.TextureRect
 {
+	[Signal]
+	public delegate void SelectTileEventHandler(int index);
+
 	private Tiles _tiles;
 	
 	// Called when the node enters the scene tree for the first time.
@@ -29,12 +32,14 @@ public partial class TextureRect : Godot.TextureRect
 		{
 			if(mouse.Pressed)
 			{
+				int tileSelected = _tiles.PointToTile(mouse.Position);
+				//EmitSignal(SignalName.SelectTile, tileSelected);
 				node.Text = "Clicked";
 			}
 		}
 		else if(input is InputEventMouseMotion motion)
 		{
-			node.Text = motion.Position.ToString();
+			//node.Text = _tiles.PointToTile(motion.Position).ToString();
 			
 		}
 	}

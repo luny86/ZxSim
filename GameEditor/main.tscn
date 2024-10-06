@@ -1,13 +1,15 @@
-[gd_scene load_steps=5 format=3 uid="uid://c508nephssk3w"]
+[gd_scene load_steps=6 format=3 uid="uid://c508nephssk3w"]
 
 [ext_resource type="Texture2D" uid="uid://cbn8ws5dejakf" path="res://icon.svg" id="1_8xg0j"]
 [ext_resource type="Script" path="res://nodes/TilesNode.cs" id="2_q16sr"]
 [ext_resource type="Script" path="res://nodes/TileGridNode.cs" id="3_7di26"]
 [ext_resource type="Script" path="res://nodes/TextureRect.cs" id="4_ebpbd"]
+[ext_resource type="Script" path="res://nodes/TileGridControl.cs" id="4_fjdr4"]
 
 [node name="Main" type="Node"]
 
 [node name="TileGrid" type="Sprite2D" parent="."]
+visible = false
 position = Vector2(160, 184)
 scale = Vector2(2, 2)
 texture = ExtResource("1_8xg0j")
@@ -23,7 +25,7 @@ anchor_right = 0.69
 anchor_bottom = 0.102
 offset_left = 0.471924
 offset_top = 0.0240002
-offset_right = 0.119934
+offset_right = 335.12
 offset_bottom = -0.0960007
 text = "Hello"
 
@@ -39,6 +41,18 @@ offset_right = -356.264
 offset_bottom = -350.0
 stretch_mode = 1
 script = ExtResource("4_ebpbd")
+
+[node name="TileGrid" type="TextureRect" parent="TileControl"]
+anchors_preset = -1
+anchor_left = 0.207
+anchor_top = 0.276
+anchor_right = 0.241
+anchor_bottom = 0.338
+offset_left = -0.46402
+offset_top = 0.151978
+offset_right = 0.367981
+offset_bottom = -0.0240173
+script = ExtResource("4_fjdr4")
 
 [node name="Tiles" type="Sprite2D" parent="."]
 visible = false
