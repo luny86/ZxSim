@@ -8,6 +8,7 @@ public partial class Plane : Area2D
 		Fly,
 		WaitingFall,
 		Fall,
+		Win,		// Fly away
 		Stop
 	};
 	
@@ -56,6 +57,10 @@ public partial class Plane : Area2D
 			case Mode.Fall:
 				Fall(delta);
 				break;
+				
+			case Mode.Win:
+				FlyAway(delta);
+				break;
 		}
 	}
 	
@@ -73,6 +78,11 @@ public partial class Plane : Area2D
 		Move(delta, new Vector2(0,1));	
 	}	
 	
+	private void FlyAway(double delta)
+	{
+		Move(delta, new Vector2(1,-1));	
+	}
+	
 	private void Move(double delta, Vector2 velocity)
 	{	
 		velocity = velocity.Normalized() * speed;
@@ -84,7 +94,19 @@ public partial class Plane : Area2D
 		}		
 	}
 	
-	public void Start(Vector2 position)
+	public void Title()
+	{
+		hit = Mode.Stop;
+		Hide();	
+	}
+	
+	public void NewGame()
+	{
+		hit = Mode.Stop;
+		Hide();	
+	}
+	
+	public void StartLevel(Vector2 position)
 	{
 		hit = Mode.Fly;
 		endHit.Disabled = false;
@@ -95,9 +117,16 @@ public partial class Plane : Area2D
 		Show();	
 	}
 
+	public void Win()
+	{
+		hit = Mode.Win;
+		var anim = GetNode<AnimatedSprite2D>("image");
+		anim.Play();
+	}
+	
 	private void _on_body_entered(Node body)
 	{
-		if(body.Name == "grass")
+		if(body.Name == "grass" && hit == Mode.Fly)
 		{
 			// Do nothing
 		}

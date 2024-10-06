@@ -4,64 +4,68 @@ using System;
 public partial class main : Node
 {
 	[Export]
-	public PackedScene BlockScene { get; set; }
-
-	[Export]
 	public PackedScene BombScene { get; set; }
 	
 	private bool bombActive;
 	private Bomb bomb;
 	private int bombCount;
+	private Control control;
+	private Plane player;
 	
 	// Called when the node enters the scene tree for the first time.
 	public override void _Ready()
 	{
+		control = GetNode<Control>("Control");
 		bomb = GetNode<Bomb>("Bomb");
-		RemoveChild(bomb);
-		NewGame();
+		player = GetNode<Plane>("Plane");
+		Title();
 	}
 
+	private void Title()
+	{
+		player.Title();
+		control.Title();		
+	}
+	
 	// Called every frame. 'delta' is the elapsed time since the previous frame.
 	public override void _Process(double delta)
 	{
 	}
+
+	private void _on_control_start_game()
+	{
+		NewGame();
+	}
 	
 	private void NewGame()
 	{
-		bomb.Hide();
-		bombActive = false;
-		var player = GetNode<Plane>("Plane");
-		var pos = GetNode<Marker2D>("startpoint");
-		player.Start(pos.Position);
-		Build();
+		RemoveChild(bomb);
+		control.NewGame();
+		player.NewGame();
+		NewLevel();
 	}
 	
-	private void Build()
+	private void NewLevel()
 	{
-		Marker2D marker = GetNode<Marker2D>("buildings");
-		
-		Vector2 nextPos = marker.Position;
-		
-		for(int n=0; n<24;n++)
-		{
-			uint height = (GD.Randi() % 10)+5;
-			float w = 0;
-			// Reset Y pos
-			nextPos.Y = marker.Position.Y;
-			
-			for(int h=0; h<height; h++)
-			{
-				var block = BlockScene.Instantiate<RigidBody2D>();
-				CollisionShape2D item = block.GetNode<CollisionShape2D>("CollisionShape2D");
-				Vector2 blockRect = item.Shape.GetRect().Size;
-				w = blockRect.X;
-				block.Position = nextPos;
-				AddChild(block);
-				nextPos.Y -= blockRect.Y;
-			}
-				
-			nextPos.X += w;
-		}
+		control.NewLevel();
+		bomb.Hide();
+		bombActive = false;
+		Builder builder = GetNode<Builder>("builder");
+		builder.Build();
+		Timer timer = GetNode<Timer>("StartTimer");
+		timer.Start();		
+	}
+	
+	private void StartLevel()
+	{
+		control.StartLevel();
+		var pos = GetNode<Marker2D>("startpoint");
+		player.StartLevel(pos.Position);
+	}
+	
+	private void _on_start_timer_timeout()
+	{
+		StartLevel();
 	}
 
 	private void OnPlaneFire(Vector2 position)
@@ -75,12 +79,28 @@ public partial class main : Node
 	
 	private void _on_plane_plane_hit(Node body)
 	{
-			GD.Print("Crash");
+		control.GameOver();
+		Timer timer = GetNode<Timer>("GameOverTimer");
+		timer.Start();
 	}
 
 	private void _on_plane_plane_landed()
 	{
-		GD.Print("Landed");
+		control.Win();
+		Timer timer = GetNode<Timer>("WinTimer");
+		timer.Start();
+	}
+
+	private void _on_win_timer_timeout()
+	{
+		player.Win();
+		Timer timer = GetNode<Timer>("NewLevelTimer");
+		timer.Start();
+	}
+
+	private void _on_new_level_timer_timeout()
+	{
+		NewLevel();
 	}
 
 	private void _on_bomb_hit(Node2D body)
@@ -93,6 +113,7 @@ public partial class main : Node
 		{
 			body.Hide();
 			body.CallDeferred("free");
+			control.AddScore(10);
 			bombCount--;
 			if(bombCount <= 0)
 			{
@@ -114,5 +135,12 @@ public partial class main : Node
 		bomb.Hide();
 		bombActive = false;
 		CallDeferred("remove_child", bomb);		
+	}
+
+	private void _on_game_over_timer_timeout()
+	{
+		Builder builder = GetNode<Builder>("builder");
+		builder.Clear();
+		Title();
 	}
 }

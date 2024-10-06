@@ -25,7 +25,6 @@ public partial class Bomb : Area2D
 	
 	private void _on_body_entered(Node2D body)
 	{
-		GD.Print("bomb");
 		Hide();
 		EmitSignal(SignalName.Hit, body);
 	}
