@@ -8,7 +8,10 @@ using Platform;
 /// and allows user to edit.
 /// </summary>
 public partial class TileGridControl : TextureRect
-{	
+{
+	/// <summary>Invoked when a tile has been altered.</summary>
+	public event  EventHandler<SelectTileEventArgs> TileChanged;
+
 	private TileGrid _tileGrid;
 
 	public TileGridControl()
@@ -19,8 +22,12 @@ public partial class TileGridControl : TextureRect
 	// Called when the node enters the scene tree for the first time.
 	public override void _Ready()
 	{
-		_tileGrid = CPU.Instance.CreateTileGrid();
+		ISurface surface = Factory.CreateSurface();
+		surface.Updated += Surface_Updated;
+		_tileGrid = CPU.Instance.CreateTileGrid(surface);
 		UpdateGrid(0);
+
+		// Hook into the selection tool
 		var tiles = GetParent().GetNode<TileEditNode>("TileSelect");
 
 		tiles.SelectTile += OnSelectTile;
@@ -31,9 +38,25 @@ public partial class TileGridControl : TextureRect
 	{
 	}
 
-	public void OnSelectTile(object sender, EventArgs e)
+    public override void _GuiInput(InputEvent input)
+    {
+		if(input is InputEventMouseButton mouse)
+		{
+			if(mouse.Pressed)
+			{
+				_tileGrid.TogglePixel((int)mouse.Position.X, (int)mouse.Position.Y);
+				OnTileChanged();
+			}
+		}
+		else
+		{
+        	base._GuiInput(input);
+		}
+    }
+
+    public void OnSelectTile(object sender, EventArgs e)
 	{
-		if(e is TileEditNode.SelectTileEventArgs args)
+		if(e is SelectTileEventArgs args)
 		{
 			UpdateGrid(args.Index);
 		}
@@ -41,9 +64,20 @@ public partial class TileGridControl : TextureRect
 	
 	private void UpdateGrid(int index)
 	{
-		// change to an update event to pass back 'image'
-		Surface image = _tileGrid.Draw(index) as Surface;
-		var texture = ImageTexture.CreateFromImage(image.Image);
-		Texture = texture;
+		_tileGrid.Draw(index);
+	}
+
+	private void Surface_Updated(object sender, EventArgs e)
+	{
+		if(sender is Surface surface)
+		{
+			Texture = ImageTexture.CreateFromImage(surface.Image);
+		}
+	}
+
+	private void OnTileChanged()
+	{
+		TileChanged?.Invoke(this, 
+		new SelectTileEventArgs(_tileGrid.TileIndex));
 	}
 }

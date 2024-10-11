@@ -26,6 +26,14 @@ namespace KUtil
             {
                 return (index >=0 && index <Length) ? Memory[index] : (byte)0xff;
             }
+
+            set
+            {
+                if(index >=0 && index < Length)
+                {
+                    Memory[index] = value;
+                }
+            }
         }
 
         public int Start { get; }

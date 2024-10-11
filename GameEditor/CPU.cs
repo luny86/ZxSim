@@ -14,14 +14,14 @@ public partial class CPU : Node
 
 	private Chunk _tileChunk;
 
-	public Tiles CreateTiles()
+	public Tiles CreateTiles(ISurface surface)
 	{
-		return new Tiles(_tileChunk, new Surface());
+		return new Tiles(_tileChunk, surface);
 	}
 
-	public TileGrid CreateTileGrid()
+	public TileGrid CreateTileGrid(ISurface surface)
 	{
-		return new TileGrid(_tileChunk, new Surface());
+		return new TileGrid(_tileChunk, surface);
 	}
 
 	// Called when the node enters the scene tree for the first time.

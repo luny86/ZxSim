@@ -9,16 +9,6 @@ using Platform;
 /// </summary>
 public partial class TileEditNode : TextureRect
 {
-	public class SelectTileEventArgs : EventArgs
-	{
-		public SelectTileEventArgs(int index)
-		{
-			Index = index;
-		}
-		
-		public int Index { get; }
-	}
-	
 	public event EventHandler<SelectTileEventArgs> SelectTile;
 	
 	private Tiles _tiles;
@@ -26,10 +16,29 @@ public partial class TileEditNode : TextureRect
 	// Called when the node enters the scene tree for the first time.
 	public override void _Ready()
 	{
-		_tiles = CPU.Instance.CreateTiles();
-		Surface image = _tiles.Draw() as Surface;
-		var texture = ImageTexture.CreateFromImage(image.Image);
-		Texture = texture;
+		ISurface surface = Factory.CreateSurface();
+		surface.Updated += Surface_Updated;
+		_tiles = CPU.Instance.CreateTiles(surface);
+		_tiles.Draw();
+
+		var tileGrid = GetParent().GetNode<TileGridControl>("TileGrid");
+		tileGrid.TileChanged += TileGrid_TileChanged;
+	}
+
+	private void TileGrid_TileChanged(object sender, EventArgs e)
+	{
+		if(e is SelectTileEventArgs select)
+		{
+			_tiles.DrawTile(select.Index);		
+		}
+	}
+
+	private void Surface_Updated(object sender, EventArgs e)
+	{
+		if(sender is Surface surface)
+		{
+			Texture = ImageTexture.CreateFromImage(surface.Image);
+		}
 	}
 
 	// Called every frame. 'delta' is the elapsed time since the previous frame.

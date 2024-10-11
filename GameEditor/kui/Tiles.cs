@@ -22,14 +22,19 @@ namespace KUi
 
 		private int Divide { get { return (TileSize + Margin) * _zoom; } }
 
+		private int TileWidth => _zoom * ((_tilesAcross * 9)+1);
+		private int TileHeight => _zoom * ((_tilesDown * 9)+1);
+
 		public ISurface Draw()
 		{
+			Image.BeginDraw();
+
 			int numTiles = TileChunk.Length / 8;
 			_tilesAcross = 32;
 			_tilesDown = numTiles / _tilesAcross;
 
-			int w = _zoom * ((_tilesAcross * 9)+1);
-			int h = _zoom * ((_tilesDown * 9)+1);
+			int w = TileWidth;
+			int h = TileHeight;
 			Image.Create(w, h);
 			Image.Fill(new Rgba(0.5f, 0.5f, 0.5f, 1.0f));
 			
@@ -41,15 +46,35 @@ namespace KUi
 			{
 				for(int x = 1; x < w - _zoom; x+=sx)
 				{
-					for(int row = 0; row < 8; row++)
-					{
-						byte b = TileChunk[nextByte++];
-						DrawByte(b, x, y+(row * 2), 2);
-					}
+					nextByte = DrawTile(x,y, nextByte);
 				}
 			}
 
+			Image.EndDraw();
 			return Image;
+		}
+
+		private int DrawTile(int x, int y, int nextByte)
+		{
+			for(int row = 0; row < 8; row++)
+			{
+				byte b = TileChunk[nextByte++];
+				DrawByte(b, x, y+(row * 2), 2);
+			}
+
+			return nextByte;
+		}
+
+		public void DrawTile(int index)
+		{
+			int row = index / _tilesAcross;
+			int col = index % _tilesAcross;
+			int offset = index * 8;
+
+			DrawTile(
+				col * Divide,
+				row * Divide,
+				offset);
 		}
 
         public int PointToTile(int x, int y)
