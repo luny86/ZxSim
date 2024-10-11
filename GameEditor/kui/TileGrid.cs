@@ -1,6 +1,6 @@
 using System;
-using Godot;
 using KUtil;
+using Platform;
 
 namespace KUi
 {
@@ -9,23 +9,22 @@ namespace KUi
     /// </summary>
     public class TileGrid : TileBase
     {
-        private const int PixelScale = 4;
+        private const int PixelScale = 16;
         private const int TileWidth = 8;
         private const int TileHeight = 8;
         private const int Margin = 1; // In pixels (scaled)
 
-        public TileGrid(Chunk tileChunk)
-        : base(tileChunk)
+        public TileGrid(Chunk tileChunk, ISurface image)
+        : base(tileChunk, image)
         {
         }
 
-        private static Image CreateImage()
+        private void CreateImage()
         {
-            return Image.CreateEmpty(
+            Image.Create(
                 (TileWidth * PixelScale) + (Margin * 10),
-                (TileHeight * PixelScale)+ (Margin * 10),
-                true,
-                Image.Format.Rgba8);
+                (TileHeight * PixelScale)+ (Margin * 10));
+			Image.Fill(new Rgba(0.5f, 0.5f, 0.5f, 1.0f));
         }
 
         /// <summary>
@@ -33,8 +32,9 @@ namespace KUi
         /// </summary>
         /// <param name="index">Index of tile</param>
         /// <returns>Image containing tile.</returns>
-        public Image Draw(int index)
+        public ISurface Draw(int index)
         {
+            Image.BeginDraw();
             // Convert into tile offset
             index *= 8;
 
@@ -43,8 +43,7 @@ namespace KUi
                 throw new ArgumentException("Tile index out of range");
             }
 
-            Image = CreateImage();
-			Image.Fill(new Color(0.5f, 0.5f, 0.5f, 1.0f));
+            CreateImage();
 
             int margin = Margin;
             int zoom = PixelScale + margin;
@@ -54,6 +53,8 @@ namespace KUi
                 byte b = TileChunk[index++];
                 DrawByte(b, margin, margin + (y*zoom), zoom, margin);
             }
+            
+            Image.EndDraw();
             return Image;
         }
     }

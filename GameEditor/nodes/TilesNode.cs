@@ -1,7 +1,6 @@
 using Godot;
-using System;
-using KUtil;
 using KUi;
+using Platform;
 
 public partial class TilesNode : Sprite2D
 {
@@ -9,9 +8,8 @@ public partial class TilesNode : Sprite2D
 	public override void _Ready()
 	{
 		Tiles tiles = CPU.Instance.CreateTiles();
-		Image image = tiles.Draw();
-		var texture = ImageTexture.CreateFromImage(image);
-		this.Texture = texture;
+		Surface image = tiles.Draw() as Surface;
+		var texture = ImageTexture.CreateFromImage(image.Image);
 	}
 
 	// Called every frame. 'delta' is the elapsed time since the previous frame.

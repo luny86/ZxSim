@@ -3,7 +3,7 @@
 [ext_resource type="Texture2D" uid="uid://cbn8ws5dejakf" path="res://icon.svg" id="1_8xg0j"]
 [ext_resource type="Script" path="res://nodes/TilesNode.cs" id="2_q16sr"]
 [ext_resource type="Script" path="res://nodes/TileGridNode.cs" id="3_7di26"]
-[ext_resource type="Script" path="res://nodes/TextureRect.cs" id="4_ebpbd"]
+[ext_resource type="Script" path="res://nodes/TileEditNode.cs" id="3_vfai6"]
 [ext_resource type="Script" path="res://nodes/TileGridControl.cs" id="4_fjdr4"]
 
 [node name="Main" type="Node"]
@@ -17,30 +17,18 @@ script = ExtResource("3_7di26")
 
 [node name="TileControl" type="Node" parent="."]
 
-[node name="TextEdit" type="TextEdit" parent="TileControl"]
+[node name="TileSelect" type="TextureRect" parent="TileControl"]
 anchors_preset = -1
-anchor_left = 0.589
-anchor_top = 0.037
-anchor_right = 0.69
-anchor_bottom = 0.102
-offset_left = 0.471924
-offset_top = 0.0240002
-offset_right = 335.12
-offset_bottom = -0.0960007
-text = "Hello"
-
-[node name="TilesTextureRect" type="TextureRect" parent="TileControl"]
-anchors_preset = -1
-anchor_left = 0.43
-anchor_top = 0.205
-anchor_right = 0.857
-anchor_bottom = 1.0
-offset_left = 7.63998
-offset_top = -61.84
-offset_right = -356.264
-offset_bottom = -350.0
+anchor_left = 0.437
+anchor_top = 0.11
+anchor_right = 0.548
+anchor_bottom = 0.46
+offset_left = -0.424011
+offset_top = -0.280006
+offset_right = -0.296021
+offset_bottom = -0.0800171
 stretch_mode = 1
-script = ExtResource("4_ebpbd")
+script = ExtResource("3_vfai6")
 
 [node name="TileGrid" type="TextureRect" parent="TileControl"]
 anchors_preset = -1

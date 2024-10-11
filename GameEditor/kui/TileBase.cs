@@ -1,16 +1,17 @@
-using Godot;
 using KUtil;
+using Platform;
 
 namespace KUi
 {
     public class TileBase
-    {
+	{
 
-        public TileBase(Chunk tileChunk)
+        public TileBase(Chunk tileChunk, ISurface image)
         {
             TileChunk = tileChunk;
-            Paper = new Color(0.0f, 0.0f, 0.0f, 1.0f);
-			Ink = new Color(1.0f, 1.0f, 1.0f, 1.0f);
+			Image = image;
+            Paper = zx.Palette.BrightYellow;
+			Ink = zx.Palette.BrightBlack;
 
         }
 
@@ -20,26 +21,26 @@ namespace KUi
             private set;
         }
 
-        protected Image	Image { get; set; }
+        protected ISurface	Image { get; }
 
 
-		protected Color Ink
+		public Rgba Ink
 		{
 			get;
 			set;
 		}
 
-		protected Color Paper
+		public Rgba Paper
 		{
 			get;
 			set;
 		}
 
-    		protected void DrawByte(byte b, int x, int y, int zoom = 1, int gap=0)
+    	protected void DrawByte(byte b, int x, int y, int zoom = 1, int gap=0)
 		{
 			for(int pixel = 0; pixel<8; pixel++)
 			{
-				Rect2I rect = new Rect2I(x+(pixel*zoom), y, zoom-gap ,zoom-gap);
+				Rectangle rect = new Rectangle(x+(pixel*zoom), y, zoom-gap ,zoom-gap);
 				Image.FillRect(rect, 
 					(b & 128) == 0 ? Paper : Ink);
 				b <<= 1;

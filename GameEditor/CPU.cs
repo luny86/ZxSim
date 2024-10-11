@@ -1,6 +1,7 @@
 using Godot;
 using KUtil;
 using KUi;
+using Platform;
 
 public partial class CPU : Node
 {
@@ -15,12 +16,12 @@ public partial class CPU : Node
 
 	public Tiles CreateTiles()
 	{
-		return new Tiles(_tileChunk);
+		return new Tiles(_tileChunk, new Surface());
 	}
 
 	public TileGrid CreateTileGrid()
 	{
-		return new TileGrid(_tileChunk);
+		return new TileGrid(_tileChunk, new Surface());
 	}
 
 	// Called when the node enters the scene tree for the first time.

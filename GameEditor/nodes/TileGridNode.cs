@@ -1,7 +1,6 @@
 using Godot;
-using System;
-using KUtil;
 using KUi;
+using Platform;
 
 public partial class TileGridNode : Sprite2D
 {
@@ -10,12 +9,12 @@ public partial class TileGridNode : Sprite2D
 	public TileGridNode()
 	: base()
 	{
-		_tileGrid = CPU.Instance.CreateTileGrid();
 	}
 
 	// Called when the node enters the scene tree for the first time.
 	public override void _Ready()
 	{
+		_tileGrid = CPU.Instance.CreateTileGrid();
 	}
 
 	// Called every frame. 'delta' is the elapsed time since the previous frame.
@@ -25,8 +24,8 @@ public partial class TileGridNode : Sprite2D
 
 	public void SelectTile(int index)
 	{
-		Image image = _tileGrid.Draw(index);
-		var texture = ImageTexture.CreateFromImage(image);
-		this.Texture = texture;
+		Surface image = _tileGrid.Draw(index) as Surface;
+		var texture = ImageTexture.CreateFromImage(image.Image);
+		Texture = texture;
 	}
 }
