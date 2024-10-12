@@ -11,19 +11,19 @@ namespace KUi
 		private const int TileSize = 8;
 		private const int Margin = 1;
 
-		private int _zoom = 2;
 		private int _tilesAcross = 0;
 		private int _tilesDown = 0;
 
 		public Tiles(Chunk tileChunk, ISurface image)
 		: base(tileChunk, image)
 		{
+			Zoom = 2;
 		}
 
-		private int Divide { get { return (TileSize + Margin) * _zoom; } }
+		private int Divide { get { return (TileSize + Margin) * Zoom; } }
 
-		private int TileWidth => _zoom * ((_tilesAcross * 9)+1);
-		private int TileHeight => _zoom * ((_tilesDown * 9)+1);
+		private int TileWidth => Zoom * ((_tilesAcross * 9)+1);
+		private int TileHeight => Zoom * ((_tilesDown * 9)+1);
 
 		public ISurface Draw()
 		{
@@ -42,9 +42,9 @@ namespace KUi
 			int sy = Divide;
 			int sx = Divide;
 
-			for(int y = 1; y < h - _zoom; y+=sy)
+			for(int y = 1; y < h - Zoom; y+=sy)
 			{
-				for(int x = 1; x < w - _zoom; x+=sx)
+				for(int x = 1; x < w - Zoom; x+=sx)
 				{
 					nextByte = DrawTile(x,y, nextByte);
 				}
@@ -52,17 +52,6 @@ namespace KUi
 
 			Image.EndDraw();
 			return Image;
-		}
-
-		private int DrawTile(int x, int y, int nextByte)
-		{
-			for(int row = 0; row < 8; row++)
-			{
-				byte b = TileChunk[nextByte++];
-				DrawByte(b, x, y+(row * 2), 2);
-			}
-
-			return nextByte;
 		}
 
 		public void DrawTile(int index)
@@ -79,7 +68,7 @@ namespace KUi
 
         public int PointToTile(int x, int y)
         {
-			int margin = Margin * _zoom;
+			int margin = Margin * Zoom;
 
             return ( (x - margin)/ Divide) + 
 				_tilesAcross * 

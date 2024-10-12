@@ -18,6 +18,7 @@ namespace KUi
 		public TileGrid(Chunk tileChunk, ISurface image)
 		: base(tileChunk, image)
 		{
+            Zoom = PixelScale + Margin;
 		}
 
         public int TileIndex
@@ -39,14 +40,6 @@ namespace KUi
             get
             {
                 return (TileHeight * PixelScale)+ (Margin * 10); 
-            }
-        }
-
-        private static int Zoom
-        {
-            get
-            {
-                return PixelScale + Margin;
             }
         }
 
@@ -83,12 +76,11 @@ namespace KUi
 			CreateImage();
 
 			int margin = Margin;
-			int zoom = Zoom;
 
 			for(int y=0;y<8; y++)
 			{
 				byte b = TileChunk[index++];
-				DrawByte(b, margin, margin + (y*zoom), zoom, margin);
+				DrawByte(b, margin, margin + (y*Zoom), margin);
 			}
 			
 			Image.EndDraw();
