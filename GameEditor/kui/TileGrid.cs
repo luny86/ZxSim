@@ -18,8 +18,11 @@ namespace KUi
 		public TileGrid(Chunk tileChunk, ISurface image)
 		: base(tileChunk, image)
 		{
+            TileChunk = tileChunk;
             Zoom = PixelScale + Margin;
 		}
+
+        private IChunk TileChunk { get; }
 
         public int TileIndex
         {
@@ -58,7 +61,7 @@ namespace KUi
 		{
             TileIndex = index;
 			index *= TilesizeInBytes;
-			if(index <0 || index > TileChunk.Length)
+			if(index <0 || index >= NumberOfTiles)
 			{
 				throw new ArgumentException("Tile index out of range");
 			}
@@ -68,20 +71,14 @@ namespace KUi
 
         private void Draw()
         {
-            int index = TileIndex*TilesizeInBytes;
-
 			Image.BeginDraw();
 			// Convert into tile offset
 
 			CreateImage();
 
-			int margin = Margin;
-
-			for(int y=0;y<8; y++)
-			{
-				byte b = TileChunk[index++];
-				DrawByte(b, margin, margin + (y*Zoom), margin);
-			}
+			TileDrawer.Gap = Margin;
+            TileDrawer.Zoom = Zoom;
+            TileDrawer.Draw(Margin, Margin, TileIndex, Image);
 			
 			Image.EndDraw();
 		}
@@ -100,13 +97,3 @@ namespace KUi
         }
 	}
 }
-
-/*
-    -
-    O
-    -
-    O
-    -
-    O
-    -
-*/

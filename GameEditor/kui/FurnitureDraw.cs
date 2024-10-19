@@ -13,7 +13,7 @@ namespace KUi
     /// The furniture string uses draw codes to put the tiles together.
     /// The tiles hold the bitmaps of each tile.
     /// </remarks>
-    public class FurnitureDraw : TileBase, zx.IAttribute
+    public class FurnitureDraw
     {
         private delegate void CursorMethod();
 
@@ -50,8 +50,9 @@ namespace KUi
             Chunk stringTable,
             IChunk tileChunk,
             ISurface surface)
-            : base(tileChunk, surface)
             {
+                TileDrawer = new TileDrawer(tileChunk);
+                Image = surface;
                 TileStringChunk = tileStrings;
                 StringTableChunk = stringTable;
                 Index = 9;  // First item
@@ -67,11 +68,17 @@ namespace KUi
         private Chunk TileStringChunk { get; }
         private Chunk StringTableChunk { get; }
         
+        private TileDrawer TileDrawer { get; }
+
+        private ISurface Image { get; }
+
         public int Index 
         {
             get;
             set;
         }
+
+        public int Zoom { get; set; }
 
         /// <summary>
         /// Emulates the flags when drawing
@@ -93,16 +100,6 @@ namespace KUi
         /// Number of pixels that make up a screen character cell.
         /// </summary>
         private int CharSize => 8*Zoom;
-
-        /// <summary>
-        /// Offset value which points to the first tile
-        /// in the memory, as set by the string decoder.
-        /// </summary>
-        /// <value></value>
-        private int TileStart { get; set; }
-
-        // Determines if Paper / Ink is bright
-        private bool Bright { get; set; }
 
         #region Public Interface        
         public void Draw()
@@ -126,9 +123,7 @@ namespace KUi
             System.Drawing.Point start = _startCache[Index];
             X = start.X;
             Y = start.Y;
-            TileStart= 0;
-            Ink = zx.Palette.BrightWhite;
-            Paper = zx.Palette.Black;
+            TileDrawer.SetTileStart(0);
 
             Image.BeginDraw();
 			Image.Fill(new Rgba(0.5f, 0.5f, 0.5f, 1.0f));
@@ -163,11 +158,6 @@ namespace KUi
             return  word - TileStringChunk.Start; 
         }
 
-        private int CalculateTileAddr(int tileIndex)
-        {
-            return TileStart + (8 * tileIndex);
-        }
-
         private int DrawNext(int offset)
         {
             byte code = TileStringChunk[offset++];
@@ -178,9 +168,7 @@ namespace KUi
             }
             else if(code < (byte)Code.DrawTile)
             {
-                int tile = CalculateTileAddr(code);
-
-                DrawTile(X, Y, tile);
+                TileDrawer.Draw(X,Y, code, Image);
                 CursorRight();
             }
             else if(code < (byte)Code.SetCursor)
@@ -197,17 +185,18 @@ namespace KUi
             else if(code == (byte)Code.SetAddress)
             {
                 ushort newAddr = TileStringChunk.Word(offset);
-                TileStart = newAddr - TileChunk.Start;
+                // TODO - Add method to draw to set start...
+                TileDrawer.SetTileStart(newAddr);
                 offset+=2;
             }
             else if(code < (byte)Code.DrawTileLoop)
             {
                 int count = code - 0xa0;
-                int tile = CalculateTileAddr(TileStringChunk[offset++]);
+                int tile = TileStringChunk[offset++];
 
                 for(int i=0;i<count;i++)
                 {
-                    DrawTile(X, Y, tile);
+                    TileDrawer.Draw(X, Y, tile, Image);
                     CursorDown();
                 }
             }
@@ -218,18 +207,19 @@ namespace KUi
             }
             else if(code == (byte)Code.DrawSolidTile)
             {
-                DrawTile(X, Y, 0x4335);
+                int tile = TileDrawer.TileFromAddr(0x4335);
+                TileDrawer.Draw(X, Y, tile, Image);
                 CursorRight();
                 return -1;
             }
             else if(code == (byte)Code.DrawTileLoopStepUpLeft)
             {
                 int count = TileStringChunk[offset++];
-                int tile = CalculateTileAddr(TileStringChunk[offset++]);
+                int tile = TileStringChunk[offset++];
 
                 for(int i=0; i<count; i++)
                 {
-                    DrawTile(X, Y, tile);
+                    TileDrawer.Draw(X, Y, tile, Image);
                     CursorUp();
                     CursorRight();
                 }
@@ -244,17 +234,17 @@ namespace KUi
             }
             else if(code == (byte)Code.ToggleBrightness)
             {
-                zx.Palette.ToggleBright(this);
+                zx.Palette.ToggleBright(TileDrawer);
             }
             else if(code < (byte)Code.SetColourInk)
             {
                 int c = code - 0xc2;
-                zx.Palette.SetAttribute((byte)c, this);
+                zx.Palette.SetAttribute((byte)c, TileDrawer);
             }
             else if(code < (byte)Code.SetcolourInkBright)
             {
                 int c = code - 0x89;
-                zx.Palette.SetAttribute((byte)c, this);
+                zx.Palette.SetAttribute((byte)c, TileDrawer);
             }
             else if(code == (byte)Code.SwitchString)
             {
@@ -263,7 +253,7 @@ namespace KUi
             else if(code == (byte)Code.SetColourMem)
             {
                 byte c = TileStringChunk[offset++];
-                zx.Palette.SetAttribute(c, this);
+                zx.Palette.SetAttribute(c, TileDrawer);
             }
             else if(code == (byte)Code.Draw2TilesLoopAcross)
             {
@@ -299,14 +289,14 @@ namespace KUi
         private int DrawTwoTilesLoopAndMove(int offset, CursorMethod method)
         {
             int amount = TileStringChunk[offset++];
-            int tile1 = CalculateTileAddr(TileStringChunk[offset++]);
-            int tile2 = CalculateTileAddr(TileStringChunk[offset++]);
+            int tile1 = TileStringChunk[offset++];
+            int tile2 = TileStringChunk[offset++];
 
             for(int i=0; i<amount; i++)
             {
-                DrawTile(X, Y, tile1);
+                TileDrawer.Draw(X, Y, tile1, Image);
                 method.Invoke();
-                DrawTile(X, Y, tile2);
+                TileDrawer.Draw(X, Y, tile2, Image);
                 method.Invoke();
             }
             return offset;
@@ -316,16 +306,17 @@ namespace KUi
         {
             int width = TileStringChunk[offset++];
             int height = TileStringChunk[offset++];
-            int tile = CalculateTileAddr(TileStringChunk[offset++]);
+            int tile = TileStringChunk[offset++];
 
             for(int y=0; y<height; y++)
             {
                 for(int x=0; x<width;x++)
                 {
-                    DrawTile(
+                    TileDrawer.Draw(
                         X+(x*CharSize),
                         Y+(y*CharSize), 
-                        tile);
+                        tile,
+                        Image);
                 }
             }
 
@@ -347,10 +338,10 @@ namespace KUi
         private int DrawLoopAndRight(int offset)
         {
             int count = TileStringChunk[offset++];
-            int tile = CalculateTileAddr(TileStringChunk[offset++]);
+            int tile = TileStringChunk[offset++];
             for(int i=0; i< count; i++)
             {
-                DrawTile(X, Y, tile);
+                TileDrawer.Draw(X, Y, tile, Image);
                 CursorRight();
             }
 

@@ -29,16 +29,15 @@ namespace KUi
 		{
 			Image.BeginDraw();
 
-			int numTiles = TileChunk.Length / 8;
 			_tilesAcross = 32;
-			_tilesDown = numTiles / _tilesAcross;
+			_tilesDown = NumberOfTiles / _tilesAcross;
 
 			int w = TileWidth;
 			int h = TileHeight;
 			Image.Create(w, h);
 			Image.Fill(new Rgba(0.5f, 0.5f, 0.5f, 1.0f));
 			
-			int	nextByte = 0;
+			int	index = 0;
 			int sy = Divide;
 			int sx = Divide;
 
@@ -46,7 +45,7 @@ namespace KUi
 			{
 				for(int x = 1; x < w - Zoom; x+=sx)
 				{
-					nextByte = DrawTile(x,y, nextByte);
+					TileDrawer.Draw(x, y, index++, Image);
 				}
 			}
 
@@ -58,12 +57,12 @@ namespace KUi
 		{
 			int row = index / _tilesAcross;
 			int col = index % _tilesAcross;
-			int offset = index * 8;
 
-			DrawTile(
+			TileDrawer.Draw(
 				col * Divide,
 				row * Divide,
-				offset);
+				index,
+				Image);
 		}
 
         public int PointToTile(int x, int y)
