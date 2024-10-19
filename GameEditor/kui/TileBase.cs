@@ -6,7 +6,7 @@ namespace KUi
     public class TileBase
 	{
 
-        public TileBase(Chunk tileChunk, ISurface image)
+        public TileBase(IChunk tileChunk, ISurface image)
         {
             TileChunk = tileChunk;
 			Image = image;
@@ -15,7 +15,7 @@ namespace KUi
 			Zoom = 2;
         }
 
-        protected Chunk TileChunk
+        protected IChunk TileChunk
         {
             get;
             private set;

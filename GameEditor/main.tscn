@@ -1,10 +1,11 @@
-[gd_scene load_steps=6 format=3 uid="uid://c508nephssk3w"]
+[gd_scene load_steps=7 format=3 uid="uid://c508nephssk3w"]
 
 [ext_resource type="Texture2D" uid="uid://cbn8ws5dejakf" path="res://icon.svg" id="1_8xg0j"]
 [ext_resource type="Script" path="res://nodes/TilesNode.cs" id="2_q16sr"]
 [ext_resource type="Script" path="res://nodes/TileGridNode.cs" id="3_7di26"]
 [ext_resource type="Script" path="res://nodes/TileEditNode.cs" id="3_vfai6"]
 [ext_resource type="Script" path="res://nodes/TileGridControl.cs" id="4_fjdr4"]
+[ext_resource type="Script" path="res://nodes/FurnitureDisplayNode.cs" id="6_1temh"]
 
 [node name="Main" type="Node"]
 
@@ -18,6 +19,7 @@ script = ExtResource("3_7di26")
 [node name="TileControl" type="Node" parent="."]
 
 [node name="TileSelect" type="TextureRect" parent="TileControl"]
+visible = false
 anchors_preset = -1
 anchor_left = 0.437
 anchor_top = 0.11
@@ -31,6 +33,7 @@ stretch_mode = 1
 script = ExtResource("3_vfai6")
 
 [node name="TileGrid" type="TextureRect" parent="TileControl"]
+visible = false
 anchors_preset = -1
 anchor_left = 0.207
 anchor_top = 0.276
@@ -47,3 +50,33 @@ visible = false
 position = Vector2(106, 642)
 texture = ExtResource("1_8xg0j")
 script = ExtResource("2_q16sr")
+
+[node name="FurnitureControl" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 0
+offset_right = 493.0
+offset_bottom = 645.0
+
+[node name="FurnitureDisplay" type="TextureRect" parent="FurnitureControl"]
+layout_mode = 0
+offset_left = 55.0
+offset_top = 46.0
+offset_right = 95.0
+offset_bottom = 86.0
+script = ExtResource("6_1temh")
+
+[node name="NextItemButton" type="Button" parent="FurnitureControl"]
+layout_mode = 0
+offset_left = 212.0
+offset_top = 615.0
+offset_right = 239.0
+offset_bottom = 646.0
+text = ">"
+
+[node name="PrevItemButton" type="Button" parent="FurnitureControl"]
+layout_mode = 0
+offset_left = 175.0
+offset_top = 615.0
+offset_right = 202.0
+offset_bottom = 646.0
+text = "<"

@@ -38,8 +38,8 @@ public partial class TileGridControl : TextureRect
 	{
 	}
 
-    public override void _GuiInput(InputEvent input)
-    {
+	public override void _GuiInput(InputEvent input)
+	{
 		if(input is InputEventMouseButton mouse)
 		{
 			if(mouse.Pressed)
@@ -50,11 +50,11 @@ public partial class TileGridControl : TextureRect
 		}
 		else
 		{
-        	base._GuiInput(input);
+			base._GuiInput(input);
 		}
-    }
+	}
 
-    public void OnSelectTile(object sender, EventArgs e)
+	public void OnSelectTile(object sender, EventArgs e)
 	{
 		if(e is SelectTileEventArgs args)
 		{

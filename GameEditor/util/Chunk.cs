@@ -6,7 +6,7 @@ namespace KUtil
     /// Holds information and data on a chunk of memory
     /// copied from the ram buffer.
     /// </summary>
-    public class Chunk
+    public class Chunk : IChunk
     {
         const int RamStart = 0x4000;
 
@@ -18,6 +18,20 @@ namespace KUtil
             byte[] memory = new byte[length];
             Array.Copy(buffer, start-RamStart, memory, 0, length);
             Memory = memory;
+        }
+
+        public ushort Word(int index)
+        {
+            return (index >=0 && index <Length-1) ? 
+                (ushort)(Memory[index] + (256 * Memory[index+1]))
+                : (ushort)0xff;
+        }
+
+        public byte[] CopyRange(int index, int length)
+        {
+            byte[] copy = new byte[length];
+            Array.Copy(Memory, index,  copy, 0, length);
+            return copy;
         }
 
         public byte this[int index]

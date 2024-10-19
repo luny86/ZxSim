@@ -19,5 +19,10 @@ namespace KUtil
         public int Y { get; }
         public int W { get; }
         public int H { get; }
+
+        public int Left => X;
+        public int Right => X+W;
+        public int Top => Y;
+        public int Bottom => Y+H;
     }
 }
