@@ -8,6 +8,13 @@ namespace KUtil
         /// </summary>
         public class CodeInfo
         {
+            public CodeInfo(CodeInfo copy)
+            {
+                Code = copy.Code;
+                NumberOfArgs = copy.NumberOfArgs;
+                Name = copy.Name;
+            }
+
             public CodeInfo(byte code, int numArgs, string name)
             {
                 Code = code;

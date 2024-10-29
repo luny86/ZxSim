@@ -20,19 +20,6 @@ namespace KUi
         protected delegate void CursorMethod();
         #endregion
 
-        #region Private Types
-        protected class CodeArgs
-        {
-            public CodeArgs(byte[] args)
-            {
-                Args = args;
-            }
-
-            public byte[] Args { get; }
-        }
-    
-        #endregion
-
         #region Fields
         /// <summary>
         /// Maps a byte range to a single code.
@@ -195,7 +182,9 @@ namespace KUi
         private void InvokeCodeMethod(byte code)
         {
             CodeInfo info = CodeInfo[code];
-            CodeArgs args = new CodeArgs(TileStringChunk.CopyRange(Offset-1, info.NumberOfArgs));
+            CodeArgs args = new CodeArgs(
+                TileStringChunk.CopyRange(Offset-1, info.NumberOfArgs),
+                info);
             CodeMethods[code].Invoke(args);         
             Offset+= info.NumberOfArgs-1;
         }
