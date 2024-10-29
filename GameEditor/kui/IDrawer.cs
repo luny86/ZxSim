@@ -7,10 +7,6 @@ namespace KUi
     /// </summary>
     public interface IDrawer
     {
-        int TileStart { get; }
-        
-        void SetTileStart(int address);
-
         void Draw(int x, int y, int index, ISurface surface);
     }
 }

@@ -36,6 +36,7 @@ namespace KUi
 			int h = TileHeight;
 			Image.Create(w, h);
 			Image.Fill(new Rgba(0.5f, 0.5f, 0.5f, 1.0f));
+			TileDrawer.Zoom = Zoom;
 			
 			int	index = 0;
 			int sy = Divide;

@@ -41,7 +41,6 @@ namespace zx
             ZxAttr ink = (ZxAttr)((attribute & 0x07) + (8*bright));
             ZxAttr paper = (ZxAttr)(((attribute >> 3) & 0x07) + (8*bright));
 
-            Godot.GD.Print($"attr({attribute:X}) = P{paper} I{ink}");
             objectToSet.Ink = rgb[ink];
             objectToSet.Paper = rgb[paper];
         }

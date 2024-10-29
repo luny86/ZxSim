@@ -20,6 +20,11 @@ namespace KUtil
             Memory = memory;
         }
 
+        public static ushort Word(byte h, byte l)
+        {
+            return (ushort)(h + (l * 256));
+        }
+
         public ushort Word(int index)
         {
             return (index >=0 && index <Length-1) ? 

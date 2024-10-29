@@ -41,6 +41,20 @@ public partial class CPU : Node
 			new Chunk(0x4000, 0xbfff, _ram), surface);
 	}
 
+	public RoomDraw CreateRoomDraw(ISurface surface)
+	{
+		return new RoomDraw(_roomAttrTable,
+			_roomData,
+			CreateFurnitureDrawer() as IFurnitureDrawer,
+			surface);
+	}
+
+	private IDrawer CreateFurnitureDrawer()
+	{
+		return new ThreeWeeks.FurnitureDrawer(_tileStrings, _tileStringTable,
+			new Chunk(0x4000, 0xbfff, _ram));
+	}
+
 	// Called when the node enters the scene tree for the first time.
 	public override void _Ready()
 	{
@@ -51,8 +65,8 @@ public partial class CPU : Node
 		_tileStrings = new Chunk(0x6c13, 0x1fe5, _ram);
 		_tileStringTable = new Chunk(0x7c87, 0x11e, _ram);
 		_roomAttrTable = new Chunk(0xd170, 0x20, _ram);
-		_roomData = new Chunk(0xc977, 0x200, _ram);
-		
+		_roomData = new Chunk(0xc977, 0x1000, _ram);
+
 		Instance = this;
 	}
 

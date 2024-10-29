@@ -5,6 +5,9 @@ namespace KUi
 {
     public class TileDrawer : IDrawer, zx.IAttribute
     {
+        // TODO Create an ITileDrawer, for TileStart etc.
+        // Convert references to IDrawer.
+        
         public TileDrawer(IChunk tileChunk)
         {
             TileChunk = tileChunk;

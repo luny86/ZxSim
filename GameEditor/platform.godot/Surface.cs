@@ -60,5 +60,13 @@ namespace Platform
         {
             Updated?.Invoke(this, new EventArgs());
         }
+
+        public bool IsInBounds(int x, int y)
+        {
+            return 
+                x >= 0 && x <= Image.GetWidth()
+                &&
+                y >= 0 && y <= Image.GetHeight();
+        }
     }
 }

@@ -7,20 +7,24 @@ namespace KUi
     {
         private const byte CodeExit = 0xff;
 
+        private readonly int _maxItems ;
+
         public RoomDraw(IReadOnlyChunk attrTable, 
             IReadOnlyChunk roomData,
-            FurnitureDraw furnitureDraw,
+            IFurnitureDrawer drawer,
             ISurface image)
         {
             AttrTable = attrTable;
             RoomData = roomData;
-            FurnitureDraw = furnitureDraw;
+            Drawer = drawer;
             Image = image;
+
+            _maxItems = 256;
         }
 
         private IReadOnlyChunk AttrTable { get; }
         private IReadOnlyChunk RoomData { get; }
-        private FurnitureDraw FurnitureDraw{ get; }
+        private IFurnitureDrawer Drawer { get; }
         private ISurface Image {get; }
 		public Rgba Ink
 		{
@@ -44,11 +48,14 @@ namespace KUi
 
         public void Draw()
         {
+            Image.BeginDraw();
             zx.Palette.SetAttribute(AttrTable[Index], this);
             Image.Fill(Paper);
 
             int offset = StringSearch(Index);
-            int next = 0;
+            int size = Drawer.CharSize;
+            int next;
+            Godot.GD.Print(offset.ToString());
             do
             {
                 next = RoomData[offset++];
@@ -61,32 +68,55 @@ namespace KUi
                     break; // For no
                 }
 
-                int y = RoomData[offset++];
+                int x = next * size;
+                int y = RoomData[offset++] * size;
                 int i = RoomData[offset++];
-                FurnitureDraw.X = next;
-                FurnitureDraw.Y = y;
-                FurnitureDraw.Index = i;
-                // More flexible with image and what to draw... FurnitureDraw.Draw();
+                Drawer.Draw(x, y, i, Image);
             }
             while(next != CodeExit);
 
+            Image.EndDraw();
         }
 
         private int StringSearch(int index)
         {
+            if(index == 0)
+            {
+                return 0;
+            }
+
             int offset = 0;
-            byte found = 0;
 
             do
             {
-                while(found != CodeExit) 
-                {
-                    found = RoomData[offset++];
-                }
+                while(RoomData[offset++] != CodeExit);
             }
             while(--index > 0);
 
             return offset;
         }
+
+        #region Controls
+        public void NextItem()
+        {
+            if(++Index >= _maxItems)
+            {
+                Index = 0;
+            }
+
+            Draw();
+        }
+
+        public void PreviousItem()
+        {
+            if(--Index < 0)
+            {
+                Index = _maxItems - 1;
+            }
+
+            Draw();
+        }
+        #endregion
+
     }
 }

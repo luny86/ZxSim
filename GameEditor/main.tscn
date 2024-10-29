@@ -1,4 +1,4 @@
-[gd_scene load_steps=7 format=3 uid="uid://c508nephssk3w"]
+[gd_scene load_steps=8 format=3 uid="uid://c508nephssk3w"]
 
 [ext_resource type="Texture2D" uid="uid://cbn8ws5dejakf" path="res://icon.svg" id="1_8xg0j"]
 [ext_resource type="Script" path="res://nodes/TilesNode.cs" id="2_q16sr"]
@@ -6,6 +6,7 @@
 [ext_resource type="Script" path="res://nodes/TileEditNode.cs" id="3_vfai6"]
 [ext_resource type="Script" path="res://nodes/TileGridControl.cs" id="4_fjdr4"]
 [ext_resource type="Script" path="res://nodes/FurnitureDisplayNode.cs" id="6_1temh"]
+[ext_resource type="Script" path="res://nodes/RoomDisplayNode.cs" id="7_io6ng"]
 
 [node name="Main" type="Node"]
 
@@ -52,6 +53,7 @@ texture = ExtResource("1_8xg0j")
 script = ExtResource("2_q16sr")
 
 [node name="FurnitureControl" type="Control" parent="."]
+visible = false
 layout_mode = 3
 anchors_preset = 0
 offset_right = 493.0
@@ -80,3 +82,44 @@ offset_top = 615.0
 offset_right = 202.0
 offset_bottom = 646.0
 text = "<"
+
+[node name="RoomControl" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 0
+offset_left = 140.0
+offset_top = 120.0
+offset_right = 180.0
+offset_bottom = 160.0
+
+[node name="RoomDisplay" type="TextureRect" parent="RoomControl"]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 40.0
+script = ExtResource("7_io6ng")
+
+[node name="NextItemButton" type="Button" parent="RoomControl"]
+layout_mode = 0
+offset_left = 37.0
+offset_top = 448.0
+offset_right = 64.0
+offset_bottom = 479.0
+text = ">"
+
+[node name="PrevItemButton" type="Button" parent="RoomControl"]
+layout_mode = 0
+offset_top = 448.0
+offset_right = 27.0
+offset_bottom = 479.0
+text = "<"
+
+[node name="Commands" type="ItemList" parent="RoomControl"]
+layout_mode = 0
+offset_left = 733.0
+offset_top = -91.0
+offset_right = 989.0
+offset_bottom = 165.0
+item_count = 2
+item_0/text = "ABC"
+item_0/selectable = false
+item_1/text = "XYZ"
+item_1/selectable = false
