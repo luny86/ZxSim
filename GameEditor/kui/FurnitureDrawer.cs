@@ -1,8 +1,7 @@
-using System;
+
 using System.Collections.Generic;
 using Platform;
 using KUtil;
-using Range = KUtil.Range;
 
 namespace KUi
 {
@@ -16,21 +15,10 @@ namespace KUi
     public abstract class FurnitureDrawer : IFurnitureDrawer
     {
         #region Delegates
-        protected delegate void CodeMethod(CodeArgs args);
         protected delegate void CursorMethod();
         #endregion
 
         #region Fields
-        /// <summary>
-        /// Maps a byte range to a single code.
-        /// </summary>
-        protected IList<Range> Ranges { get; set; }
-
-        /// <summary>
-        /// Information on each code.
-        /// </summary>
-        protected Dictionary<byte, CodeInfo> CodeInfo { get; set; } 
-
         /// <summary>
         /// Collection of each method used for each code.
         /// </summary>
@@ -41,34 +29,19 @@ namespace KUi
         #endregion
 
         #region Construction
-        public FurnitureDrawer(Chunk tileStrings, 
-            Chunk stringTable,
-            IChunk tileChunk)
+        public FurnitureDrawer(
+            IChunk tileChunk,
+            IDataContainer furniture)
         {
-            TileStringChunk = tileStrings;
-            StringTableChunk = stringTable;
+            Furniture = furniture;
             TileDrawer = new TileDrawer(tileChunk);
             Zoom = 2;
         }
         #endregion
 
         #region Properties
-        protected Chunk TileStringChunk { get; }
-        private Chunk StringTableChunk { get; }        
         protected TileDrawer TileDrawer { get; }
-
-        /// <summary>
-        /// Emulates the flags when drawing
-        /// </summary>
-        /// <remarks>
-        /// Some items use a flag to determine which end part
-        /// of the string to draw.
-        /// </remarks>
-        public bool Flag
-        {
-            get;
-            set;
-        }
+        private IDataContainer Furniture { get; }
 
         protected ISurface Image { get; set;}
 
@@ -120,16 +93,6 @@ namespace KUi
             get;
             set;
         }
-
-        /// <summary>
-        /// Keeps track of current position when decoding
-        /// string.
-        /// </summary>
-        protected int Offset
-        {
-            get;
-            set;
-        }
         #endregion
 
         #region Draw Methods
@@ -137,57 +100,24 @@ namespace KUi
         {
             X = x;
             Y = y;
-            Offset = CalculateAddressOffset(index);
             Image = image;
 
             DrawnOutOfBounds = false;
             TileDrawer.SetTileStart(0);
 
-            do
+            int debug = int.MaxValue; // Debug limit
+            foreach(CodeArgs args in Furniture[index])
             {
-                DrawNext();
-            } while(Offset != -1 && !DrawnOutOfBounds);
-
-            Image = null;
-        }
-
-        private int CalculateAddressOffset(int index)
-        {
-            int word = StringTableChunk.Word(index*2);
-            return  word - TileStringChunk.Start; 
-        }
-
-        private void DrawNext()
-        {
-            byte code = CheckForRangeCode(TileStringChunk[Offset++]);
-
-            InvokeCodeMethod(code);                            
-        }
-
-        private byte CheckForRangeCode(byte code)
-        {
-            System.Diagnostics.Debug.Assert(Ranges != null, "Ranges should contain stuff");
-            foreach(Range range in Ranges)
-            {
-                if(range.Within(code))
+                CodeMethods[args.Info.Code].Invoke(args);
+                if(--debug == 0)
                 {
-                    code = range.LessThan;
                     break;
                 }
             }
 
-            return code;
+            Image = null;
         }
 
-        private void InvokeCodeMethod(byte code)
-        {
-            CodeInfo info = CodeInfo[code];
-            CodeArgs args = new CodeArgs(
-                TileStringChunk.CopyRange(Offset-1, info.NumberOfArgs),
-                info);
-            CodeMethods[code].Invoke(args);         
-            Offset+= info.NumberOfArgs-1;
-        }
         #endregion
 
 
