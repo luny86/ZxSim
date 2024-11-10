@@ -153,8 +153,7 @@ namespace ThreeWeeks
 
         private void SwitchString(CodeArgs args)
         {
-            // TODO Switch String
-            //Offset = TileStringChunk.Word(Offset) - TileStringChunk.Start;
+            // Does nothing, handled by enumerator methods.
         }
 
         private void SetColourMem(CodeArgs args)
@@ -184,13 +183,7 @@ namespace ThreeWeeks
 
         private void TestFlag(CodeArgs args)
         {
-            /* TODO TestFlag
-            Offset++;   // TODO Ignore flag bit for now...
-            if(Flag)
-            {
-                // Skip original ending for alternate ending.
-                while(TileStringChunk[Offset++] != (byte)FurnitureCode.SoftEnd);
-            }*/
+            Godot.GD.Print("*******************");
         }
 
         private void DrawLoopAndRight(CodeArgs args)

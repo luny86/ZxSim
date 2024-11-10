@@ -105,14 +105,10 @@ namespace KUi
             DrawnOutOfBounds = false;
             TileDrawer.SetTileStart(0);
 
-            int debug = int.MaxValue; // Debug limit
             foreach(CodeArgs args in Furniture[index])
             {
+                Godot.GD.Print($"-- {args.Info.Code}");
                 CodeMethods[args.Info.Code].Invoke(args);
-                if(--debug == 0)
-                {
-                    break;
-                }
             }
 
             Image = null;

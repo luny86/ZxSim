@@ -13,14 +13,10 @@ namespace ThreeWeeks
 
         #region Construction
         public FurnitureEnumerator(int startOffset, 
-            IChunk furnitureData,
-            IReadOnlyDictionary<byte, CodeInfo> info,
-            IReadOnlyList<Range> ranges)
+            FurnitureDataGroup dataGroup)
         {
             StartOffset = startOffset;
-            FurnitureData = furnitureData;
-            CodeInfo = info;
-            Ranges = ranges;
+            DataGroup = dataGroup;
             _current = null;
             (this as IEnumerator).Reset();
         }
@@ -33,9 +29,8 @@ namespace ThreeWeeks
 
         #region Properties
         private int StartOffset { get; }
-        private IChunk FurnitureData { get; }
-        private IReadOnlyDictionary<byte, CodeInfo> CodeInfo { get; }
-        private IReadOnlyList<Range> Ranges { get; }
+
+        private FurnitureDataGroup DataGroup { get; }
 
         public CodeArgs Current => _current;
 
@@ -54,7 +49,15 @@ namespace ThreeWeeks
             if(valid)
             {
                 _current = CreateArgs(code);
-                _index += _current.Info.NumberOfArgs;
+
+                if(DataGroup.SpecialCodes.TryGetValue(code, out EnumeratorAlterMethod alterMethod))
+                {
+                    _index = alterMethod(_index, DataGroup);
+                }
+                else
+                {
+                    _index += _current.Info.NumberOfArgs;
+                }
             }
 
             return valid;
@@ -70,22 +73,22 @@ namespace ThreeWeeks
         #region Private Helpers
         private byte CurrentCode()
         {
-            return CheckForRangeCode(FurnitureData[_index]);
+            return CheckForRangeCode(DataGroup.FurnitureData[_index]);
         }
 
         private CodeArgs CreateArgs(byte code)
         {
-            CodeInfo info = CodeInfo[code];
+            CodeInfo info = DataGroup.CodeInfoMapping[code];
 
             return new CodeArgs(
-                FurnitureData.CopyRange(_index, info.NumberOfArgs),
+                DataGroup.FurnitureData.CopyRange(_index, info.NumberOfArgs),
                 info);
         }
  
          private byte CheckForRangeCode(byte code)
         {
-            System.Diagnostics.Debug.Assert(Ranges != null, "Ranges should contain stuff");
-            foreach(Range range in Ranges)
+            System.Diagnostics.Debug.Assert(DataGroup.CodeRanges != null, "Ranges should contain stuff");
+            foreach(Range range in DataGroup.CodeRanges)
             {
                 if(range.Within(code))
                 {

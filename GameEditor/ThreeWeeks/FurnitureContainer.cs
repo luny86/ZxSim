@@ -11,24 +11,19 @@ namespace ThreeWeeks
         private class FurnitureEnumerable : IEnumerable
         {
             public FurnitureEnumerable(int startOffset, 
-                IChunk furnitureData,
-                IReadOnlyDictionary<byte, CodeInfo> info,
-                IReadOnlyList<Range> ranges)
+                FurnitureDataGroup furnitureDataGroup)
             {
                 StartOffset = startOffset;
-                FurnitureData = furnitureData;
-                CodeInfo = info;
-                Ranges = ranges;
+                dataGroup = furnitureDataGroup;
             }
 
+            FurnitureDataGroup dataGroup { get; }
+
             private int StartOffset { get; }
-            private IChunk FurnitureData { get; }
-            private IReadOnlyDictionary<byte, CodeInfo> CodeInfo { get; }
-            private IReadOnlyList<Range> Ranges { get; }
 
             IEnumerator IEnumerable.GetEnumerator()
             {
-                return new FurnitureEnumerator(StartOffset, FurnitureData, CodeInfo, Ranges);
+                return new FurnitureEnumerator(StartOffset, dataGroup);
             }
         }
         #endregion
@@ -40,6 +35,7 @@ namespace ThreeWeeks
             ItemData = itemData;
             CreateInfo();
             Ranges = CreateRanges();
+            EnumeratorMethods = CreateEnumeratorMap();
         }
 
         private void CreateInfo()
@@ -82,11 +78,36 @@ namespace ThreeWeeks
         }
         #endregion
 
+        #region Enumerator altering methods and map
+        private IReadOnlyDictionary<byte, EnumeratorAlterMethod> CreateEnumeratorMap()
+        {
+            return new  Dictionary<byte, EnumeratorAlterMethod>()
+            {
+                { (byte)FurnitureCode.SwitchString, SwitchString },
+                { (byte)FurnitureCode.TestFlag, TestFlag }
+            };
+        }
+
+        int SwitchString(int index, FurnitureDataGroup group)
+        {
+            return group.FurnitureData.Word(index);
+        }
+
+        int TestFlag(int index, FurnitureDataGroup group)
+        {
+            index++; // Skip flag for now
+            while(group.FurnitureData[index++] != (byte)FurnitureCode.SoftEnd);
+            return index;
+        }
+        #endregion
+
         #region Fields
         private IChunk ItemTable { get; }
         private IChunk ItemData { get; }
         private IReadOnlyDictionary<byte, CodeInfo> CodeInfo { get; set; }
         private List<Range> Ranges { get; }
+
+        private IReadOnlyDictionary<byte, EnumeratorAlterMethod> EnumeratorMethods { get; }
         #endregion
 
         #region Public API
@@ -96,11 +117,15 @@ namespace ThreeWeeks
             {
                 int offset = CalculateRoomAddressOffset(index);
 
-                return new FurnitureEnumerable(
-                    offset,
-                    ItemData,
-                    CodeInfo,
-                    Ranges);
+                FurnitureDataGroup group = new FurnitureDataGroup()
+                {
+                    FurnitureData = ItemData,
+                    CodeInfoMapping = CodeInfo,
+                    CodeRanges = Ranges,
+                    SpecialCodes = EnumeratorMethods
+                };
+
+                return new FurnitureEnumerable(offset, group);
             }
         }
 
