@@ -1,0 +1,36 @@
+Game Editor Library
+=================
+Initialise
+----------
+The Game Editor Librarys entry point if the main static call:
+
+    GameEditor.Initialise()
+
+This must be called before any other library usage.
+
+
+Platform
+--------
+Composition
+The main instance of any module is an IComposition.
+A composition may implent the IBuildable interface for dependency.
+A composition can have child IBuilder instances.
+All compositions are owned by the main app.
+Only one instance of each composite type can exist.
+
+Buildable
+The buildable is an object that implements the IBuildable interface.
+By doing so the editor will recognise the class and automatically create and own an instance of the object. It will then call the IBuildable methods and
+allow the instance to register its own objects or use
+dependencies built by other buildables.
+Any objects registered by a buildable is public to any other buildable and is injected
+by the build engine.
+
+
+Factory
+Game Editor expects a platform specific factory.
+The platform (user) must register a factory that implements 
+the Platform.IFactory interface.
+The job of this factory is to create any object that
+requires platform specific handling, such as the graphic surfaces, colours or hardware (disk loading etc). Effectively the factory if a Hardware abstraction layer.
+The platform must then register the factory from within its buildable instance.
