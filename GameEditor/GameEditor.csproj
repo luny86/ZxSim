@@ -5,4 +5,9 @@
     <TargetFramework Condition=" '$(GodotTargetPlatform)' == 'ios' ">net8.0</TargetFramework>
     <EnableDynamicLoading>true</EnableDynamicLoading>
   </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="./GameEditorLib.dll" >
+      <Hint>./GameEditorLib.dll</Hint>
+    </Reference>
+  </ItemGroup>
 </Project>

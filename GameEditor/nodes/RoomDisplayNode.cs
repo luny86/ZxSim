@@ -2,6 +2,7 @@ using Godot;
 using System;
 using KUi;
 using Platform;
+using GameEditorLib.Platform;
 
 public partial class RoomDisplayNode : TextureRect
 {
@@ -10,7 +11,8 @@ public partial class RoomDisplayNode : TextureRect
 	// Called when the node enters the scene tree for the first time.
 	public override void _Ready()
 	{
-		ISurface surface = Factory.CreateSurface();
+		// TODO - Factory
+		ISurface surface = new Factory().CreateSurface();
 		surface.Create(512, 192*2);
 		surface.Updated += Surface_Updated;
 		_roomDraw = CPU.Instance.CreateRoomDraw(surface);
@@ -18,8 +20,8 @@ public partial class RoomDisplayNode : TextureRect
 
 		BaseButton button = GetParent().GetNode<BaseButton>("NextItemButton");
 		button.Pressed += NextButton_Pressed;
-        button = GetParent().GetNode<BaseButton>("PrevItemButton");
-        button.Pressed += PrevButton_Pressed;
+		button = GetParent().GetNode<BaseButton>("PrevItemButton");
+		button.Pressed += PrevButton_Pressed;
 	}
 
 	// Called every frame. 'delta' is the elapsed time since the previous frame.
@@ -35,14 +37,14 @@ public partial class RoomDisplayNode : TextureRect
 		}
 	}
 
-    private void NextButton_Pressed()
-    {
-        _roomDraw.NextItem();
-    }
+	private void NextButton_Pressed()
+	{
+		_roomDraw.NextItem();
+	}
 
-    private void PrevButton_Pressed()
-    {
-        _roomDraw.PreviousItem();
-    }
+	private void PrevButton_Pressed()
+	{
+		_roomDraw.PreviousItem();
+	}
 
 }

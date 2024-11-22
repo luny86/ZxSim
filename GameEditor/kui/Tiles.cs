@@ -1,5 +1,6 @@
 using KUtil;
 using Platform;
+using GameEditorLib.Platform;
 
 namespace KUi
 {
@@ -66,13 +67,13 @@ namespace KUi
 				Image);
 		}
 
-        public int PointToTile(int x, int y)
-        {
+		public int PointToTile(int x, int y)
+		{
 			int margin = Margin * Zoom;
 
-            return ( (x - margin)/ Divide) + 
+			return ( (x - margin)/ Divide) + 
 				_tilesAcross * 
 				((y - margin) / Divide);
-        }
+		}
 	}
 }

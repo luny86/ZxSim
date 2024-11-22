@@ -1,15 +1,17 @@
 
+using GameEditorLib.Platform;
+
 namespace Platform
 {
     /// <summary>
     /// Main factory for platform objects
     /// </summary>
-    public static class Factory
+    public class Factory : IFactory
     {
         /// <summary>
         /// Creates a surface for manipulating and displaying native images
         /// </summary>
         /// <returns>ISurface object holding an image.</returns>
-        static public ISurface CreateSurface() { return new Surface(); }
+        public ISurface CreateSurface() { return new Surface(); }
     }
 }

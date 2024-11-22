@@ -1,6 +1,7 @@
 using System;
 using KUtil;
 using Platform;
+using GameEditorLib.Platform;
 
 namespace KUi
 {
@@ -9,7 +10,7 @@ namespace KUi
 	/// </summary>
 	public class TileGrid : TileBase
 	{
-        private const int TilesizeInBytes = 8;
+		private const int TilesizeInBytes = 8;
 		private const int PixelScale = 16;
 		private const int TileWidth = 8;
 		private const int TileHeight = 8;
@@ -18,33 +19,33 @@ namespace KUi
 		public TileGrid(Chunk tileChunk, ISurface image)
 		: base(tileChunk, image)
 		{
-            TileChunk = tileChunk;
-            Zoom = PixelScale + Margin;
+			TileChunk = tileChunk;
+			Zoom = PixelScale + Margin;
 		}
 
-        private IChunk TileChunk { get; }
+		private IChunk TileChunk { get; }
 
-        public int TileIndex
-        {
-            get;
-            private set;
-        }
+		public int TileIndex
+		{
+			get;
+			private set;
+		}
 
-        private static int Width 
-        { 
-            get
-            {
-                return (TileWidth * PixelScale) + (Margin * 10); 
-            }
-        }
+		private static int Width 
+		{ 
+			get
+			{
+				return (TileWidth * PixelScale) + (Margin * 10); 
+			}
+		}
 
-        private static int Height
-        {
-            get
-            {
-                return (TileHeight * PixelScale)+ (Margin * 10); 
-            }
-        }
+		private static int Height
+		{
+			get
+			{
+				return (TileHeight * PixelScale)+ (Margin * 10); 
+			}
+		}
 
 		private void CreateImage()
 		{
@@ -59,41 +60,41 @@ namespace KUi
 		/// <returns>Image containing tile.</returns>
 		public void Draw(int index)
 		{
-            TileIndex = index;
+			TileIndex = index;
 			index *= TilesizeInBytes;
 			if(index <0 || index >= NumberOfTiles)
 			{
 				throw new ArgumentException("Tile index out of range");
 			}
 
-            Draw();
-        }
+			Draw();
+		}
 
-        private void Draw()
-        {
+		private void Draw()
+		{
 			Image.BeginDraw();
 			// Convert into tile offset
 
 			CreateImage();
 
 			TileDrawer.Gap = Margin;
-            TileDrawer.Zoom = Zoom;
-            TileDrawer.Draw(Margin, Margin, TileIndex, Image);
+			TileDrawer.Zoom = Zoom;
+			TileDrawer.Draw(Margin, Margin, TileIndex, Image);
 			
 			Image.EndDraw();
 		}
 
-        public void TogglePixel(int x, int y)
-        {
-            int offset = TileIndex * TilesizeInBytes;
-            int row = (y-1)/ Zoom;
-            int bit = 1 << (7- (x-1) / Zoom);
+		public void TogglePixel(int x, int y)
+		{
+			int offset = TileIndex * TilesizeInBytes;
+			int row = (y-1)/ Zoom;
+			int bit = 1 << (7- (x-1) / Zoom);
 
-            byte b = TileChunk[offset+row];
-            b ^= (byte)bit;
-            TileChunk[offset+row] = b;
+			byte b = TileChunk[offset+row];
+			b ^= (byte)bit;
+			TileChunk[offset+row] = b;
 
-            Draw();
-        }
+			Draw();
+		}
 	}
 }

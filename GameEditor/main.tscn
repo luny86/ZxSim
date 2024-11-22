@@ -123,3 +123,10 @@ item_0/text = "ABC"
 item_0/selectable = false
 item_1/text = "XYZ"
 item_1/selectable = false
+
+[node name="View" type="Node2D" parent="."]
+visible = false
+
+[node name="Command" type="Node2D" parent="View"]
+
+[node name="Editor" type="Node2D" parent="View"]

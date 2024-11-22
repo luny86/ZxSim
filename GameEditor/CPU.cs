@@ -2,9 +2,13 @@ using Godot;
 using KUtil;
 using KUi;
 using Platform;
+using GameEditorLib.Platform;
 
 public partial class CPU : Node
 {
+	// 
+	// Info to move into ZX
+	//
 	// True address for start of ram in buffer.
 	private int _startAddr = 0x4000;
 	
@@ -58,16 +62,30 @@ public partial class CPU : Node
 	// Called when the node enters the scene tree for the first time.
 	public override void _Ready()
 	{
+		//
+		//
+		//
+		GameEditorLib.GameEditor.Initialise();
+		//
+		//
+
+		//
+		// Platform specific
+		// IMemory { filename, ram }		
 		using var file = FileAccess.Open("res://game.bin", FileAccess.ModeFlags.Read);
 		_ram = file.GetBuffer(49152);
 
+		// 
+		// Move into Three Weeks composite.
 		_tileChunk = new Chunk(0x7da5, 0x1de6, _ram);
 		_tileStrings = new Chunk(0x6c13, 0x1fe5, _ram);
 		_tileStringTable = new Chunk(0x7c87, 0x11e, _ram);
 		_roomAttrTable = new Chunk(0xd170, 0x20, _ram);
 		_roomData = new Chunk(0xc977, 0x1000, _ram);
 
-		Instance = this;
+		//
+		// Eventually lose this as a singleton.
+		Instance = this;		
 	}
 
 	// Called every frame. 'delta' is the elapsed time since the previous frame.

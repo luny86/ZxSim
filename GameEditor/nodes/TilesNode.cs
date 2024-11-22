@@ -2,13 +2,14 @@ using Godot;
 using KUi;
 using Platform;
 using System;
+using GameEditorLib.Platform;
 
 public partial class TilesNode : Sprite2D
 {
 	// Called when the node enters the scene tree for the first time.
 	public override void _Ready()
 	{
-		ISurface surface = Factory.CreateSurface();
+		ISurface surface = new Factory().CreateSurface();
 		surface.Updated += Surface_Updated;
 		Tiles tiles = CPU.Instance.CreateTiles(surface);
 		tiles.Draw() ;

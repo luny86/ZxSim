@@ -2,6 +2,7 @@ using Godot;
 using System;
 using KUi;
 using Platform;
+using GameEditorLib.Platform;
 
 /// <summary>
 /// Control that displays a tile in a grid
@@ -22,7 +23,7 @@ public partial class TileGridControl : TextureRect
 	// Called when the node enters the scene tree for the first time.
 	public override void _Ready()
 	{
-		ISurface surface = Factory.CreateSurface();
+		ISurface surface = new Factory().CreateSurface();
 		surface.Updated += Surface_Updated;
 		_tileGrid = CPU.Instance.CreateTileGrid(surface);
 		UpdateGrid(0);

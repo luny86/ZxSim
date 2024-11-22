@@ -2,6 +2,7 @@ using Godot;
 using KUi;
 using Platform;
 using System;
+using GameEditorLib.Platform;
 
 public partial class TileGridNode : Sprite2D
 {
@@ -15,7 +16,8 @@ public partial class TileGridNode : Sprite2D
 	// Called when the node enters the scene tree for the first time.
 	public override void _Ready()
 	{
-		ISurface surface = Factory.CreateSurface();
+		// TODO - Factory
+		ISurface surface = new Factory().CreateSurface();
 		surface.Updated += Surface_Updated;
 		_tileGrid = CPU.Instance.CreateTileGrid(surface);
 	}

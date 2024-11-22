@@ -1,17 +1,18 @@
 using KUtil;
 using Platform;
+using GameEditorLib.Platform;
 
 namespace KUi
 {
-    public class TileBase
+	public class TileBase
 	{
 
-        public TileBase(IChunk tileChunk, ISurface image)
-        {
+		public TileBase(IChunk tileChunk, ISurface image)
+		{
 			NumberOfTiles = tileChunk.Length / 8;
 			TileDrawer = new TileDrawer(tileChunk);
 			Image = image;
-        }
+		}
 
 		protected int NumberOfTiles
 		{
@@ -23,12 +24,12 @@ namespace KUi
 			get;
 		}
 
-        protected ISurface	Image { get; }
+		protected ISurface	Image { get; }
 
 		protected int Zoom
 		{
 			get;
 			set;
 		}
-    }
+	}
 }

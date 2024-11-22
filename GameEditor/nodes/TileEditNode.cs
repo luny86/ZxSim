@@ -2,6 +2,7 @@ using Godot;
 using System;
 using KUi;
 using Platform;
+using GameEditorLib.Platform;
 
 /// <summary>
 /// Node which displays all tiles and allows
@@ -16,7 +17,7 @@ public partial class TileEditNode : TextureRect
 	// Called when the node enters the scene tree for the first time.
 	public override void _Ready()
 	{
-		ISurface surface = Factory.CreateSurface();
+		ISurface surface = new Factory().CreateSurface();
 		surface.Updated += Surface_Updated;
 		_tiles = CPU.Instance.CreateTiles(surface);
 		_tiles.Draw();
