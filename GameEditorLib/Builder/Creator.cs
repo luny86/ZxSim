@@ -49,6 +49,10 @@ internal class Creator : IDisposable
     // finally a list of instances that meet those requests.
     private readonly Dictionary<IBuildable, ScopedInfo> _scopedInfo = 
         new Dictionary<IBuildable, ScopedInfo>();
+
+    // Map of the compositions found, by name.
+    public Dictionary<string, IComposition> _compositions =
+        new Dictionary<string, IComposition>();
     #endregion
 
     #region Construction
@@ -76,6 +80,20 @@ internal class Creator : IDisposable
     }
     #endregion 
 
+    #region Public Helpers
+    public IComposition? TryGetComposition(string name)
+    {
+        IComposition? found = null;
+        
+        if(!string.IsNullOrWhiteSpace(name))
+        {
+            _compositions.TryGetValue(name, out found);
+        }
+
+        return found;
+    }
+    #endregion
+
     #region Build members
     public void BuildAll()
     {
@@ -93,6 +111,8 @@ internal class Creator : IDisposable
         IList<IComposition> compositions = Compositions.ToList();
         foreach(IComposition composition in compositions)
         {
+            _compositions.Add(composition.Name, composition);
+
             if(composition is IBuildable buildable)
             {
                 _buildables.Add(buildable);

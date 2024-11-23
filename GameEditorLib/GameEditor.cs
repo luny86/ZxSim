@@ -1,5 +1,10 @@
 
+using System.Runtime.CompilerServices;
+
 using GameEditorLib.Builder;
+
+[assembly:InternalsVisibleTo("GameEditorTests")]
+
 
 namespace GameEditorLib;
 

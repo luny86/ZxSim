@@ -6,10 +6,6 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
-  <ItemGroup>
-    <InternalsVisibleTo Include="GameEditorLibTest.Tests" />
-  </ItemGroup>
-
   <Target Name="CopyDll" AfterTargets="Build">
     <Copy
       SourceFiles="$(TargetDir)$(ProjectName).dll;$(TargetDir)$(ProjectName).pdb"

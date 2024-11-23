@@ -19,6 +19,11 @@ namespace GameEditorLib.Builder
      public interface IComposition
     {
         /// <summary>
+        /// Unique name for composition.
+        /// </summary>
+        string Name { get; }
+        
+        /// <summary>
         /// This member should create any child
         /// IBuildable instances belonging the to composition.
         /// </summary>

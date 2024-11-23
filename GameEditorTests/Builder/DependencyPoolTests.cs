@@ -2,16 +2,19 @@ using NUnit.Framework;
 
 using GameEditorLib.Builder;
 
-namespace Tests
+namespace Tests.Builder
 {
     public class DependencyPoolTests
     {
+        #region Test Types
         private class D 
         {
         }
 
         private class A : IComposition, IBuildable
         {
+            string IComposition.Name => "A";
+
             void IBuildable.AskForDependents(IRequests requests)
             {
             }
@@ -33,6 +36,8 @@ namespace Tests
 
         private class B : IComposition, IBuildable
         {
+            string IComposition.Name => "B";
+
             void IBuildable.AskForDependents(IRequests requests)
             {
                 requests.AddRequest("T.A", typeof(D));
@@ -55,6 +60,7 @@ namespace Tests
             {
             }
         }
+        #endregion
 
         [SetUp]
         public void Setup()
