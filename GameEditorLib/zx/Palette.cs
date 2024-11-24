@@ -1,8 +1,6 @@
 using KUtil;
-using System.Collections.Generic;
-using System.Linq;
 
-namespace zx
+namespace GameEditorLib.zx
 {
     public static class Palette
     {

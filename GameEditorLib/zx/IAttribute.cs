@@ -1,7 +1,7 @@
 
 using KUtil;
 
-namespace zx
+namespace GameEditorLib.zx
 {
     /// <summary>
     /// Describes an object that can hold RGBA values

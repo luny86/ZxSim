@@ -1,10 +1,11 @@
 using Platform;
 using KUtil;
 using GameEditorLib.Platform;
+using zx = GameEditorLib.zx;
 
 namespace KUi
 {
-	public class TileDrawer : IDrawer, zx.IAttribute
+	public class TileDrawer : IDrawer, GameEditorLib.zx.IAttribute
 	{
 		// TODO Create an ITileDrawer, for TileStart etc.
 		// Convert references to IDrawer.

@@ -1,5 +1,6 @@
 using Godot;
 using KUtil;
+using zx = GameEditorLib.zx;
 
 namespace Platform
 {

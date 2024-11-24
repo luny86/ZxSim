@@ -1,5 +1,6 @@
 using KUtil;
 using System.Collections.Generic;
+using zx = GameEditorLib.zx;
 
 namespace ThreeWeeks
 {
