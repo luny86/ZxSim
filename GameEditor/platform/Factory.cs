@@ -8,6 +8,8 @@ namespace Platform
     /// </summary>
     public class Factory : IFactory
     {
+        public Factory() {}
+        
         /// <summary>
         /// Creates a surface for manipulating and displaying native images
         /// </summary>

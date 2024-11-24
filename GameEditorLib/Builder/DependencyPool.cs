@@ -1,4 +1,5 @@
 
+using System;
 using System.Collections.Generic;
 
 namespace GameEditorLib.Builder
@@ -42,7 +43,7 @@ namespace GameEditorLib.Builder
                 throw new ArgumentNullException(nameof(instance));
             }
 
-            if(!instance.GetType().IsAssignableFrom(type))
+            if(!instance.GetType().IsAssignableTo(type))
             {
                 throw new ArgumentException($"Instance given does not implement {type.FullName}");
             }

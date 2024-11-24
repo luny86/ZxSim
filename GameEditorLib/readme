@@ -9,7 +9,7 @@ The Game Editor Librarys entry point if the main static call:
 This must be called before any other library usage.
 
 
-Platform
+Builder
 --------
 Composition
 The main instance of any module is an IComposition.
@@ -27,7 +27,21 @@ Any objects registered by a buildable is public to any other buildable and is in
 by the build engine.
 
 
+Platform
+--------
+your main project, for a specific platform must define some objects that implement certain platform interfaces.
+
+1. Composition (IComposition, IBuilder)
+    Name: "GameEditor.Platform.Composition"
+
+    Your platform needs to create a platform in the Platform namespace. This must register the following specific objects  that are platform specific but are abstracted by interfaces.
+
+    1.a Factory (IFactory)
+    This is the main goto to create platform specific objects such as surfaces.
+
+
 Factory
+-------
 Game Editor expects a platform specific factory.
 The platform (user) must register a factory that implements 
 the Platform.IFactory interface.

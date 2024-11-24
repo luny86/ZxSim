@@ -11,6 +11,8 @@ public class Composite : IBuildable, IComposition
     {
     }
 
+    string IComposition.Name => "ThreeWeeks";
+
     IList<IBuildable> IComposition.CreateBuildables()
     {
         Godot.GD.Print("Child...");
@@ -26,19 +28,24 @@ public class Composite : IBuildable, IComposition
         ISurface surface = factory.CreateSurface();
 
 		// TODO - Node to deal surface.Updated += Surface_Updated;
-		KUi.FurnitureDraw furniture = CPU.Instance.CreateFurnitureDraw(surface);
+		//KUi.FurnitureDraw furniture = CPU.Instance.CreateFurnitureDraw(surface);
 
-        dependencies.Add(typeof(KUi.FurnitureDrawer), furniture);
+        //dependencies.Add(typeof(KUi.FurnitureDrawer), furniture);
         Godot.GD.Print("Register...");
     }
 
-    void IBuildable.AskForDependents()
+    void IBuildable.AskForDependents(IRequests requests)
     {
+        requests.AddRequest("GameEditorLib.Platform.IFactory", typeof(IFactory));
         Godot.GD.Print("Asking...");
     }
 
-    void IBuildable.DependentsMet(IDependencyPool dependencies)
+    void IBuildable.DependentsMet(IDependencies dependencies)
     {
-        Godot.GD.Print("Met...");
+        IFactory factory = 
+            dependencies.TryGetInstance("GameEditorLib.Platform.IFactory", typeof(IFactory))
+            as IFactory;
+
+        Godot.GD.Print($"Met...{factory}");
     }
 }
