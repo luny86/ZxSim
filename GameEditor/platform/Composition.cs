@@ -7,11 +7,6 @@ namespace Platform
 {
     internal class Composition : IComposition, IBuildable
     {
-        // True address for start of ram in buffer.
-        private int _startAddr = 0x4000;
-
-    	private byte[] _ram;
-
         string IComposition.Name => "GameEditor.Platform.Composition";
 
         void IBuildable.AskForDependents(IRequests requests)
@@ -20,8 +15,6 @@ namespace Platform
 
         void IBuildable.RegisterObjects(IDependencyPool dependencies)
         {
-            CreateMemory();
-
             dependencies.Add("GameEditorLib.Platform.IFactory", 
                 typeof(GameEditorLib.Platform.IFactory),
                 new Factory());
@@ -34,13 +27,6 @@ namespace Platform
 
         void IBuildable.DependentsMet(IDependencies dependencies)
         {
-
-        }
-
-        private void CreateMemory()
-        {
-            using var file = FileAccess.Open("res://game.bin", FileAccess.ModeFlags.Read);
-            _ram = file.GetBuffer(49152);
         }
     }
 }

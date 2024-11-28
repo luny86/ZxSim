@@ -12,6 +12,16 @@ namespace KUtil
 
         public Chunk(int start, int length, byte[] buffer)
         {
+            if(buffer == null)
+            {
+                throw new ArgumentNullException(nameof(buffer));
+            }
+
+            if(length < 1)
+            {
+                throw new ArgumentException($"Length cannot be less than 1");
+            }
+
             Start = start;
             Length = length;
 

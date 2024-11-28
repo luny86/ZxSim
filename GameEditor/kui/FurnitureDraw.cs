@@ -17,10 +17,14 @@ namespace KUi
 	public class FurnitureDraw
 	{
 
-		private readonly int _maxItems;
-		private readonly DrawPositionCache _startCache;
+		private int _maxItems;
+		private DrawPositionCache _startCache;
 
-		public FurnitureDraw(Chunk tileStrings, 
+		public FurnitureDraw()
+		{
+		}
+		
+		public void Initialise(Chunk tileStrings, 
 			Chunk stringTable,
 			IChunk tileChunk,
 			ISurface surface)
@@ -42,9 +46,9 @@ namespace KUi
 					Drawer.CharSize);
 			}
 
-		private FurnitureDrawer Drawer { get; }
+		private FurnitureDrawer Drawer { get; set; }
 
-		private ISurface Image { get; }
+		private ISurface Image { get; set; }
 
 		public int Index 
 		{

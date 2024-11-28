@@ -1,7 +1,8 @@
+using System;
 using Godot;
 using KUtil;
 using KUi;
-using Platform;
+using GameEditorLib.Ui;
 using GameEditorLib.Platform;
 
 public partial class CPU : Node
@@ -29,6 +30,8 @@ public partial class CPU : Node
 	// Room data
 	private Chunk _roomData;
 
+	private PackedScene _commandScene;
+
 	public Tiles CreateTiles(ISurface surface)
 	{
 		return new Tiles(_tileChunk, surface);
@@ -38,13 +41,6 @@ public partial class CPU : Node
 	{
 		return new TileGrid(_tileChunk, surface);
 	}
-
-	public FurnitureDraw CreateFurnitureDraw(ISurface surface)
-	{
-		return new FurnitureDraw(_tileStrings, _tileStringTable,
-			new Chunk(0x4000, 0xbfff, _ram), surface);
-	}
-
 	public RoomDraw CreateRoomDraw(ISurface surface)
 	{
 		return new RoomDraw(_roomAttrTable,
@@ -59,9 +55,26 @@ public partial class CPU : Node
 			new Chunk(0x4000, 0xbfff, _ram));
 	}
 
+	public IView CreateCommand(string name)
+	{
+		Node inst = _commandScene.Instantiate();
+		AddChild(inst);	
+		FurnitureDisplayNode view = inst.GetNode<FurnitureDisplayNode>("Panel/Window/View");
+
+		if(view is not IView)
+		{
+			throw new InvalidOperationException($"Node without IView when trying to create command '{name}'");
+		}
+
+		return view;
+	}
+
 	// Called when the node enters the scene tree for the first time.
 	public override void _Ready()
 	{
+		Instance = this;		
+		_commandScene = GD.Load<PackedScene>("res://command.tscn");
+
 		//
 		//
 		//
@@ -69,6 +82,7 @@ public partial class CPU : Node
 		//
 		//
 
+		/*
 		//
 		// Platform specific
 		// IMemory { filename, ram }		
@@ -82,10 +96,7 @@ public partial class CPU : Node
 		_tileStringTable = new Chunk(0x7c87, 0x11e, _ram);
 		_roomAttrTable = new Chunk(0xd170, 0x20, _ram);
 		_roomData = new Chunk(0xc977, 0x1000, _ram);
-
-		//
-		// Eventually lose this as a singleton.
-		Instance = this;		
+		*/
 	}
 
 	// Called every frame. 'delta' is the elapsed time since the previous frame.

@@ -1,40 +1,72 @@
 using Godot;
 using System;
 using KUi;
+using GameEditorLib.Ui;
 using GameEditorLib.Platform;
 using Platform;
 
-public partial class FurnitureDisplayNode : TextureRect
+public partial class FurnitureDisplayNode : TextureRect, IView
 {
-	private FurnitureDraw _furniture;
+	private ISurface _surface;
+
+	ISurface IView.Surface
+	{
+		get
+		{
+			return _surface;
+		}
+
+		set
+		{
+			if(_surface != null)
+			{
+				_surface.Updated -= Surface_Updated;
+			}
+
+			_surface = value;
+			_surface.Updated += Surface_Updated;
+		}
+	}
 
 	public override void _Ready()
 	{
-		IFactory factory = new Factory();
+		//IFactory factory = new Factory();
 		// TODO - Factory
-		GameEditorLib.Platform.ISurface surface = factory.CreateSurface();
-		surface.Updated += Surface_Updated;
-		_furniture = CPU.Instance.CreateFurnitureDraw(surface);
-		_furniture.Draw();
+		//GameEditorLib.Platform.ISurface surface = factory.CreateSurface();
+		//surface.Updated += Surface_Updated;
+		//_furniture = CPU.Instance.CreateFurnitureDraw(surface);
+		//_furniture.Draw();
 		
+		/*
 		BaseButton button = GetParent().GetNode<BaseButton>("NextItemButton");
-		button.Pressed += NextButton_Pressed;
+		
+		if(button is not null)
+		{
+			button.Pressed += NextButton_Pressed;
+		}
+
 		button = GetParent().GetNode<BaseButton>("PrevItemButton");
-		button.Pressed += PrevButton_Pressed;
+
+		if(button is not null)
+		{
+			button.Pressed += PrevButton_Pressed;
+		}
+		*/
 	}
 
 	private void NextButton_Pressed()
 	{
-		_furniture.NextItem();
+		//_furniture.NextItem();
 	}
 
 	private void PrevButton_Pressed()
 	{
-		_furniture.PreviousItem();
+		//_furniture.PreviousItem();
 	}
 	
 	private void Surface_Updated(object sender, EventArgs e)
 	{
+		Godot.GD.Print("Updated");
 		if(sender is Surface surface)
 		{
 			Texture = ImageTexture.CreateFromImage(surface.Image);

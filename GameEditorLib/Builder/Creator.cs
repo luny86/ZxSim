@@ -1,8 +1,4 @@
 
-using System;
-using System.Collections.Generic;
-using System.Reflection;
-
 namespace GameEditorLib.Builder;
 
 /// <summary>
@@ -17,14 +13,21 @@ internal class Creator : IDisposable
         {
             Requests = new List<Request>();
             Instances = new DependencyPool();
+            ChildBuildables = new List<IBuildable>();
         }
 
         public List<Request> Requests { get; }
         public DependencyPool Instances { get; }
+        public List<IBuildable> ChildBuildables { get; }
 
         public void AddRequest(string scope, Type type)
         {
             Requests.Add(new Request(scope, type));
+        }
+
+        public void AddChildRange(List<IBuildable> children)
+        {
+            ChildBuildables.AddRange(children);
         }
 
         public override string ToString()

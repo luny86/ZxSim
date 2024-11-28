@@ -1,7 +1,7 @@
-using Platform;
+
 using GameEditorLib.Platform;
 
-namespace KUi
+namespace GameEditorLib.Ui
 {
 	/// <summary>
 	/// Basic interface for an item drawer.
