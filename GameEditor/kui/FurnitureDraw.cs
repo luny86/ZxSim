@@ -1,7 +1,6 @@
-using System;
 using KUtil;
-using Platform;
 using GameEditorLib.Platform;
+using GameEditorLib.Ui;
 
 namespace KUi
 {
@@ -24,29 +23,25 @@ namespace KUi
 		{
 		}
 		
-		public void Initialise(Chunk tileStrings, 
-			Chunk stringTable,
-			IChunk tileChunk,
-			ISurface surface)
+		public void Initialise( 
+			ISurface surface,
+			IFurnitureDrawer drawer,
+			int maxItems)
 			{
-				Drawer = new ThreeWeeks.FurnitureDrawer(
-					tileStrings,
-					stringTable,
-					tileChunk);
+				Drawer = drawer;
 				Image = surface;
 
 				Index = 9;  // First item
-				Drawer.Zoom = 2;
 				Image.Create(512, 512);
 
-				_maxItems = stringTable.Length/2;
+				_maxItems = maxItems;
 				_startCache = new DrawPositionCache(
 					new Rectangle(0,0,512,512),
 					_maxItems,
 					Drawer.CharSize);
 			}
 
-		private FurnitureDrawer Drawer { get; set; }
+		private IFurnitureDrawer Drawer { get; set; }
 
 		private ISurface Image { get; set; }
 
@@ -60,7 +55,6 @@ namespace KUi
 		#region Public Interface        
 		public void Draw()
 		{
-			Godot.GD.Print($"---- {Index} ----");
 			System.Drawing.Point start = _startCache[Index];
 
 			DrawReset();
@@ -68,12 +62,11 @@ namespace KUi
 
 			do
 			{
-				Godot.GD.Print("= "+start.ToString());
 				Drawer.Draw(start.X, start.Y, Index, Image);     
-				if(Drawer.DrawnOutOfBounds)
+				if(Drawer is IBoundsDraw bounds &&
+					bounds.DrawnOutOfBounds)
 				{  
-					System.Drawing.Point p = Drawer.OutOfBoundsHit;
-					Godot.GD.Print(p.ToString());
+					System.Drawing.Point p = bounds.OutOfBoundsHit;
 					_startCache.IsInBounds(Index, p.X, p.Y);
 					start = _startCache[Index];
 					// start again....

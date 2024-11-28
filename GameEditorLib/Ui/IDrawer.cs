@@ -8,6 +8,8 @@ namespace GameEditorLib.Ui
 	/// </summary>
 	public interface IDrawer
 	{
+		int Zoom { get; }
+		
 		void Draw(int x, int y, int index, ISurface surface);
 	}
 }

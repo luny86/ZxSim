@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using Platform;
 using KUtil;
+using GameEditorLib.Ui;
 using GameEditorLib.Platform;
 
 namespace KUi
@@ -13,7 +14,7 @@ namespace KUi
 	/// Codes used by the draw string is a byte.
 	/// All memory sizes are bytes.
 	/// </remarks>
-	public abstract class FurnitureDrawer : IFurnitureDrawer
+	public abstract class FurnitureDrawer : IFurnitureDrawer, IBoundsDraw
 	{
 		#region Delegates
 		protected delegate void CursorMethod();

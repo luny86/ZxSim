@@ -76,10 +76,12 @@ public class Composite : IBuildable, IComposition
 
         _furnitureDraw = new FurnitureDraw();
         _furnitureDraw.Initialise(
-            _furnitureStrings, 
-            _furnitureStringTable, 
-            _tileBmpChunk,
-            view.Surface);
+            view.Surface,
+            new FurnitureDrawer(
+					_furnitureStrings,
+					_furnitureStringTable,
+					_tileBmpChunk),
+                    _furnitureStringTable.Length/2);
         _furnitureDraw.Draw();
     }
 
