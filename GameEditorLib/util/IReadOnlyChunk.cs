@@ -7,6 +7,8 @@ namespace KUtil
     /// </summary>
     public interface IReadOnlyChunk
     {
+        string Name { get; }
+        
         byte this[int index]
         {
             get;

@@ -81,17 +81,18 @@ public class Composite : IBuildable, IComposition
 					_furnitureStrings,
 					_furnitureStringTable,
 					_tileBmpChunk),
+                    // Number of items in table.
                     _furnitureStringTable.Length/2);
         _furnitureDraw.Draw();
     }
 
     private void CreateMemoryMaps()
     {
-		_tileBmpChunk = new Chunk(0x7da5, 0x1de6, _ram);
-		_furnitureStrings = new Chunk(0x6c13, 0x1fe5, _ram);
-		_furnitureStringTable = new Chunk(0x7c87, 0x11e, _ram);
-		_roomAttrTable = new Chunk(0xd170, 0x20, _ram);
-		_roomData = new Chunk(0xc977, 0x1000, _ram);
+		_tileBmpChunk = new Chunk("Tiles", 0x7da5, 0x1de6, _ram);
+		_furnitureStrings = new Chunk("Furniture", 0x6c13, 0x1fe5, _ram);
+		_furnitureStringTable = new Chunk("Furniture Table", 0x7c87, 0x11e, _ram);
+		_roomAttrTable = new Chunk("Room Attrs", 0xd170, 0x20, _ram);
+		_roomData = new Chunk("Rooms", 0xc977, 0x1000, _ram);
     }
     #endregion
 }

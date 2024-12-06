@@ -10,8 +10,10 @@ namespace KUtil
     {
         const int RamStart = 0x4000;
 
-        public Chunk(int start, int length, byte[] buffer)
+        public Chunk(string name, int start, int length, byte[] buffer)
         {
+            Name = name ?? throw new ArgumentNullException(nameof(name));
+            
             if(buffer == null)
             {
                 throw new ArgumentNullException(nameof(buffer));
@@ -28,6 +30,12 @@ namespace KUtil
             byte[] memory = new byte[length];
             Array.Copy(buffer, start-RamStart, memory, 0, length);
             Memory = memory;
+        }
+
+        public string Name 
+        {
+             get;
+             private set;
         }
 
         public static ushort Word(byte h, byte l)

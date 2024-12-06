@@ -41,6 +41,7 @@ public partial class CPU : Node
 	{
 		return new TileGrid(_tileChunk, surface);
 	}
+
 	public RoomDraw CreateRoomDraw(ISurface surface)
 	{
 		return new RoomDraw(_roomAttrTable,
@@ -52,7 +53,7 @@ public partial class CPU : Node
 	private IDrawer CreateFurnitureDrawer()
 	{
 		return new ThreeWeeks.FurnitureDrawer(_tileStrings, _tileStringTable,
-			new Chunk(0x4000, 0xbfff, _ram));
+			new Chunk("Full Ram", 0x4000, 0xbfff, _ram));
 	}
 
 	public IView CreateCommand(string name)
