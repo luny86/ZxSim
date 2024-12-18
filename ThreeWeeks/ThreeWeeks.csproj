@@ -1,38 +1,32 @@
-<Project Sdk="Godot.NET.Sdk/4.3.0">
+<Project Sdk="Microsoft.NET.Sdk">
+
   <PropertyGroup>
     <TargetFramework>net6.0</TargetFramework>
-    <TargetFramework Condition=" '$(GodotTargetPlatform)' == 'android' ">net7.0</TargetFramework>
-    <TargetFramework Condition=" '$(GodotTargetPlatform)' == 'ios' ">net8.0</TargetFramework>
-    <EnableDynamicLoading>true</EnableDynamicLoading>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
+    <AppendRuntimeIdentifierToOutputPath>false</AppendRuntimeIdentifierToOutputPath>
+    <OutputPath>../output/$(Configuration)</OutputPath>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="../output/$(Configuration)/zx.dll" >
       <Hint>../output/$(Configuration)/zx.dll</Hint>
     </Reference>
-  </ItemGroup>
-  <ItemGroup>
     <Reference Include="../output/$(Configuration)/Builder.dll" >
       <Hint>../output/$(Configuration)/Builder.dll</Hint>
     </Reference>
-  </ItemGroup>
-  <ItemGroup>
     <Reference Include="../output/$(Configuration)/Util.dll" >
       <Hint>../output/$(Configuration)/Util.dll</Hint>
     </Reference>
-  </ItemGroup>
-  <ItemGroup>
     <Reference Include="../output/$(Configuration)/Ui.dll" >
       <Hint>../output/$(Configuration)/Ui.dll</Hint>
     </Reference>
-  </ItemGroup>
-  <ItemGroup>
     <Reference Include="../output/$(Configuration)/Platform.dll" >
       <Hint>../output/$(Configuration)/Platform.dll</Hint>
     </Reference>
-  </ItemGroup>
-  <ItemGroup>
     <Reference Include="../output/$(Configuration)/GameEditorLib.dll" >
       <Hint>../output/$(Configuration)/GameEditorLib.dll</Hint>
     </Reference>
+    <Reference Include="../output/$(Configuration)/Ui.dll" ></Reference>
   </ItemGroup>
 </Project>

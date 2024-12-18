@@ -1,6 +1,5 @@
 
 using System.Collections.Generic;
-using Platform;
 using KUtil;
 using GameEditorLib.Ui;
 using GameEditorLib.Platform;
@@ -38,6 +37,7 @@ namespace KUi
 			Furniture = furniture;
 			TileDrawer = new TileDrawer(tileChunk);
 			Zoom = 2;
+			CodeMethods = new Dictionary<byte, CodeMethod>();
 		}
 		#endregion
 
@@ -45,7 +45,7 @@ namespace KUi
 		protected TileDrawer TileDrawer { get; }
 		private IDataContainer Furniture { get; }
 
-		protected ISurface Image { get; set;}
+		protected ISurface Image { get; set;} = null!;
 
 		public int X 
 		{ 
@@ -111,8 +111,6 @@ namespace KUi
 			{
 				CodeMethods[args.Info.Code].Invoke(args);
 			}
-
-			Image = null;
 		}
 
 		#endregion

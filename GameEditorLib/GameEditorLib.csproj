@@ -8,11 +8,20 @@
     <AppendRuntimeIdentifierToOutputPath>false</AppendRuntimeIdentifierToOutputPath>
     <OutputPath>../output/$(Configuration)</OutputPath>
   </PropertyGroup>
-
+  <ItemGroup>
+      <ProjectReference Include="..\Builder\Builder.csproj">
+        <Project>{D0437079-BEB3-4286-979B-E94D1FC00563}</Project>
+        <Name>Builder</Name>
+        <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
+    </ProjectReference>
+  </ItemGroup>
   <Target Name="CopyDll" AfterTargets="Build">
     <Copy
       SourceFiles="$(TargetDir)$(ProjectName).dll;$(TargetDir)$(ProjectName).pdb"
       DestinationFolder="../GameEditor/" 
       />
   </Target>
+  <ItemGroup>
+    <Reference Include="../output/$(Configuration)/Builder.dll" ></Reference>
+  </ItemGroup>
 </Project>

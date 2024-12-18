@@ -1,6 +1,6 @@
 using KUtil;
-using GameEditorLib.Platform;
 using GameEditorLib.Ui;
+using GameEditorLib.Platform;
 
 namespace KUi
 {
@@ -17,7 +17,7 @@ namespace KUi
 	{
 
 		private int _maxItems;
-		private DrawPositionCache _startCache;
+		private DrawPositionCache _startCache = null!;
 
 		public FurnitureDraw()
 		{
@@ -41,9 +41,9 @@ namespace KUi
 					Drawer.CharSize);
 			}
 
-		private IFurnitureDrawer Drawer { get; set; }
+		private IFurnitureDrawer Drawer { get; set; } = null!;
 
-		private ISurface Image { get; set; }
+		private ISurface Image { get; set; } = null!;
 
 		public int Index 
 		{

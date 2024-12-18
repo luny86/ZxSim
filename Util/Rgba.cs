@@ -6,6 +6,11 @@ namespace KUtil
     /// </summary>
     public class Rgba
     {
+        public Rgba()
+        {
+
+        }
+        
         public Rgba(float r, float g, float b, float a=1.0f)
         {
             R = r;

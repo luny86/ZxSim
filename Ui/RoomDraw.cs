@@ -1,5 +1,4 @@
 using KUtil;
-using Platform;
 using GameEditorLib.Platform;
 using zx = GameEditorLib.zx;
 
@@ -20,6 +19,8 @@ namespace KUi
 			RoomData = roomData;
 			Drawer = drawer;
 			Image = image;
+			Ink = new Rgba();
+			Paper = new Rgba();
 
 			_maxItems = 256;
 		}

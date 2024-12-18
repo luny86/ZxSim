@@ -4,7 +4,7 @@ namespace GameEditorLib.Builder;
 /// <summary>
 /// Main creator object for the builder engine.
 /// </summary>
-internal class Creator : IDisposable
+public class Creator : IDisposable
 {
     #region Private Types
     private class ScopedInfo : IRequests
