@@ -7,12 +7,15 @@
     <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
     <AppendRuntimeIdentifierToOutputPath>false</AppendRuntimeIdentifierToOutputPath>
     <OutputPath>../output/$(Configuration)</OutputPath>
-  </PropertyGroup>
-
-  <Target Name="CopyDll" AfterTargets="Build">
-    <Copy
-      SourceFiles="$(TargetDir)$(ProjectName).dll;$(TargetDir)$(ProjectName).pdb"
-      DestinationFolder="../GameEditor/" 
-      />
-  </Target>
+</PropertyGroup>
+  <ItemGroup>
+      <ProjectReference Include="..\Util\Util.csproj">
+        <Project>{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</Project>
+        <Name>Util</Name>
+        <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="../output/$(Configuration)/Util.dll" ></Reference>
+  </ItemGroup>
 </Project>

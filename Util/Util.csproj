@@ -9,10 +9,4 @@
     <OutputPath>../output/$(Configuration)</OutputPath>
   </PropertyGroup>
 
-  <Target Name="CopyDll" AfterTargets="Build">
-    <Copy
-      SourceFiles="$(TargetDir)$(ProjectName).dll;$(TargetDir)$(ProjectName).pdb"
-      DestinationFolder="../GameEditor/" 
-      />
-  </Target>
 </Project>
