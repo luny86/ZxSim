@@ -6,8 +6,28 @@
     <EnableDynamicLoading>true</EnableDynamicLoading>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="./GameEditorLib.dll" >
-      <Hint>./GameEditorLib.dll</Hint>
+    <Reference Include="../output/$(Configuration)/zx.dll" >
+      <Hint>../output/$(Configuration)/zx.dll</Hint>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="../output/$(Configuration)/Util.dll" >
+      <Hint>../output/$(Configuration)/Util.dll</Hint>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="../output/$(Configuration)/Ui.dll" >
+      <Hint>../output/$(Configuration)/Ui.dll</Hint>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="../output/$(Configuration)/Platform.dll" >
+      <Hint>../output/$(Configuration)/Platform.dll</Hint>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="../output/$(Configuration)/GameEditorLib.dll" >
+      <Hint>../output/$(Configuration)/GameEditorLib.dll</Hint>
     </Reference>
   </ItemGroup>
 </Project>
