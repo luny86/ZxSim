@@ -5,17 +5,13 @@ namespace KUtil
     /// <summary>
     /// Describes a Read only chunk of memory.
     /// </summary>
-    public interface IReadOnlyChunk
+    public interface IReadOnlyChunk : IChunkAttributes
     {
-        string Name { get; }
         
         byte this[int index]
         {
             get;
         }
-
-        int Start { get; }
-        int Length { get; }
 
         /// <summary>
         /// Return the two bytes as a word (big endian)

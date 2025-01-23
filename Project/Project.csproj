@@ -1,0 +1,15 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
+    <AppendRuntimeIdentifierToOutputPath>false</AppendRuntimeIdentifierToOutputPath>
+    <OutputPath>../output/$(Configuration)</OutputPath>
+  </PropertyGroup>
+    <ItemGroup>
+      <Reference Include="../output/$(Configuration)/Util.dll" ></Reference>
+      <Reference Include="../output/$(Configuration)/Builder.dll" ></Reference>
+    </ItemGroup>
+</Project>
