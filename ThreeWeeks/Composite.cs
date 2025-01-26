@@ -14,23 +14,23 @@ public class Composite : IBuildable, IComposition
     private const int _startAddr = 0x4000;
 
 	// Tile bitmaps
-	private Chunk _tileBmpChunk;
+	private Chunk _tileBmpChunk = null!;
 	// Furniture strings
-	private Chunk _furnitureStrings;
+	private Chunk _furnitureStrings = null!;
 	// Furniture table
-	private Chunk _furnitureStringTable;
+	private Chunk _furnitureStringTable = null!;
 
 	// Table of background attributes for each room.
-	private Chunk _roomAttrTable;
+	private Chunk _roomAttrTable = null!;
 
 	// Room data
-	private Chunk _roomData;
+	private Chunk _roomData = null!;
     #endregion
 
     #region Members
-    private byte[] _ram;
+    private byte[] _ram = null!;
 
-    private FurnitureDraw _furnitureDraw;
+    private FurnitureDraw _furnitureDraw = null!;
 
     #endregion
 

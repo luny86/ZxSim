@@ -8,7 +8,7 @@ namespace ThreeWeeks
     {
         #region Fields
         private int _index;
-        private CodeArgs _current;
+        private CodeArgs _current = null!;
         #endregion
 
         #region Construction

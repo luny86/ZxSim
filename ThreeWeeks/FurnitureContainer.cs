@@ -17,7 +17,7 @@ namespace ThreeWeeks
                 dataGroup = furnitureDataGroup;
             }
 
-            FurnitureDataGroup dataGroup { get; }
+            FurnitureDataGroup dataGroup { get; } 
 
             private int StartOffset { get; }
 
@@ -104,7 +104,7 @@ namespace ThreeWeeks
         #region Fields
         private IChunk ItemTable { get; }
         private IChunk ItemData { get; }
-        private IReadOnlyDictionary<byte, CodeInfo> CodeInfo { get; set; }
+        private IReadOnlyDictionary<byte, CodeInfo> CodeInfo { get; set; } = null!  ;
         private List<KUtil.Range> Ranges { get; }
 
         private IReadOnlyDictionary<byte, EnumeratorAlterMethod> EnumeratorMethods { get; }
