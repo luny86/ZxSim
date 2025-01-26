@@ -3,3 +3,45 @@ Git repo for GODOT projects.
 Blitz 2024
 Test project to converting Vic-20 Blitz into a GODOT game.
 
+Setting up a new project
+========================
+
+Godot
+-----
+
+Create a script based on a Node.
+Override the void _Read() method. This will be ran at the start.
+Call into you main static Initialisation code from here and any initial loading required.
+
+
+Make the script run immediately using:
+
+    Project Settings -> Globals -> Autoload
+
+
+Sub projects are class libraries
+
+    dotnet new classlib -n <NAME>
+
+
+Example node use
+----------------
+
+    	Node inst = _commandScene.Instantiate();
+		AddChild(inst);	
+		FurnitureDisplayNode view = inst.GetNode<FurnitureDisplayNode>("Panel/Window/View");
+
+		if(view is not IView)
+		{
+			throw new InvalidOperationException($"Node without IView when trying to create command '{name}'");
+		}
+
+		return view;
+
+    Where:
+
+        . FurnitureDisplayNode is a script based on a TextureRect and IView.
+        . "Panel/Window/View" is the tree path for the physical node added to the Godot scene.
+
+The IView will then give you access to the surface which gets created in the factory.
+
