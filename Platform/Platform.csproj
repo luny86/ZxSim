@@ -9,14 +9,14 @@
     <OutputPath>../output/$(Configuration)</OutputPath>
   </PropertyGroup>
   <ItemGroup>
-      <ProjectReference Include="..\zx\zx.csproj">
+      <ProjectReference Include="..\ZX\ZX.csproj">
         <Project>{17E6F8A0-DCEB-4F04-94FD-56C463175ACC}</Project>
         <Name>zx</Name>
         <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Reference Include="../output/$(Configuration)/zx.dll" ></Reference>
+    <Reference Include="../output/$(Configuration)/ZX.dll" ></Reference>
     <Reference Include="../output/$(Configuration)/Util.dll" ></Reference>
   </ItemGroup>
 

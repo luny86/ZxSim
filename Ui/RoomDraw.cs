@@ -1,10 +1,9 @@
 using KUtil;
 using GameEditorLib.Platform;
-using zx = GameEditorLib.zx;
 
 namespace KUi
 {
-	public class RoomDraw : zx.IAttribute
+	public class RoomDraw : ZX.IAttribute
 	{
 		private const byte CodeExit = 0xff;
 
@@ -52,7 +51,7 @@ namespace KUi
 		public void Draw()
 		{
 			Image.BeginDraw();
-			zx.Palette.SetAttribute(AttrTable[Index], this);
+			ZX.Palette.SetAttribute(AttrTable[Index], this);
 			Image.Fill(Paper);
 
 			int offset = StringSearch(Index);

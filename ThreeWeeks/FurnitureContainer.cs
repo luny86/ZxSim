@@ -64,16 +64,16 @@ namespace ThreeWeeks
             };        
         }
 
-        private List<Range> CreateRanges()
+        private List<KUtil.Range> CreateRanges()
         {
-            return new List<Range>()
+            return new List<KUtil.Range>()
             {
-                new Range(0, (byte)FurnitureCode.DrawTile),
-                new Range((byte)FurnitureCode.DrawTile, (byte)FurnitureCode.SetCursor),
-                new Range((byte)FurnitureCode.SetCursor, (byte)FurnitureCode.DrawTileLoop),
-                new Range((byte)FurnitureCode.DrawTileLoop, (byte)FurnitureCode.SetColourInk),
-                new Range((byte)FurnitureCode.SetColourInk, (byte)FurnitureCode.SetColourInkBright),
-                new Range((byte)FurnitureCode.SoftEnd, (byte)FurnitureCode.Exit)
+                new KUtil.Range(0, (byte)FurnitureCode.DrawTile),
+                new KUtil.Range((byte)FurnitureCode.DrawTile, (byte)FurnitureCode.SetCursor),
+                new KUtil.Range((byte)FurnitureCode.SetCursor, (byte)FurnitureCode.DrawTileLoop),
+                new KUtil.Range((byte)FurnitureCode.DrawTileLoop, (byte)FurnitureCode.SetColourInk),
+                new KUtil.Range((byte)FurnitureCode.SetColourInk, (byte)FurnitureCode.SetColourInkBright),
+                new KUtil.Range((byte)FurnitureCode.SoftEnd, (byte)FurnitureCode.Exit)
             };
         }
         #endregion
@@ -105,7 +105,7 @@ namespace ThreeWeeks
         private IChunk ItemTable { get; }
         private IChunk ItemData { get; }
         private IReadOnlyDictionary<byte, CodeInfo> CodeInfo { get; set; }
-        private List<Range> Ranges { get; }
+        private List<KUtil.Range> Ranges { get; }
 
         private IReadOnlyDictionary<byte, EnumeratorAlterMethod> EnumeratorMethods { get; }
         #endregion

@@ -1,10 +1,9 @@
 using KUtil;
 using System.Collections.Generic;
-using zx = GameEditorLib.zx;
 
 namespace ThreeWeeks
 {
-    internal class FurnitureDrawer : KUi.FurnitureDrawer
+    public class FurnitureDrawer : KUi.FurnitureDrawer
     {
         #region Constructor
         public FurnitureDrawer(Chunk tileStrings, 
@@ -112,7 +111,7 @@ namespace ThreeWeeks
 
         private void ToggleBrightness(CodeArgs args)
         {
-            zx.Palette.ToggleBright(TileDrawer);
+            ZX.Palette.ToggleBright(TileDrawer);
         }
 
         private void DrawTwoTilesLoopDown(CodeArgs args)
@@ -143,13 +142,13 @@ namespace ThreeWeeks
         private void SetColourInk(CodeArgs args)
         {
             int c = args.Args[0] - 0xc2;
-            zx.Palette.SetAttribute((byte)c, TileDrawer);
+            ZX.Palette.SetAttribute((byte)c, TileDrawer);
         }
 
         private void SetColourInkBright(CodeArgs args)
         {
             int c = args.Args[0] - 0x89;
-            zx.Palette.SetAttribute((byte)c, TileDrawer);
+            ZX.Palette.SetAttribute((byte)c, TileDrawer);
         }
 
         private void SwitchString(CodeArgs args)
@@ -160,7 +159,7 @@ namespace ThreeWeeks
         private void SetColourMem(CodeArgs args)
         {
             byte c = args.Args[1];
-            zx.Palette.SetAttribute(c, TileDrawer);
+            ZX.Palette.SetAttribute(c, TileDrawer);
         }
 
         private void DrawRectangle(CodeArgs args)
@@ -184,7 +183,6 @@ namespace ThreeWeeks
 
         private void TestFlag(CodeArgs args)
         {
-            Godot.GD.Print("*******************");
         }
 
         private void DrawLoopAndRight(CodeArgs args)

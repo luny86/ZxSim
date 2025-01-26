@@ -1,6 +1,6 @@
 using KUtil;
 
-namespace GameEditorLib.zx
+namespace ZX
 {
     public static class Palette
     {

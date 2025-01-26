@@ -1,5 +1,5 @@
 
-using GameEditorLib.zx;
+using ZX;
 
 namespace GameEditorLib.Platform
 {

@@ -6,8 +6,8 @@
     <EnableDynamicLoading>true</EnableDynamicLoading>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="../output/$(Configuration)/zx.dll" >
-      <Hint>../output/$(Configuration)/zx.dll</Hint>
+    <Reference Include="../output/$(Configuration)/ZX.dll" >
+      <Hint>../output/$(Configuration)/ZX.dll</Hint>
     </Reference>
   </ItemGroup>
   <ItemGroup>
@@ -35,4 +35,8 @@
       <Hint>../output/$(Configuration)/GameEditorLib.dll</Hint>
     </Reference>
   </ItemGroup>
-</Project>
+  <ItemGroup>
+    <Reference Include="../output/$(Configuration)/ThreeWeeks.dll" >
+      <Hint>../output/$(Configuration)/ThreeWeeks.dll</Hint>
+    </Reference>
+  </ItemGroup></Project>

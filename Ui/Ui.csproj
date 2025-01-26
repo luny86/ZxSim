@@ -14,10 +14,11 @@
         <Name>Platform</Name>
         <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
     </ProjectReference>
+      <ProjectReference Include="..\ZX\ZX.csproj" />
   </ItemGroup>
   <ItemGroup>
-    <Reference Include="../output/$(Configuration)/Platform.dll" ></Reference>
-    <Reference Include="../output/$(Configuration)/Util.dll" ></Reference>
-    <Reference Include="../output/$(Configuration)/zx.dll" ></Reference>
+    <Reference Include="../output/$(Configuration)/Platform.dll"></Reference>
+    <Reference Include="../output/$(Configuration)/Util.dll"></Reference>
+    <Reference Include="../output/$(Configuration)/ZX.dll"></Reference>
   </ItemGroup>
 </Project>

@@ -1,11 +1,11 @@
 using GameEditorLib.Platform;
 using KUtil;
 using GameEditorLib.Ui;
-using zx = GameEditorLib.zx;
+
 
 namespace KUi
 {
-	public class TileDrawer : IDrawer, GameEditorLib.zx.IAttribute
+	public class TileDrawer : IDrawer, ZX.IAttribute
 	{
 		// TODO Create an ITileDrawer, for TileStart etc.
 		// Convert references to IDrawer.
@@ -13,8 +13,8 @@ namespace KUi
 		public TileDrawer(IChunk tileChunk)
 		{
 			TileChunk = tileChunk;
-			Paper = zx.Palette.BrightYellow;
-			Ink = zx.Palette.BrightBlack;
+			Paper = ZX.Palette.BrightYellow;
+			Ink = ZX.Palette.BrightBlack;
 			Zoom = 2;
 			Gap = 0;
 		}

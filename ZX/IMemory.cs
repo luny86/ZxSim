@@ -1,5 +1,5 @@
 
-namespace GameEditorLib.zx
+namespace ZX
 {
     /// <summary>
     /// Describes the memory of a snapshot.

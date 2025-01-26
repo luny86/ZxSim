@@ -88,7 +88,7 @@ namespace ThreeWeeks
          private byte CheckForRangeCode(byte code)
         {
             System.Diagnostics.Debug.Assert(DataGroup.CodeRanges != null, "Ranges should contain stuff");
-            foreach(Range range in DataGroup.CodeRanges)
+            foreach(KUtil.Range range in DataGroup.CodeRanges)
             {
                 if(range.Within(code))
                 {

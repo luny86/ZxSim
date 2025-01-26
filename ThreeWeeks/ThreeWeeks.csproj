@@ -9,8 +9,8 @@
     <OutputPath>../output/$(Configuration)</OutputPath>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="../output/$(Configuration)/zx.dll" >
-      <Hint>../output/$(Configuration)/zx.dll</Hint>
+    <Reference Include="../output/$(Configuration)/ZX.dll" >
+      <Hint>../output/$(Configuration)/ZX.dll</Hint>
     </Reference>
     <Reference Include="../output/$(Configuration)/Builder.dll" >
       <Hint>../output/$(Configuration)/Builder.dll</Hint>
