@@ -1,7 +1,7 @@
 using Godot;
 using KUtil;
 using System;
-using GameEditorLib.Platform;
+using ZX.Platform;
 
 namespace Platform
 {

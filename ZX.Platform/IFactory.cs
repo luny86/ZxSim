@@ -1,7 +1,7 @@
 
 using ZX;
 
-namespace GameEditorLib.Platform
+namespace ZX.Platform
 {
     /// <summary>
     /// Describes the factory used to create

@@ -1,7 +1,7 @@
 using Godot;
 using System;
 using Platform;
-using GameEditorLib.Platform;
+using ZX.Platform;
 using GameEditorLib.Builder;
 using ZX;
 

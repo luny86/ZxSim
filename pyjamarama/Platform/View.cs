@@ -1,6 +1,6 @@
 using Godot;
 using System;
-using GameEditorLib.Platform;
+using ZX.Platform;
 using Platform;
 
 public partial class View : TextureRect, IView

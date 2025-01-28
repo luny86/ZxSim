@@ -1,6 +1,6 @@
 using KUtil;
 
-namespace GameEditorLib.Platform
+namespace ZX.Platform
 {
     /// <summary>
     /// Describes a surface which wraps a platform

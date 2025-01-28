@@ -27,7 +27,7 @@
   </ItemGroup>
   <ItemGroup>
     <Reference Include="../output/$(Configuration)/Platform.dll" >
-      <Hint>../output/$(Configuration)/Platform.dll</Hint>
+      <Hint>../output/$(Configuration)/ZX.Platform.dll</Hint>
     </Reference>
   </ItemGroup>
   <ItemGroup>

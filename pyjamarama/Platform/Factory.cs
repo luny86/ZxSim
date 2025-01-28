@@ -1,6 +1,6 @@
 
 using Godot;
-using GameEditorLib.Platform;
+using ZX.Platform;
 
 namespace Platform
 {

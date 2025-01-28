@@ -1,6 +1,6 @@
 
 
-namespace GameEditorLib.Platform
+namespace ZX.Platform
 {
     /// <summary>
     /// Describes a platforms view. This holds the main surface of

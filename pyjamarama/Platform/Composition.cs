@@ -7,7 +7,7 @@ namespace Platform
 {
 	internal class Composition : IComposition, IBuildable
 	{
-		string IComposition.Name => "GameEditor.Platform.Composition";
+		string IComposition.Name => "Pyjarama.Platform.Composition";
 
 		void IBuildable.AskForDependents(IRequests requests)
 		{
@@ -15,8 +15,8 @@ namespace Platform
 
 		void IBuildable.RegisterObjects(IDependencyPool dependencies)
 		{
-			dependencies.Add("GameEditorLib.Platform.IFactory", 
-				typeof(GameEditorLib.Platform.IFactory),
+			dependencies.Add("ZX.Platform.IFactory", 
+				typeof(ZX.Platform.IFactory),
 				new Factory());
 		}
 
