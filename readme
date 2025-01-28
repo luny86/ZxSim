@@ -9,15 +9,22 @@ Setting up a new project
 Godot
 -----
 
-Create a script based on a Node.
-Override the void _Read() method. This will be ran at the start.
-Call into you main static Initialisation code from here and any initial loading required.
+Create a new scene 'main' and make it the default.
+Create a scene called 'view'
+	Add a child TextureRect node and call it 'view'.
 
+Copy folder, and its contents, ./..../Platform into the project.
+Include libraries in projects makefile.
+
+Create a script based on a Node.
+Override the void _Ready() method. This will be ran at the start.
+Call into you main static Initialisation code from here and any initial loading required.
 
 Make the script run immediately using:
 
     Project Settings -> Globals -> Autoload
 
+Attach the script 'View.cs' to node 'view'.
 
 Sub projects are class libraries
 
