@@ -26,6 +26,13 @@ Make the script run immediately using:
 
 Attach the script 'View.cs' to node 'view'.
 
+Main.cs
+This should be a godot Node, IComposition and an IBuildable.
+This sould be added as an autostart, where it can invoke the build functionality.
+Main should instantiate the view and create the surface for it. This will be the main screen.
+The composition should expose the main view (IView) as "Platform.Main.View".
+
+
 Sub projects are class libraries
 
     dotnet new classlib -n <NAME>

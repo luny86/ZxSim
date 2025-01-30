@@ -1,11 +1,13 @@
 using Godot;
 using System;
+using System.Collections.Generic;
 using Platform;
 using ZX.Platform;
 using GameEditorLib.Builder;
 using ZX;
+using ZX.Util;
 
-public partial class Main : Node
+public partial class Main : Node, IComposition, IBuildable
 {
 	private static Main _singleton = null!;
 
@@ -19,10 +21,10 @@ public partial class Main : Node
 	{
 		_commandScene = GD.Load<PackedScene>("res://view.tscn");
 		_singleton = this;
+		_view = CreateScreen();
 
 		Creator creator = new Creator();
 		creator.BuildAll();		
-		_view = CreateScreen();
 	}
 
 	// Called every frame. 'delta' is the elapsed time since the previous frame.
@@ -51,4 +53,40 @@ public partial class Main : Node
 
 		return view;
 	}
+
+	#region IComposition
+	string IComposition.Name => "Platform.Main";
+
+	IList<IBuildable>? IComposition.CreateBuildables()
+	{
+		return null;
+	}
+	#endregion
+
+	#region IBuildables
+	void IBuildable.AskForDependents(IRequests requests)
+	{
+	}
+
+	void IBuildable.RegisterObjects(IDependencyPool dependencies)
+	{
+		using var file = FileAccess.Open("res://pyjamarama.bin", FileAccess.ModeFlags.Read);
+
+		byte[] ram = file.GetBuffer(0x10000);
+		MemoryMap map = new MemoryMap(0x4000, ram);
+		map.AddRange("Tiles", 0xc1a0, 0x1158);
+
+		dependencies.Add("Platform.Main.IView", 
+			typeof(IView),
+			_view);
+		dependencies.Add("Platform.Main.IMemoryMap",
+			typeof(ZX.Util.IMemoryMap),
+			map);
+	}
+
+
+	void IBuildable.DependentsMet(IDependencies dependencies)
+	{
+	}
+	#endregion
 }
