@@ -1,5 +1,6 @@
 
 using System;
+using System.Text;
 using System.Collections.Generic;
 
 namespace GameEditorLib.Builder
@@ -28,7 +29,16 @@ namespace GameEditorLib.Builder
 
         public override string ToString()
         {
-            return $"DependencyPool : {_pool.Count}";
+            StringBuilder sb = new StringBuilder($"DependencyPool : {_pool.Count}");
+            sb.AppendLine();
+            foreach(var kvp in _pool)
+            {
+                foreach(var inner in kvp.Value)
+                {
+                    sb.AppendLine($" - {inner.Key} = {inner.Value}");
+                }
+            }
+            return sb.ToString();
         }
 
         void IDependencyPool.Add(string scope, Type type, object instance)

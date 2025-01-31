@@ -1,7 +1,9 @@
 
 
+using System.Text;
 using System.Runtime.CompilerServices;
 [assembly:InternalsVisibleTo("GameEditorTests")]
+
 
 namespace GameEditorLib.Builder;
 
@@ -65,6 +67,7 @@ public class Creator : IDisposable
     #region Construction
     public Creator()
     {
+        PreloadAssemblies();
     }
 
     public void Dispose()
@@ -99,13 +102,42 @@ public class Creator : IDisposable
 
         return found;
     }
+
+    public override string ToString()
+    {
+        StringBuilder sb = new StringBuilder();
+        sb.AppendLine(_instancePool.ToString());
+        sb.AppendLine(_scopedInfo.ToString());
+
+        sb.AppendLine("Buildables");
+        foreach(IBuildable build in _buildables)
+            sb.AppendLine($" - {build}");
+
+        sb.AppendLine("IComposites");
+        foreach(var a in _compositions)
+        {
+            sb.AppendLine($" -- {a.Key} {a.Value.Name}");
+        }
+        return sb.ToString();
+    }
     #endregion
 
     #region Build members
     public void BuildAll()
     {
         _buildables.Clear();
+        BuildAllInternal();
+    }
 
+    public void BuildAll(IBuildable initialBuildable)
+    {
+        _buildables.Clear();
+        _buildables.Add(initialBuildable);
+        BuildAllInternal();
+    }
+
+    private void BuildAllInternal()
+    {
         FindAllBuildables();
         RegisterObjectsFromBuildables();
         AskForDependents();
@@ -202,11 +234,26 @@ public class Creator : IDisposable
                 {
                     (pair.Value.Instances as IDependencyPool).Add(request.Scope, request.Type, o);
                 }
+                else
+                {
+                    //throw new InvalidOperationException($"Unable to find {request.Scope} of type {request.Type.FullName}");
+                }
             }
         }
     }
 
-    internal static IEnumerable<IComposition> Compositions
+    private static void PreloadAssemblies()
+    {
+        foreach(var refAssembly in
+            AppDomain.CurrentDomain.GetAssemblies()
+            .SelectMany( b => b.GetReferencedAssemblies())
+            .Where(b => b.Name != null && b.Name.StartsWith("ZX")))
+            {
+                System.Reflection.Assembly.Load(refAssembly);
+            }
+    }
+
+    public static IEnumerable<IComposition> Compositions
     {
         get
         {
