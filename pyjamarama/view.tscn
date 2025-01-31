@@ -3,10 +3,12 @@
 [ext_resource type="Script" path="res://Platform/View.cs" id="1_ydvyv"]
 
 [node name="view" type="TextureRect"]
+texture_filter = 3
 offset_left = 310.0
 offset_top = 140.0
 offset_right = 566.0
 offset_bottom = 332.0
 scale = Vector2(2, 2)
 expand_mode = 1
+stretch_mode = 3
 script = ExtResource("1_ydvyv")

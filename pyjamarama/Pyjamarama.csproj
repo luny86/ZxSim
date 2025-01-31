@@ -6,28 +6,32 @@
     <EnableDynamicLoading>true</EnableDynamicLoading>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="../output/$(Configuration)/ZX.dll" >
+    <Reference Include="../output/$(Configuration)/ZX.dll">
       <Hint>../output/$(Configuration)/ZX.dll</Hint>
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Reference Include="../output/$(Configuration)/Builder.dll" >
+    <Reference Include="../output/$(Configuration)/Builder.dll">
       <Hint>../output/$(Configuration)/Builder.dll</Hint>
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Reference Include="../output/$(Configuration)/Util.dll" >
-      <Hint>../output/$(Configuration)/Util.dll</Hint>
+    <Reference Include="../output/$(Configuration)/ZX.Util.dll">
+      <Hint>../output/$(Configuration)/ZX.Util.dll</Hint>
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Reference Include="../output/$(Configuration)/ZX.Platform.dll" >
+    <Reference Include="../output/$(Configuration)/ZX.Platform.dll">
       <Hint>../output/$(Configuration)/Platform.dll</Hint>
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Reference Include="../output/$(Configuration)/GameEditorLib.dll" >
+    <Reference Include="../output/$(Configuration)/GameEditorLib.dll">
       <Hint>../output/$(Configuration)/GameEditorLib.dll</Hint>
     </Reference>
   </ItemGroup>
-</Project>
+  <ItemGroup>
+    <Reference Include="../output/$(Configuration)/ZX.Drawing.dll">
+      <Hint>../output/$(Configuration)/ZX.Drawing.dll</Hint>
+    </Reference>
+  </ItemGroup></Project>

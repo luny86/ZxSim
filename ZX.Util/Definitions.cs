@@ -1,5 +1,5 @@
 
-namespace KUtil
+namespace ZX.Util
 {
     /// <summary>
     /// Signature for methods used when handling special codes

@@ -15,8 +15,8 @@
     <Reference Include="../output/$(Configuration)/Builder.dll" >
       <Hint>../output/$(Configuration)/Builder.dll</Hint>
     </Reference>
-    <Reference Include="../output/$(Configuration)/Util.dll" >
-      <Hint>../output/$(Configuration)/Util.dll</Hint>
+    <Reference Include="../output/$(Configuration)/ZX.Util.dll" >
+      <Hint>../output/$(Configuration)/ZX.Util.dll</Hint>
     </Reference>
     <Reference Include="../output/$(Configuration)/Ui.dll" >
       <Hint>../output/$(Configuration)/Ui.dll</Hint>

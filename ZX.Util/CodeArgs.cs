@@ -1,5 +1,5 @@
 
-namespace KUtil
+namespace ZX.Util
 {
     /// <summary>
     /// Holds information on a data code.

@@ -1,5 +1,5 @@
 using System;
-using KUtil;
+using ZX.Util;
 using GameEditorLib.Platform;
 
 namespace KUi

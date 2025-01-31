@@ -1,6 +1,6 @@
 using System;
 using Godot;
-using KUtil;
+using ZX.Util;
 using KUi;
 using GameEditorLib.Ui;
 using GameEditorLib.Platform;

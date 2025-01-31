@@ -16,8 +16,8 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Reference Include="../output/$(Configuration)/Util.dll" >
-      <Hint>../output/$(Configuration)/Util.dll</Hint>
+    <Reference Include="../output/$(Configuration)/ZX.Util.dll" >
+      <Hint>../output/$(Configuration)/ZX.Util.dll</Hint>
     </Reference>
   </ItemGroup>
   <ItemGroup>

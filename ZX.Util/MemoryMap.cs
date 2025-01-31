@@ -9,7 +9,7 @@ namespace ZX.Util
         private long _size;
         private byte[] _memory;
 
-        private Dictionary<string, KUtil.Chunk> _chunks = null!;
+        private Dictionary<string, Chunk> _chunks = null!;
 
         /// <summary>
         /// Create.
@@ -18,14 +18,14 @@ namespace ZX.Util
         /// <param name="binary">Image of binary.</param>
         public MemoryMap(int start, byte[] binary)
         {
-            _chunks = new Dictionary<string, KUtil.Chunk>();
+            _chunks = new Dictionary<string, Chunk>();
             _start =start;
             _size = binary.Length;
             _memory = new byte[_size];
             Array.Copy(binary, _memory, _size);
         }
 
-        public KUtil.IChunk this[string name]
+        public IChunk this[string name]
         {
             get
             {
@@ -46,7 +46,7 @@ namespace ZX.Util
             }
 
             _chunks.Add(name, 
-            new KUtil.Chunk(name, address, length, _memory));
+            new Chunk(name, address, length, _memory));
         }
 
     }

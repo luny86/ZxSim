@@ -1,4 +1,4 @@
-using KUtil;
+using ZX.Util;
 
 namespace ZX
 {
@@ -41,6 +41,12 @@ namespace ZX
 
             objectToSet.Ink = rgb[ink];
             objectToSet.Paper = rgb[paper];
+        }
+
+        public static void SetAttribute(Rgba ink, Rgba paper, IAttribute objectToSet)
+        {
+            objectToSet.Ink = ink;
+            objectToSet.Paper = paper;
         }
 
         public static void ToggleBright(IAttribute objectToSet)

@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 
-namespace KUtil
+namespace ZX.Util
 {
     /// <summary>
     /// Holds all the different pieces of data required

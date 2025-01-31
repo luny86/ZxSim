@@ -10,7 +10,7 @@
     <Reference Include="../GameEditor/GameEditorLib.dll" >
       <Hint>./GameEditor/GameEditorLib.dll</Hint>
     </Reference>
-        <Reference Include="../output/$(Configuration)/Util.dll" ></Reference>
+        <Reference Include="../output/$(Configuration)/ZX.Util.dll" ></Reference>
     <Reference Include="../output/$(Configuration)/Builder.dll" ></Reference>
     <Reference Include="../output/$(Configuration)/Project.dll" ></Reference>
   </ItemGroup>

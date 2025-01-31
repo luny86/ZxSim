@@ -2,7 +2,7 @@
 using GameEditorLib.Builder;
 using GameEditorLib.Platform;
 using KUi;
-using KUtil;
+using ZX.Util;
 using System.Collections.Generic;
 
 namespace ThreeWeeks;

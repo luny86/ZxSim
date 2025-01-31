@@ -1,7 +1,7 @@
 
 using ZX;
 using ZX.Platform;
-using KUtil;
+using ZX.Util;
 
 namespace ZX.Drawing
 {

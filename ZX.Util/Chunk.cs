@@ -1,6 +1,6 @@
 using System;
 
-namespace KUtil
+namespace ZX.Util
 {
     /// <summary>
     /// Holds information and data on a chunk of memory

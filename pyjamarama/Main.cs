@@ -1,18 +1,22 @@
 using Godot;
 using System;
+using System.Linq;
 using System.Collections.Generic;
 using Platform;
 using ZX.Platform;
 using GameEditorLib.Builder;
 using ZX;
 using ZX.Util;
+using ZX.Drawing;
 
-public partial class Main : Node, IComposition, IBuildable
+public partial class Main : Node, IBuildable
 {
 	private static Main _singleton = null!;
 
 	private PackedScene _commandScene;
 	private IView _view;
+
+	private MemoryMap _map;
 
 	public static Main Singleton { get { return _singleton;} }
 	
@@ -23,8 +27,15 @@ public partial class Main : Node, IComposition, IBuildable
 		_singleton = this;
 		_view = CreateScreen();
 
-		Creator creator = new Creator();
-		creator.BuildAll();		
+		try
+		{
+			Creator creator = new Creator();
+			creator.BuildAll(this);		
+		}
+		catch (InvalidOperationException e)
+		{
+			GD.Print($"Error {e.Message}");
+		}
 	}
 
 	// Called every frame. 'delta' is the elapsed time since the previous frame.
@@ -43,7 +54,7 @@ public partial class Main : Node, IComposition, IBuildable
 		{
 			Surface surface = new Surface();
 			surface.Create(256, 192);
-			surface.Fill(ZX.Palette.Black);
+			surface.Fill(ZX.Palette.Green);
 			viewer.Surface = surface;
 		}
 		else
@@ -54,18 +65,11 @@ public partial class Main : Node, IComposition, IBuildable
 		return view;
 	}
 
-	#region IComposition
-	string IComposition.Name => "Platform.Main";
-
-	IList<IBuildable>? IComposition.CreateBuildables()
-	{
-		return null;
-	}
-	#endregion
-
 	#region IBuildables
 	void IBuildable.AskForDependents(IRequests requests)
 	{
+		requests.AddRequest("ZX.Drawing.IFactory", 
+				typeof(ZX.Drawing.IFactory));
 	}
 
 	void IBuildable.RegisterObjects(IDependencyPool dependencies)
@@ -73,20 +77,30 @@ public partial class Main : Node, IComposition, IBuildable
 		using var file = FileAccess.Open("res://pyjamarama.bin", FileAccess.ModeFlags.Read);
 
 		byte[] ram = file.GetBuffer(0x10000);
-		MemoryMap map = new MemoryMap(0x4000, ram);
-		map.AddRange("Tiles", 0xc1a0, 0x1158);
+		_map = new MemoryMap(0x4000, ram);
+		_map.AddRange("Tiles", 0xc1a3, 0x1158);
 
 		dependencies.Add("Platform.Main.IView", 
 			typeof(IView),
 			_view);
 		dependencies.Add("Platform.Main.IMemoryMap",
 			typeof(ZX.Util.IMemoryMap),
-			map);
+			_map);
 	}
-
 
 	void IBuildable.DependentsMet(IDependencies dependencies)
 	{
+		object? temp = 
+			dependencies.TryGetInstance(
+				"ZX.Drawing.IFactory", 
+				typeof(ZX.Drawing.IFactory));
+		ZX.Drawing.IFactory factory = temp
+			as ZX.Drawing.IFactory;
+
+		
+		ZX.Drawing.IDrawer drawer = factory.CreateTileDrawer(_map["Tiles"]);
+		drawer.Draw(_view.Surface, 4, 10,10);
+
 	}
 	#endregion
 }

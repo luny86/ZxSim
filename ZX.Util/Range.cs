@@ -1,6 +1,6 @@
 
 
-namespace KUtil
+namespace ZX.Util
 {
     /// <summary>
     /// Holds a range for byte codes

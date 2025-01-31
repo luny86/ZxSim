@@ -1,4 +1,4 @@
-namespace KUtil
+namespace ZX.Util
 {
     /// <summary>
     /// Defines the aproperties used by a memory chunk.

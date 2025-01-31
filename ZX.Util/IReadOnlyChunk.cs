@@ -1,6 +1,6 @@
 
 
-namespace KUtil
+namespace ZX.Util
 {
     /// <summary>
     /// Describes a Read only chunk of memory.

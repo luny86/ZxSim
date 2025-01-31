@@ -18,7 +18,7 @@
   </ItemGroup>
   <ItemGroup>
     <Reference Include="../output/$(Configuration)/Platform.dll"></Reference>
-    <Reference Include="../output/$(Configuration)/Util.dll"></Reference>
+    <Reference Include="../output/$(Configuration)/ZX.Util.dll"></Reference>
     <Reference Include="../output/$(Configuration)/ZX.dll"></Reference>
   </ItemGroup>
 </Project>

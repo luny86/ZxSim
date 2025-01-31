@@ -1,7 +1,7 @@
 using System;
 using System.Drawing;
 
-namespace KUtil
+namespace ZX.Util
 {
     /// <summary>
     /// Keeps a cache of positions, indexed.

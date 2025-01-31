@@ -1,7 +1,7 @@
 
 using System.Collections;
 
-namespace KUtil
+namespace ZX.Util
 {
     /// <summary>
     /// Holds game data that is made up of data string

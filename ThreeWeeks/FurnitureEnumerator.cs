@@ -1,6 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
-using KUtil;
+using ZX.Util;
 
 namespace ThreeWeeks
 {

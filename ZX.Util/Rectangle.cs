@@ -1,5 +1,5 @@
 
-namespace KUtil
+namespace ZX.Util
 {
     /// <summary>
     /// Simple class for passing rect values into platform 
