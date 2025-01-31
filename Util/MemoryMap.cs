@@ -18,6 +18,7 @@ namespace ZX.Util
         /// <param name="binary">Image of binary.</param>
         public MemoryMap(int start, byte[] binary)
         {
+            _chunks = new Dictionary<string, KUtil.Chunk>();
             _start =start;
             _size = binary.Length;
             _memory = new byte[_size];
