@@ -21,7 +21,7 @@ Main="*res://Main.cs"
 
 [dotnet]
 
-project/assembly_name="Pyjamarama"
+project/assembly_name="godot_pyjamarama"
 
 [rendering]
 

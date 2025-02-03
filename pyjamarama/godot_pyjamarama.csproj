@@ -34,4 +34,12 @@
     <Reference Include="../output/$(Configuration)/ZX.Drawing.dll">
       <Hint>../output/$(Configuration)/ZX.Drawing.dll</Hint>
     </Reference>
-  </ItemGroup></Project>
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="../output/$(Configuration)/Pyjamarama.dll">
+      <Hint>../output/$(Configuration)/Pyjamarama.dll</Hint>
+    </Reference>
+  </ItemGroup>
+
+
+</Project>
