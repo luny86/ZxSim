@@ -1,0 +1,20 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <ItemGroup>
+    <ProjectReference Include="..\ZX.Drawing\ZX.Drawing.csproj" />
+    <ProjectReference Include="..\ZX.Platform\ZX.Platform.csproj" />
+    <ProjectReference Include="..\ZX.Util\ZX.Util.csproj" />
+    <ProjectReference Include="..\ZX\ZX.csproj" />
+    <projectReference Include="..\Builder\Builder.csproj"/>
+  </ItemGroup>
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
+    <AppendRuntimeIdentifierToOutputPath>false</AppendRuntimeIdentifierToOutputPath>
+    <OutputPath>../output/$(Configuration)</OutputPath>
+  </PropertyGroup>
+
+</Project>

@@ -8,6 +8,7 @@ using GameEditorLib.Builder;
 using ZX;
 using ZX.Util;
 using ZX.Drawing;
+using Pyjamarama;
 
 public partial class Main : Node, IBuildable
 {
@@ -106,11 +107,11 @@ public partial class Main : Node, IBuildable
 
 		ZX.Drawing.IDrawer drawer = factory.CreateTileDrawer(_map["Tiles"]);
 		ISurface bg = platformFactory.CreateSurface();
-		bg.Create(256,192);
-		bg.Fill(new Rgba(0.0f, 0.0f, 0.0f, 0.0f));
-		drawer.Draw(bg, 4, 10,10);
-		bg.Blend(_view.Surface,0,0);
+		
 
+		BackgroundLayer layer = new BackgroundLayer(drawer, bg, 1);
+		layer.Update();
+		layer.Blend(_view.Surface);
 	}
 	#endregion
 }
