@@ -17,6 +17,8 @@ namespace ZX.Platform
         void FillRect(Rectangle rect, Rgba colour);
         void SetPixel(int x, int y, Rgba colour);
 
+        void Blend(ISurface to, int x, int y);
+
         /// <summary>
         /// Test if position is within bounds of surface
         /// </summary>

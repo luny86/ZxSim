@@ -62,6 +62,16 @@ namespace Platform
 			Updated?.Invoke(this, new EventArgs());
 		}
 
+		public void Blend(ISurface to, int x, int y)
+		{
+			if(to is Surface surface)
+			{
+				surface.Image.BlendRect(Image, 
+					new Rect2I(0,0, Image.GetWidth(), Image.GetHeight()),
+					new Vector2I(x, y));
+			}
+		}
+
 		public bool IsInBounds(int x, int y)
 		{
 			return 
