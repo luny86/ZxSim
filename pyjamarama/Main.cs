@@ -70,6 +70,8 @@ public partial class Main : Node, IBuildable
 	{
 		requests.AddRequest("ZX.Drawing.IFactory", 
 				typeof(ZX.Drawing.IFactory));
+		requests.AddRequest("ZX.Platform.IFactory",
+				typeof(ZX.Platform.IFactory));
 	}
 
 	void IBuildable.RegisterObjects(IDependencyPool dependencies)
@@ -90,16 +92,24 @@ public partial class Main : Node, IBuildable
 
 	void IBuildable.DependentsMet(IDependencies dependencies)
 	{
-		object? temp = 
+		ZX.Drawing.IFactory factory = 
 			dependencies.TryGetInstance(
 				"ZX.Drawing.IFactory", 
-				typeof(ZX.Drawing.IFactory));
-		ZX.Drawing.IFactory factory = temp
-			as ZX.Drawing.IFactory;
+				typeof(ZX.Drawing.IFactory))
+		as ZX.Drawing.IFactory;
 
-		
+		ZX.Platform.IFactory platformFactory =
+			dependencies.TryGetInstance(
+				"ZX.Platform.IFactory",
+				typeof(ZX.Platform.IFactory))
+		as ZX.Platform.IFactory;
+
 		ZX.Drawing.IDrawer drawer = factory.CreateTileDrawer(_map["Tiles"]);
-		drawer.Draw(_view.Surface, 4, 10,10);
+		ISurface bg = platformFactory.CreateSurface();
+		bg.Create(256,192);
+		bg.Fill(new Rgba(0.0f, 0.0f, 0.0f, 0.0f));
+		drawer.Draw(bg, 4, 10,10);
+		bg.Blend(_view.Surface,0,0);
 
 	}
 	#endregion

@@ -9,24 +9,40 @@ namespace ZX.Drawing
     {
         string IComposition.Name => "ZX.Drawing.Composition";
 
+        private Screen _screen = null!;
+
         void IBuildable.AskForDependents(IRequests requests)
         {
+            requests.AddRequest("Platform.Main.IView", 
+			    typeof(ZX.Platform.IView));
         }
 
         void IBuildable.RegisterObjects(IDependencyPool dependencies)
         {
+            _screen = new Screen();
+
             dependencies.Add("ZX.Drawing.IFactory", 
                 typeof(ZX.Drawing.IFactory),
                 new Factory());
+            dependencies.Add("ZX.Drawing.Screen",
+                typeof(ZX.Drawing.IScreen),
+                _screen);
         }
 
         IList<IBuildable> IComposition.CreateBuildables()
         {
-            return null;
+            return new List<IBuildable>();
         }
 
         void IBuildable.DependentsMet(IDependencies dependencies)
         {
+            ZX.Platform.IView? platform =
+                dependencies.TryGetInstance(
+                    "Platform.Main.IView", 
+			        typeof(ZX.Platform.IView))
+                as ZX.Platform.IView ?? throw new InvalidOperationException("Platform view is null from build.");
+                
+            _screen.Main = platform.Surface;
         }
     }
 }
