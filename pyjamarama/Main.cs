@@ -32,6 +32,7 @@ public partial class Main : Node, IBuildable
 		{
 			Creator creator = new Creator();
 			creator.BuildAll(this);		
+			GD.Print(creator);
 		}
 		catch (InvalidOperationException e)
 		{
@@ -73,6 +74,8 @@ public partial class Main : Node, IBuildable
 				typeof(ZX.Drawing.IFactory));
 		requests.AddRequest("ZX.Platform.IFactory",
 				typeof(ZX.Platform.IFactory));
+		requests.AddRequest("ZX.Drawing.Screen",
+				typeof(ZX.Drawing.IScreen));
 	}
 
 	void IBuildable.RegisterObjects(IDependencyPool dependencies)
@@ -81,8 +84,9 @@ public partial class Main : Node, IBuildable
 
 		byte[] ram = file.GetBuffer(0x10000);
 		_map = new MemoryMap(0x4000, ram);
-		_map.AddRange("Tiles", 0xc1a3, 0x1158);
-
+		_map.AddRange("Tiles", 0xc1a0, 0x1158);
+		_map.AddRange("Furniture", 0xd2f8, 0xeac);
+		GD.Print(_map["Furniture"][0]);
 		dependencies.Add("Platform.Main.IView", 
 			typeof(IView),
 			_view);
@@ -105,13 +109,25 @@ public partial class Main : Node, IBuildable
 				typeof(ZX.Platform.IFactory))
 		as ZX.Platform.IFactory;
 
+		ZX.Drawing.IScreen screen = 
+			dependencies.TryGetInstance(
+				"ZX.Drawing.Screen",
+				typeof(ZX.Drawing.IScreen))
+		as ZX.Drawing.IScreen;
+		
 		ZX.Drawing.IDrawer drawer = factory.CreateTileDrawer(_map["Tiles"]);
+		Pyjamarama.FurnitureDrawer fdrawer = new Pyjamarama.FurnitureDrawer(drawer, _map["Furniture"]);
+
 		ISurface bg = platformFactory.CreateSurface();
 		
+		screen.Main = _view.Surface;
 
-		BackgroundLayer layer = new BackgroundLayer(drawer, bg, 1);
+		BackgroundLayer layer = new BackgroundLayer(fdrawer, bg, 1);
+		layer.Index = 1;
 		layer.Update();
-		layer.Blend(_view.Surface);
+		screen.AddLayer(layer);
+		
+		screen.Update();
 	}
 	#endregion
 }

@@ -8,20 +8,26 @@ namespace Pyjamarama
 {
     public class BackgroundLayer : Layer
     {
-        private readonly IDrawer _tileDrawer = null!;
+        /// <summary>
+        /// Background drawer for the game.
+        /// </summary>
+        private readonly IDrawer _drawer = null!;
 
         public BackgroundLayer(IDrawer drawer, ISurface surface, int z)
         : base(surface, z)
         {
-            _tileDrawer = drawer;
+            _drawer = drawer;
 
             Surface.Create(256,192);
         }
         
+
+        public int Index { get; set; }
+
         public override void Update()
         {
             Surface.Fill(new Rgba(0.0f, 0.0f, 0.0f, 0.0f));
-            _tileDrawer.Draw(Surface, 4, 10,10);
+            _drawer.Draw(Surface, Index, 10,10);
         }
     }
 }

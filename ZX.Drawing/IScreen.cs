@@ -10,7 +10,7 @@ namespace ZX.Drawing
     {
         ISurface Main { set; }
 
-        void AddLayer(Layer layer, int z);
+        void AddLayer(Layer layer);
 
         void Update();
     }

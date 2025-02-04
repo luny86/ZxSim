@@ -36,13 +36,7 @@ namespace ZX.Drawing
 
         void IBuildable.DependentsMet(IDependencies dependencies)
         {
-            ZX.Platform.IView? platform =
-                dependencies.TryGetInstance(
-                    "Platform.Main.IView", 
-			        typeof(ZX.Platform.IView))
-                as ZX.Platform.IView ?? throw new InvalidOperationException("Platform view is null from build.");
-                
-            _screen.Main = platform.Surface;
+
         }
     }
 }

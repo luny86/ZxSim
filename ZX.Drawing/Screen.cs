@@ -33,7 +33,7 @@ namespace ZX.Drawing
         /// Z ordering. Any layers with sharing ordering are blitted
         /// in order of creation.
         /// </summary>
-        public void AddLayer(Layer layer, int z)
+        public void AddLayer(Layer layer)
         {
             layers.Add(layer);
         }
