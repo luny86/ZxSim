@@ -26,11 +26,6 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Reference Include="../output/$(Configuration)/GameEditorLib.dll">
-      <Hint>../output/$(Configuration)/GameEditorLib.dll</Hint>
-    </Reference>
-  </ItemGroup>
-  <ItemGroup>
     <Reference Include="../output/$(Configuration)/ZX.Drawing.dll">
       <Hint>../output/$(Configuration)/ZX.Drawing.dll</Hint>
     </Reference>

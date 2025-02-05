@@ -11,8 +11,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ZX.Platform", "ZX.Platform\
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Builder", "Builder\Builder.csproj", "{D0437079-BEB3-4286-979B-E94D1FC00563}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GameEditorLib", "GameEditorLib\GameEditorLib.csproj", "{96EC4E78-A330-40B6-9418-9F4B7DE4744B}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Project", "Project\Project.csproj", "{E9682F49-2E7C-42E3-A4EF-B0FE39DAAD72}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ZX.Drawing", "ZX.Drawing\ZX.Drawing.csproj", "{A9540EDF-C2BB-4C8F-A656-F736E1668E5A}"
