@@ -9,7 +9,14 @@ namespace ZX
     /// </summary>
     public interface IAttribute
     {
+        /// <summary>
+        /// Rgba version of a 'paper' colour.
+        /// </summary>
         public Rgba Paper {get; set;}
+
+        /// <summary>
+        /// Rgba version of an 'ink' colour.
+        /// </summary>
         public Rgba Ink {get; set;}
     }
 }

@@ -1,7 +1,27 @@
-Git repo for GODOT projects.
+Git repo for ZX projects.
+=========================
 
-Blitz 2024
-Test project to converting Vic-20 Blitz into a GODOT game.
+The ZX project acts as a simulator for ease of porting Z80 Spectrum games
+to C#. This is a collection of libraries which handle colours, drawing using a 
+generic interface that can be plugged into a modern front-end such as Godot.
+
+Pyjamarama has been included as an example of a game specific library and a Godot 
+project.
+
+
+Architect
+=========
+
+		 ------------- ------------
+		|   ZX Util   |   Builder  |
+		 -------------             |
+		|     ZX      |            |
+		 ------------- -------------
+		| ZX Platform | ZX Drawing |
+		 --------------------------
+		| Godot project / Platform |
+		 --------------------------
+
 
 Setting up a new project
 ========================

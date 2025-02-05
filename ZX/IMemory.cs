@@ -2,7 +2,7 @@
 namespace ZX
 {
     /// <summary>
-    /// Describes the memory of a snapshot.
+    /// Describes the memory of a snapshot / binary.
     /// </summary>
     public interface IMemory
     {
@@ -25,6 +25,9 @@ namespace ZX
         /// <summary>
         /// Main indexer.
         /// </summary>
+        /// <remarks>
+        /// This starts from 0 within the chunk of memory defined.
+        /// </remarks>
         byte[] this[int index] { get; }
     }
 }
