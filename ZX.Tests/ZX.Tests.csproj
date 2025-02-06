@@ -7,6 +7,7 @@
     <IsPackable>false</IsPackable>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="../output/$(Configuration)/ZX.dll" ></Reference>
     <Reference Include="../output/$(Configuration)/ZX.Util.dll" ></Reference>
     <Reference Include="../output/$(Configuration)/Builder.dll" ></Reference>
     <Reference Include="../output/$(Configuration)/Project.dll" ></Reference>

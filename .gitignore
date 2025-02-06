@@ -954,3 +954,5 @@ ZX.Tests/obj/Debug/net8.0/ref/GameEditorTests.dll
 ZX.Tests/obj/Debug/net8.0/ref/ZX.Tests.dll
 ZX.Tests/obj/Debug/net8.0/refint/GameEditorTests.dll
 ZX.Tests/obj/Debug/net8.0/refint/ZX.Tests.dll
+ZX.Tests/bin/Debug/net8.0/ZX.dll
+ZX.Tests/bin/Debug/net8.0/ZX.pdb
