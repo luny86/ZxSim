@@ -71,7 +71,8 @@ namespace Tests.Builder
         public void DependenciesBetweenTwoCompositions()
         {
             // Creates the compositions.
-            GameEditorLib.GameEditor.Initialise();
+            Creator creator = new Creator();
+            creator.BuildAll();
 
             Assert.Pass();
         }

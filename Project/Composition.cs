@@ -1,6 +1,6 @@
 
 using System.Runtime.CompilerServices;
-[assembly:InternalsVisibleTo("GameEditorTests")]
+[assembly:InternalsVisibleTo("ZX.Tests")]
 
 namespace GameEditorLib.Platform
 {
