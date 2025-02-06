@@ -7,10 +7,12 @@
     <IsPackable>false</IsPackable>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="../output/$(Configuration)/ZX.dll" ></Reference>
-    <Reference Include="../output/$(Configuration)/ZX.Util.dll" ></Reference>
-    <Reference Include="../output/$(Configuration)/Builder.dll" ></Reference>
-    <Reference Include="../output/$(Configuration)/Project.dll" ></Reference>
+    <Reference Include="../output/$(Configuration)/ZX.dll"></Reference>
+    <Reference Include="../output/$(Configuration)/ZX.Util.dll"></Reference>
+    <Reference Include="../output/$(Configuration)/ZX.Drawing.dll"></Reference>
+    <Reference Include="../output/$(Configuration)/ZX.Platform.dll"></Reference>
+    <Reference Include="../output/$(Configuration)/Builder.dll"></Reference>
+    <Reference Include="../output/$(Configuration)/Project.dll"></Reference>
   </ItemGroup>
 
   <ItemGroup>
@@ -19,5 +21,10 @@
     <PackageReference Include="NUnit3TestAdapter" Version="4.2.1" />
     <PackageReference Include="NUnit.Analyzers" Version="3.3.0" />
     <PackageReference Include="coverlet.collector" Version="3.1.2" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\ZX.Util\ZX.Util.csproj" />
+    <ProjectReference Include="..\ZX.Drawing\ZX.Drawing.csproj" />
   </ItemGroup>
 </Project>

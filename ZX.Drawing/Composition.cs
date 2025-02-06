@@ -1,4 +1,7 @@
+using System.Runtime.CompilerServices;
+
 using GameEditorLib.Builder;
+[assembly:InternalsVisibleTo("ZX.Tests")]
 
 namespace ZX.Drawing
 {

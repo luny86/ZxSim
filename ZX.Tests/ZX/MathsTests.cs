@@ -8,21 +8,21 @@ namespace Test.ZX
         [Test]
         public void Bit8_SignedIntTest()
         {
-            Assert.AreEqual(0, Maths.Bit8_Signed(0));
-            Assert.AreEqual(-1, Maths.Bit8_Signed(255));
-            Assert.AreEqual(127, Maths.Bit8_Signed(127));
-            Assert.AreEqual(-128, Maths.Bit8_Signed(128));
-            Assert.AreEqual(-127, Maths.Bit8_Signed(129));            
+            Assert.That(Maths.Bit8_Signed(0), Is.EqualTo(0));
+            Assert.That(Maths.Bit8_Signed(255), Is.EqualTo(-1));
+            Assert.That(Maths.Bit8_Signed(127), Is.EqualTo(127));
+            Assert.That(Maths.Bit8_Signed(128), Is.EqualTo(-128));
+            Assert.That(Maths.Bit8_Signed(129), Is.EqualTo(-127));            
         }
 
         [Test]
         public void Bit8_SignedByteTest()
         {
-            Assert.AreEqual(0, Maths.Bit8_Signed((byte)0));
-            Assert.AreEqual(-1, Maths.Bit8_Signed((byte)255));
-            Assert.AreEqual(127, Maths.Bit8_Signed((byte)127));
-            Assert.AreEqual(-128, Maths.Bit8_Signed((byte)128));
-            Assert.AreEqual(-127, Maths.Bit8_Signed((byte)129));            
+            Assert.That(Maths.Bit8_Signed((byte)0), Is.EqualTo(0));
+            Assert.That(Maths.Bit8_Signed((byte)255), Is.EqualTo(-1));
+            Assert.That(Maths.Bit8_Signed((byte)127), Is.EqualTo(127));
+            Assert.That(Maths.Bit8_Signed((byte)128), Is.EqualTo(-128));
+            Assert.That(Maths.Bit8_Signed((byte)129), Is.EqualTo(-127));            
         }        
     }
 }

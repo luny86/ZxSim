@@ -956,3 +956,9 @@ ZX.Tests/obj/Debug/net8.0/refint/GameEditorTests.dll
 ZX.Tests/obj/Debug/net8.0/refint/ZX.Tests.dll
 ZX.Tests/bin/Debug/net8.0/ZX.dll
 ZX.Tests/bin/Debug/net8.0/ZX.pdb
+ZX.Tests/bin/Debug/net8.0/CoverletSourceRootsMapping
+ZX.Tests/bin/Debug/net8.0/nunit_random_seed.tmp
+ZX.Tests/bin/Debug/net8.0/ZX.Drawing.dll
+ZX.Tests/bin/Debug/net8.0/ZX.Drawing.pdb
+ZX.Tests/bin/Debug/net8.0/ZX.Platform.dll
+ZX.Tests/bin/Debug/net8.0/ZX.Platform.pdb

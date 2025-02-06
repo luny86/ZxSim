@@ -13,7 +13,7 @@ namespace ZX.Drawing
         public TileDrawer(IChunk tileBinaryChunk)
         {
             TileBinaryChunk = tileBinaryChunk ?? throw new ArgumentNullException(nameof(tileBinaryChunk));
-            (this as IAttribute).Ink = Palette.Yellow;
+            (this as IAttribute).Ink = Palette.White;
             (this as IAttribute).Paper = Palette.Black;
         }
 
