@@ -59,11 +59,17 @@ namespace Pyjamarama
             get;
             set;
         }
+        #endregion
 
-        // Drawing attributes
+        #region Drawing Attributes
+        // Allows draw function to be spread over several methods.
         private int X { get; set; }
         private int Y { get; set; }
 
+        private int Index { get; set; }
+
+        private int Offset { get; set; }
+        private ISurface Surface { get; set; } = null!;
         #endregion
 
         #region IDrawer
@@ -72,8 +78,9 @@ namespace Pyjamarama
             IAttribute attribute = _tileDrawer as IAttribute 
                 ?? throw new InvalidCastException("Tile drawer should implement IAttribute.");
 
-            int offset = 0;
-            int i = Table[index];
+            Offset = 0;
+            Surface = surface;
+            Index = Table[index];
             bool done = false;
 
             X = x;
@@ -81,70 +88,83 @@ namespace Pyjamarama
 
             while(!done)
             {
-                byte code = _data[i];
+                byte code = _data[Index];
 
-                if( (code & CmdFlag) == 0)
+                if(code < CmdFlag)
                 {
-                    // Blit tile
-                    _tileDrawer.Draw(surface, offset+code, X, Y);
-                    X++;
-                    i++;
+                    DrawTileAtCurrentPosition(Offset+code);
+                    Index++;
                 }
                 else
                 {
                     switch(code)
                     {
                         case CmdEnd:
-                            i++;
+                            Index++;
                             done = true;
                             break;
 
                         case CmdColor:
-                            Palette.SetAttribute(_data[i+1], attribute);
-                            i+=2;
+                            Palette.SetAttribute(_data[Index+1], attribute);
+                            Index+=2;
                             break;
 
                         case CmdPosition:
-                            {
-                                // Offset position of next tile.
-                                X += Maths.Bit8_Signed(_data[i + 1]);
-                                Y += Maths.Bit8_Signed(_data[i + 2]);
-                                i += 3;
-                            }
+                            SetPositionCommand();
                             break;
 
                         case CmdOrigin:
-                            {
-                                // Offset start of tiles to use,
-                                // Allows original bytes to use more
-                                // then 256 tiles.
-                                int h = (256 * _data[i + 2]) + _data[i + 1];
-                                
-                                if (h >= OriginStartAddr)
-                                {
-                                    offset = (h - OriginStartAddr) / 8;
-                                }
-
-                                i += 3;
-                            }
+                            SetOriginCommand();
                             break;
 
                         case CmdRepeat:
-                        default:                            
-                        {
-                                // Draw the same item 'n' times in a line.
-                                for (int r = 0; r < _data[i + 1]; r++)
-                                {
-                                    _tileDrawer.Draw(surface, offset+_data[i+2], X, Y);
-                                    X++;
-                                }
-
-                                i += 3;
-                            }
+                        default:
+                            DrawRepeatedTileCommand(); 
                             break;
                     }
                 }
             }
+        }
+
+        private void DrawTileAtCurrentPosition(int index)
+        {
+                // Blit tile
+                _tileDrawer.Draw(Surface, index, X, Y);
+                X++;
+        }
+
+        private void SetPositionCommand()
+        {
+            // Offset position of next tile.
+            X += Maths.Bit8_Signed(_data[Index + 1]);
+            Y += Maths.Bit8_Signed(_data[Index + 2]);
+            Index += 3;
+        }
+
+        private void SetOriginCommand()
+        {
+            // Offset start of tiles to use,
+            // Allows original bytes to use more
+            // then 256 tiles.
+            int h = (256 * _data[Index + 2]) + _data[Index + 1];
+            
+            if (h >= OriginStartAddr)
+            {
+                Offset = (h - OriginStartAddr) / 8;
+            }
+
+            Index += 3;
+        }
+
+        private void DrawRepeatedTileCommand()
+        {
+            // Draw the same item 'n' times in a line.
+            for (int r = 0; r < _data[Index + 1]; r++)
+            {
+                DrawTileAtCurrentPosition(Offset+_data[Index+2]);
+            }
+
+            Index += 3;
         }
         #endregion
 
