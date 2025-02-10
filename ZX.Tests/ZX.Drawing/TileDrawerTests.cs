@@ -7,11 +7,18 @@ namespace ZX.Drawing.Tests
 {
     public class TileDrawerTests
     {
+        /// <summary>
+        /// Tile bitmap as would be stored in a spectrum game.
+        /// </summary>
         static readonly byte[] _tileBinary = 
                 [
                     0xff, 0x00, 0x81, 0x7e, 0x00,0x00,0x81,0xff
                 ];
                 
+        /// <summary>
+        /// Final result of the tile draw based on
+        /// how the test drawer to do it.
+        /// </summary>
         static readonly byte[] _expectedPattern =
                 [
                     1,1,1,1,1,1,1,1,
@@ -26,7 +33,8 @@ namespace ZX.Drawing.Tests
 
 
         /// <summary>
-        /// Test memory chunk that gives a tile pattern.
+        /// Test memory chunk that gives the tile pattern
+        /// to represent the Spectrum memory.
         /// </summary>
         private class Pattern : IChunk
         {

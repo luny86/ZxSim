@@ -12,14 +12,14 @@ namespace ZX.Drawing
     /// </summary>
     internal class Screen : IScreen
     {
-        private readonly List<Layer> layers;
+        private readonly List<ILayer> layers;
 
         /// <summary>
         /// Create a screen with a main surface.
         /// </summary>
         public Screen()
         {
-            layers = new List<Layer>();
+            layers = new List<ILayer>();
         }
     
         /// <summary>
@@ -33,7 +33,7 @@ namespace ZX.Drawing
         /// Z ordering. Any layers with sharing ordering are blitted
         /// in order of creation.
         /// </summary>
-        public void AddLayer(Layer layer)
+        public void AddLayer(ILayer layer)
         {
             layers.Add(layer);
         }
@@ -45,7 +45,7 @@ namespace ZX.Drawing
         {
             layers.Sort();
 
-            foreach(Layer layer in layers)
+            foreach(ILayer layer in layers)
             {
                 layer.Blend(Main);
             }

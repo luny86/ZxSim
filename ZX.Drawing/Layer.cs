@@ -8,7 +8,7 @@ namespace ZX.Drawing
     /// to the main screen. Override <see cref="Update"/> to handle
     /// how things are drawn etc.
     /// </summary>
-    public abstract class Layer : IEquatable<Layer>, IComparable<Layer>
+    public abstract class Layer : ILayer, IEquatable<Layer>, IComparable<Layer>
     {
         public Layer(ISurface surface, int z)
         {
