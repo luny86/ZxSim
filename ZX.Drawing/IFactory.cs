@@ -5,6 +5,6 @@ namespace ZX.Drawing
 {
     public interface IFactory
     {
-        IDrawer CreateTileDrawer(IChunk tileMemory);
+        IDrawer CreateTileDrawer(string scope);
     }
 }

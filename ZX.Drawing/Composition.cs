@@ -14,6 +14,8 @@ namespace ZX.Drawing
 
         private Screen _screen = null!;
 
+        private Factory _factory = null!;
+
         void IBuildable.AskForDependents(IRequests requests)
         {
             requests.AddRequest("Platform.Main.IView", 
@@ -26,7 +28,7 @@ namespace ZX.Drawing
 
             dependencies.Add("ZX.Drawing.IFactory", 
                 typeof(ZX.Drawing.IFactory),
-                new Factory());
+                _factory);
             dependencies.Add("ZX.Drawing.Screen",
                 typeof(ZX.Drawing.IScreen),
                 _screen);
@@ -34,7 +36,12 @@ namespace ZX.Drawing
 
         IList<IBuildable> IBuildable.CreateBuildables()
         {
-            return new List<IBuildable>();
+            _factory = new Factory();
+
+            return new List<IBuildable>()
+            {
+                _factory
+            };
         }
 
         void IBuildable.DependentsMet(IDependencies dependencies)

@@ -14,6 +14,12 @@ public partial class Main : Node, IBuildable
 {
 	private static Main _singleton = null!;
 
+	Pyjamarama.IFactory _factory = null;
+
+	ZX.Platform.IFactory _platformFactory = null;
+
+	ZX.Drawing.IScreen _screen =  null;
+
 	private PackedScene _commandScene;
 	private IView _view;
 
@@ -33,6 +39,19 @@ public partial class Main : Node, IBuildable
 			Creator creator = new Creator();
 			creator.BuildAll(this);		
 			GD.Print(creator);
+
+			Pyjamarama.FurnitureDrawer fdrawer = _factory.CreateFurnitureDrawer("Tiles", "Furniture");
+
+			ISurface bg = _platformFactory.CreateSurface();
+			
+			_screen.Main = _view.Surface;
+
+			BackgroundLayer layer = new BackgroundLayer(fdrawer, bg, 1);
+			layer.Index = 2;
+			layer.Update();
+			_screen.AddLayer(layer);
+			
+			_screen.Update();
 		}
 		catch (InvalidOperationException e)
 		{
@@ -75,8 +94,8 @@ public partial class Main : Node, IBuildable
 
 	void IBuildable.AskForDependents(IRequests requests)
 	{
-		requests.AddRequest("ZX.Drawing.IFactory", 
-				typeof(ZX.Drawing.IFactory));
+		requests.AddRequest("Pyjamarama.Factory", 
+				typeof(Pyjamarama.IFactory));
 		requests.AddRequest("ZX.Platform.IFactory",
 				typeof(ZX.Platform.IFactory));
 		requests.AddRequest("ZX.Drawing.Screen",
@@ -102,37 +121,23 @@ public partial class Main : Node, IBuildable
 
 	void IBuildable.DependentsMet(IDependencies dependencies)
 	{
-		ZX.Drawing.IFactory factory = 
+		_factory = 
 			dependencies.TryGetInstance(
-				"ZX.Drawing.IFactory", 
-				typeof(ZX.Drawing.IFactory))
-		as ZX.Drawing.IFactory;
+				"Pyjamarama.Factory", 
+				typeof(Pyjamarama.IFactory))
+		as Pyjamarama.IFactory;
 
-		ZX.Platform.IFactory platformFactory =
+		_platformFactory =
 			dependencies.TryGetInstance(
 				"ZX.Platform.IFactory",
 				typeof(ZX.Platform.IFactory))
 		as ZX.Platform.IFactory;
 
-		ZX.Drawing.IScreen screen = 
+		_screen = 
 			dependencies.TryGetInstance(
 				"ZX.Drawing.Screen",
 				typeof(ZX.Drawing.IScreen))
 		as ZX.Drawing.IScreen;
-		
-		ZX.Drawing.IDrawer drawer = factory.CreateTileDrawer(_map["Tiles"]);
-		Pyjamarama.FurnitureDrawer fdrawer = new Pyjamarama.FurnitureDrawer(drawer, _map["Furniture"]);
-
-		ISurface bg = platformFactory.CreateSurface();
-		
-		screen.Main = _view.Surface;
-
-		BackgroundLayer layer = new BackgroundLayer(fdrawer, bg, 1);
-		layer.Index = 2;
-		layer.Update();
-		screen.AddLayer(layer);
-		
-		screen.Update();
 	}
 	#endregion
 }
