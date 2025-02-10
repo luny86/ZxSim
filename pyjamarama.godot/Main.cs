@@ -68,6 +68,11 @@ public partial class Main : Node, IBuildable
 	}
 
 	#region IBuildables
+	IList<IBuildable> IBuildable.CreateBuildables()
+	{
+		return null;
+	}
+
 	void IBuildable.AskForDependents(IRequests requests)
 	{
 		requests.AddRequest("ZX.Drawing.IFactory", 
@@ -123,7 +128,7 @@ public partial class Main : Node, IBuildable
 		screen.Main = _view.Surface;
 
 		BackgroundLayer layer = new BackgroundLayer(fdrawer, bg, 1);
-		layer.Index = 1;
+		layer.Index = 2;
 		layer.Update();
 		screen.AddLayer(layer);
 		

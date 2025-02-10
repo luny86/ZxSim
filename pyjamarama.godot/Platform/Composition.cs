@@ -19,7 +19,7 @@ namespace Platform
 				new Factory());
 		}
 
-		IList<IBuildable> IComposition.CreateBuildables()
+		IList<IBuildable> IBuildable.CreateBuildables()
 		{
 			return null;
 		}

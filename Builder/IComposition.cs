@@ -12,9 +12,6 @@ namespace GameEditorLib.Builder
     /// the class. 
     /// If this class implements the IBuildable interface
     /// it will be added to the build process.
-    /// The system will then ask for any child IBuildable
-    /// instances, which it will also add to the build
-    /// process.
     /// </remarks>
      public interface IComposition
     {
@@ -22,12 +19,5 @@ namespace GameEditorLib.Builder
         /// Unique name for composition.
         /// </summary>
         string Name { get; }
-        
-        /// <summary>
-        /// This member should create any child
-        /// IBuildable instances belonging the to composition.
-        /// </summary>
-        /// <returns>List of buildables.</returns>
-        IList<IBuildable>? CreateBuildables(); 
     }
 }

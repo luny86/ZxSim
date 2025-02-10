@@ -19,7 +19,7 @@ namespace Tests.Builder
             {
             }
 
-            IList<IBuildable>? IComposition.CreateBuildables()
+            IList<IBuildable>? IBuildable.CreateBuildables()
             {
                 return null;
             }
@@ -43,7 +43,7 @@ namespace Tests.Builder
                 requests.AddRequest("T.A", typeof(D));
             }
 
-            IList<IBuildable>? IComposition.CreateBuildables()
+            IList<IBuildable>? IBuildable.CreateBuildables()
             {
                 return null;
             }

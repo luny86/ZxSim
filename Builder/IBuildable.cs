@@ -12,7 +12,14 @@ namespace GameEditorLib.Builder;
 /// to be created by the build system.
 /// </remarks>
 public interface IBuildable
-{
+{        
+    /// <summary>
+    /// This member should create any child
+    /// IBuildable instances belonging the to parent.
+    /// </summary>
+    /// <returns>List of buildables.</returns>
+    IList<IBuildable>? CreateBuildables(); 
+
     /// <summary>
     /// Register objects owned by this instance
     /// for use by other buildables. This is 

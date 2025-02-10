@@ -32,7 +32,7 @@ namespace ZX.Drawing
                 _screen);
         }
 
-        IList<IBuildable> IComposition.CreateBuildables()
+        IList<IBuildable> IBuildable.CreateBuildables()
         {
             return new List<IBuildable>();
         }

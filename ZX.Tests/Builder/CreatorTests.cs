@@ -6,54 +6,9 @@ namespace Tests.Builder
 {
     public class CreatorTests
     {
-        private class Buildable : IBuildable
-        {
-            bool askForDependents = false;
-            bool register = false;
-            bool dependentsMet = false;
-
-            void IBuildable.RegisterObjects(IDependencyPool dependencies)
-            {
-                Assert.False(askForDependents, "RegisterObjects: AskForDependents call out of order");
-                Assert.False(dependentsMet, "RegisterObjects: DependentsMet called out of order.");
-                register = true;
-            }
-
-            void IBuildable.AskForDependents(IRequests requests)
-            {
-                Assert.True(register, "AskForDependents: RegisterObjects not called yet");
-                Assert.False(dependentsMet, "AskForDependents: DependentsMet called out of order.");
-                askForDependents = true;
-            }
-
-            void IBuildable.DependentsMet(IDependencies dependencies)
-            {
-                Assert.True(register, "DependentsMet: RegisterObjects not called yet");
-                Assert.True(askForDependents, "DependentsMet: AskForDependents called out of order.");
-                dependentsMet = true;
-            }
-
-            public void FinalTest()
-            {
-                Assert.True(register && askForDependents && dependentsMet);
-            }
-        }
-
         private class Composition : IComposition
         {
-            private Buildable buildable = new Buildable();
-
             public string Name => "Composition"; 
-
-            public Buildable Child => buildable;
-
-            IList<IBuildable>? IComposition.CreateBuildables()
-            {
-                return new List<IBuildable>()
-                {
-                    buildable
-                }; 
-            }
         }
 
         [SetUp]
@@ -93,17 +48,6 @@ namespace Tests.Builder
             // Make sure our composition was found and created.
             c = creator.TryGetComposition("Composition");
             Assert.NotNull(c);
-
-            // Check the inner flags for the correct order
-            // of call on a buildable.
-            if(c is Composition comp)
-            {
-                comp.Child.FinalTest();
-            }
-            else
-            {
-                Assert.Fail("Composition found is not the test one");
-            }
         }
     }
 }

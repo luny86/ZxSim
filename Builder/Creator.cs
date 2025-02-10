@@ -155,17 +155,16 @@ public class Creator : IDisposable
             if(composition is IBuildable buildable)
             {
                 _buildables.Add(buildable);
+                AddChildBuildables(buildable);
             }
-
-            AddChildBuildables(composition);
         }
     }
 
-    private void AddChildBuildables(IComposition composition)
+    private void AddChildBuildables(IBuildable parent)
     {
-        if(composition != null)
+        if(parent != null)
         {
-            IList<IBuildable>? buildables = composition.CreateBuildables();
+            IList<IBuildable>? buildables = parent.CreateBuildables();
 
             if(buildables != null)
             {
