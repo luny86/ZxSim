@@ -1,6 +1,6 @@
 
 using GameEditorLib.Builder;
-using ZX.Util;
+using ZX.Drawing;
 
 namespace Pyjamarama
 {
@@ -9,10 +9,11 @@ namespace Pyjamarama
         private ZX.Drawing.IFactory _factory = null!;
         private ZX.Util.IMemoryMap _map = null!;
 
-        FurnitureDrawer IFactory.CreateFurnitureDrawer(string tileChunkName, string furnitureChunkName)
+        IDrawer IFactory.CreateRoomDrawer(string addressTableName, string dataChunkName, string tileChunkName, string furnitureChunkName)
         {
             ZX.Drawing.IDrawer drawer = _factory.CreateTileDrawer(tileChunkName);
-            return new Pyjamarama.FurnitureDrawer(drawer, _map[furnitureChunkName]);
+            FurnitureDrawer furniture = new FurnitureDrawer(drawer, _map[furnitureChunkName]);
+            return new RoomDrawer(furniture, _map[dataChunkName], _map[addressTableName]);
         }
 
         IList<IBuildable>? IBuildable.CreateBuildables()

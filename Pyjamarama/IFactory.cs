@@ -1,4 +1,6 @@
 
+using ZX.Drawing;
+
 namespace Pyjamarama
 {
     /// <summary>
@@ -10,6 +12,6 @@ namespace Pyjamarama
         /// Creates a furniture drawer by specifying which data to use for
         /// the tile-set and the furniture draw strings.
         /// </summary>
-        FurnitureDrawer CreateFurnitureDrawer(string tileChunkName, string furnitureChunkName);
+        IDrawer CreateRoomDrawer(string addressTableName, string dataChunkName, string tileChunkName, string furnitureChunkName);
     }
 }

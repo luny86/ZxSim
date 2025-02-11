@@ -1,0 +1,122 @@
+
+using ZX;
+using ZX.Drawing;
+using ZX.Platform;
+using ZX.Util;
+
+namespace Pyjamarama
+{
+    /// <summary>
+    /// Drawer for creating background images of each room.
+    /// </summary>
+    internal class RoomDrawer : IDrawer
+    {
+        #region Draw Commands
+
+        private const byte CmdWalls = 0xf5;
+        private const byte CmdEnd = 0xFF;
+        private const byte CmdFlipOn = 0xF4;
+        private const byte CmdFlipOff = 0xF3;
+        private const byte CmdActionFlag = 0xDE;
+
+        #endregion
+
+        #region Private Members
+
+        /// <summary>
+        /// Data for all rooms.
+        /// </summary>
+        private readonly IChunk _data = null!;
+
+        /// <summary>
+        /// A table of 16bit addresses pointing to each room.
+        /// </summary>
+        /// <remarks>
+        /// The table will hold asbolute addresses, as if in the
+        /// original memory. They can be used to calculate the offset
+        /// of each room within the data chunk.
+        private readonly IChunk _roomAddressTable = null!;
+
+        /// <summary>
+        /// Drawer for handling the individual items that
+        /// make up a room.
+        /// </summary>
+        private readonly IDrawer _furnitureDrawer = null!;
+
+        #endregion
+
+        #region Construction
+
+        public RoomDrawer(IDrawer furnitureDrawer, IChunk data, IChunk roomAddressTable)
+        {
+            _furnitureDrawer = furnitureDrawer;
+            _data = data;
+            _roomAddressTable = roomAddressTable;
+        }
+
+        #endregion
+
+        #region IDrawer
+
+        void IDrawer.Draw(ISurface surface, int index, int x, int y)
+        {
+            bool endOfString = false;
+            int offset = CalculateRoomIndex(index);
+
+            surface.Fill(Palette.Black);
+
+            while(!endOfString)
+            {
+                byte code = _data[offset];
+
+                switch(code)
+                {
+                    case CmdWalls:
+                        offset++;
+                        break;
+
+                    case CmdEnd:
+                        offset++;
+                        endOfString = true;
+                        break;
+
+                    case CmdFlipOff:
+                        // To do
+                        offset++;
+                        break;
+
+                    case CmdFlipOn:
+                        // To do
+                        offset++;
+                        break;
+
+                    case CmdActionFlag:
+                        {
+                            // To do
+                            endOfString = true;
+                        }
+                        break;
+
+                    default:
+                        _furnitureDrawer.Draw(surface, _data[offset+2], _data[offset], _data[offset+1]);
+                        offset+=3;
+                        break;
+                }
+
+                
+            }
+
+        }
+
+        #endregion
+
+        #region Helpers
+
+        private int CalculateRoomIndex(int index)
+        {
+            return _roomAddressTable.Word(index*2) - _data.Start;
+        }
+
+        #endregion
+    }
+}

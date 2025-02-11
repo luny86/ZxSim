@@ -8,6 +8,12 @@ generic interface that can be plugged into a modern front-end such as Godot.
 Pyjamarama has been included as an example of a game specific library and a Godot 
 project.
 
+The idea is that the libraries allow the original binary data to be used to create the
+graphics, rooms etc. Any Z80 which puts these items together can then be ported into c#.
+In the mean time other libraries will eventually exist to aid converting this raw info
+into bitmaps and JSON for quicker use. All portable to different UI platforms.
+
+
 
 Architect
 =========

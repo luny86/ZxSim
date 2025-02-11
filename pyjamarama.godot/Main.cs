@@ -40,13 +40,13 @@ public partial class Main : Node, IBuildable
 			creator.BuildAll(this);		
 			GD.Print(creator);
 
-			Pyjamarama.FurnitureDrawer fdrawer = _factory.CreateFurnitureDrawer("Tiles", "Furniture");
+			IDrawer drawer = _factory.CreateRoomDrawer("RoomPointers", "Rooms", "Tiles", "Furniture");
 
 			ISurface bg = _platformFactory.CreateSurface();
 			
 			_screen.Main = _view.Surface;
 
-			BackgroundLayer layer = new BackgroundLayer(fdrawer, bg, 1);
+			BackgroundLayer layer = new BackgroundLayer(drawer, bg, 1);
 			layer.Index = 2;
 			layer.Update();
 			_screen.AddLayer(layer);
@@ -110,6 +110,10 @@ public partial class Main : Node, IBuildable
 		_map = new MemoryMap(0x4000, ram);
 		_map.AddRange("Tiles", 0xc1a0, 0x1158);
 		_map.AddRange("Furniture", 0xd2f8, 0xeac);
+		_map.AddRange("Rooms", 0x8d6a, 0x301);
+		_map.AddRange("RoomPointers", 0x8d2e, 0x3c);
+		_map.AddRange("WallTiles", 0x8c4d, 0x18);
+
 		GD.Print(_map["Furniture"][0]);
 		dependencies.Add("Platform.Main.IView", 
 			typeof(IView),
