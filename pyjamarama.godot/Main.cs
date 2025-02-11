@@ -47,7 +47,7 @@ public partial class Main : Node, IBuildable
 			_screen.Main = _view.Surface;
 
 			BackgroundLayer layer = new BackgroundLayer(drawer, bg, 1);
-			layer.Index = 2;
+			layer.Index = 1;
 			layer.Update();
 			_screen.AddLayer(layer);
 			
@@ -108,11 +108,11 @@ public partial class Main : Node, IBuildable
 
 		byte[] ram = file.GetBuffer(0x10000);
 		_map = new MemoryMap(0x4000, ram);
-		_map.AddRange("Tiles", 0xc1a0, 0x1158);
-		_map.AddRange("Furniture", 0xd2f8, 0xeac);
-		_map.AddRange("Rooms", 0x8d6a, 0x301);
-		_map.AddRange("RoomPointers", 0x8d2e, 0x3c);
-		_map.AddRange("WallTiles", 0x8c4d, 0x18);
+		_map.AddRange(MemoryChunkNames.TileBitmaps, 0xc1a0, 0x1158);
+		_map.AddRange(MemoryChunkNames.FurnitureStrings, 0xd2f8, 0xeac);
+		_map.AddRange(MemoryChunkNames.RoomStrings, 0x8d6a, 0x301);
+		_map.AddRange(MemoryChunkNames.RoomPointers, 0x8d2e, 0x3c);
+		_map.AddRange(MemoryChunkNames.WallTileBitmaps, 0x8c4d, 0x18);
 
 		GD.Print(_map["Furniture"][0]);
 		dependencies.Add("Platform.Main.IView", 

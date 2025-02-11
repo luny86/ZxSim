@@ -26,7 +26,7 @@ namespace Pyjamarama
         /// <summary>
         /// Data for all rooms.
         /// </summary>
-        private readonly IChunk _data = null!;
+        private readonly IChunk _data;
 
         /// <summary>
         /// A table of 16bit addresses pointing to each room.
@@ -35,21 +35,23 @@ namespace Pyjamarama
         /// The table will hold asbolute addresses, as if in the
         /// original memory. They can be used to calculate the offset
         /// of each room within the data chunk.
-        private readonly IChunk _roomAddressTable = null!;
+        private readonly IChunk _roomAddressTable;
 
         /// <summary>
         /// Drawer for handling the individual items that
         /// make up a room.
         /// </summary>
-        private readonly IDrawer _furnitureDrawer = null!;
+        private readonly IDrawer _furnitureDrawer;
 
+        private readonly IDrawer _wallDrawer;
         #endregion
 
         #region Construction
 
-        public RoomDrawer(IDrawer furnitureDrawer, IChunk data, IChunk roomAddressTable)
+        public RoomDrawer(IDrawer furnitureDrawer, IDrawer wallDrawer, IChunk data, IChunk roomAddressTable)
         {
             _furnitureDrawer = furnitureDrawer;
+            _wallDrawer = wallDrawer;
             _data = data;
             _roomAddressTable = roomAddressTable;
         }
@@ -72,7 +74,10 @@ namespace Pyjamarama
                 switch(code)
                 {
                     case CmdWalls:
+                    {
+                        _wallDrawer.Draw(surface, 0,0,0);
                         offset++;
+                    }
                         break;
 
                     case CmdEnd:

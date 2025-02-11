@@ -13,7 +13,11 @@ namespace Pyjamarama
         {
             ZX.Drawing.IDrawer drawer = _factory.CreateTileDrawer(tileChunkName);
             FurnitureDrawer furniture = new FurnitureDrawer(drawer, _map[furnitureChunkName]);
-            return new RoomDrawer(furniture, _map[dataChunkName], _map[addressTableName]);
+
+            drawer = _factory.CreateTileDrawer(MemoryChunkNames.WallTileBitmaps);
+            WallDrawer walls = new WallDrawer(drawer, _map[MemoryChunkNames.WallTileBitmaps]);
+
+            return new RoomDrawer(furniture,walls,  _map[dataChunkName], _map[addressTableName]);
         }
 
         IList<IBuildable>? IBuildable.CreateBuildables()
