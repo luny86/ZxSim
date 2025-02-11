@@ -51,8 +51,6 @@ namespace Tests.Builder
 
         private void RunTestForMissingRequiredProperty(string testString)
         {
-            ChunkSerializer? chunk = null;
-
             Assert.Throws(typeof(JsonException), 
                 () => JsonSerializer.Deserialize<ChunkSerializer>(testString),
                 "Name is missing, this should be required, but has been allowed.");
