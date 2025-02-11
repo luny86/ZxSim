@@ -169,6 +169,10 @@ public class Creator : IDisposable
             if(buildables != null)
             {
                 _buildables.AddRange(buildables);
+                foreach(IBuildable inner in buildables)
+                {
+                    AddChildBuildables(inner);
+                }
             }
         }
     }
