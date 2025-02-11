@@ -29,6 +29,35 @@ Architect
 		 --------------------------
 
 
+Builder
+-------
+Builder uses the Composite and Builder patterns to create a simple form of dependency injection.
+Each 'module' or scope can have a composite object (base on IComposition) to own any concrete classes 
+belonging to the module. The composite object can also implement the IBuilder class allowing it to
+expose any of it's instances (as Interfaces) and request other instances from other modules.
+
+By using interfaces the modules can stay detached and have either a loose dependency or better still
+use dependency reversion.
+
+As an example, ZX.Plaform defines the ISurface and IView interfaces which are used by the ZX.Drawing and other modules.
+Whereas the actual project (Godot project and relating modules) will create the concrete surface using platform specific
+image objects and implement the ISurface in order to allow other modules to use it with a loose coupling.
+
+IComposite objects are automatically instantiated when calling 'BuildAll' on the Builder.Creator class.
+The builder will own all composites. From here any composites based on the IBuilder interface will then run through
+the builder process by calling
+
+- IBuilder.CreateBuildables to get a list of any child classes that are also IBuildable.
+- IBuilder.RegisterObjects to allow the instance to register any child classes for dependency injection.
+- IBuilder.AskForDependents to get a list of other instances the object wants injected.
+
+Once all this information has been collected for all instances, the creator will call 
+
+	IBuilder.DependenciesMet
+
+for all instances. It is at this point that each object can ask for the dependent instances it requested.
+
+
 Setting up a new project
 ========================
 
