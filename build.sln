@@ -19,6 +19,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Pyjamarama", "Pyjamarama\Py
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ZX.Tests", "ZX.Tests\ZX.Tests.csproj", "{370DF847-9BCE-45E5-B0AF-1577A54C0C52}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ZX.Game", "ZX.Game\ZX.Game.csproj", "{B935CA58-2A0A-4D92-B2DF-339444558945}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -64,5 +66,9 @@ Global
 		{370DF847-9BCE-45E5-B0AF-1577A54C0C52}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{370DF847-9BCE-45E5-B0AF-1577A54C0C52}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{370DF847-9BCE-45E5-B0AF-1577A54C0C52}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B935CA58-2A0A-4D92-B2DF-339444558945}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B935CA58-2A0A-4D92-B2DF-339444558945}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B935CA58-2A0A-4D92-B2DF-339444558945}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B935CA58-2A0A-4D92-B2DF-339444558945}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
