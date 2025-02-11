@@ -5,6 +5,8 @@ namespace ZX
     public static class Palette
     {
         const float DarkValue = 0.6f;
+        const float DarkYellow = 0.7f;
+        const float DarkWhite = 0.7f;
 
         private enum ZxAttr : int
         {
@@ -21,8 +23,8 @@ namespace ZX
             { ZxAttr.Magenta, new Rgba(DarkValue, 0.0f, DarkValue) },
             { ZxAttr.Green,   new Rgba(0.0f, DarkValue, 0.0f) },
             { ZxAttr.Cyan,    new Rgba(0.0f, DarkValue, DarkValue) },
-            { ZxAttr.Yellow,  new Rgba(DarkValue, DarkValue, 0.0f) },
-            { ZxAttr.White,   new Rgba(DarkValue, DarkValue, 0.4f) },
+            { ZxAttr.Yellow,  new Rgba(DarkYellow, DarkYellow, 0.0f) },
+            { ZxAttr.White,   new Rgba(DarkWhite, DarkWhite, DarkWhite) },
             { ZxAttr.BrBlack,   new Rgba(0.0f, 0.0f, 0.0f) },
             { ZxAttr.BrBlue,    new Rgba(0.0f, 0.0f, 1.0f) },
             { ZxAttr.BrRed,     new Rgba(1.0f, 0.0f, 0.0f) },
