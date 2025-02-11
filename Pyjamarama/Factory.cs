@@ -50,7 +50,7 @@ namespace Pyjamarama
                         "Platform.Main.IMemoryMap",
                         typeof(ZX.Util.IMemoryMap))
                     as ZX.Util.IMemoryMap
-                    ?? throw new NullReferenceException("Unable to get ZX.Util.ImemoryMap dependency.");
+                    ?? throw new NullReferenceException("Unable to get ZX.Util.IMemoryMap dependency. This needs to be created by the main project.");
         }
     }
 }

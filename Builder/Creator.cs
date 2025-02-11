@@ -65,9 +65,16 @@ public class Creator : IDisposable
     #endregion
 
     #region Construction
-    public Creator()
+    /// <summary>
+    /// Creates an instance of <see cref="Creator"/> 
+    /// </summary>
+    /// <param name="preload">If true then it will attempt to preload library DLLs.</param>
+    public Creator(bool preload = false)
     {
-        PreloadAssemblies();
+        if(preload)
+        {
+            PreloadAssemblies();
+        }
     }
 
     public void Dispose()
