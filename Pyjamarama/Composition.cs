@@ -1,5 +1,9 @@
 
 using GameEditorLib.Builder;
+using System.Runtime.CompilerServices;
+
+
+[assembly:InternalsVisibleTo("PyjamaramaTests")]
 
 namespace Pyjamarama
 {

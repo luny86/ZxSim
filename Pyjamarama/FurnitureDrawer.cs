@@ -32,6 +32,7 @@ namespace Pyjamarama
 
         private readonly IDrawer _tileDrawer;
         private readonly IChunk _data;
+
         #endregion
 
         #region Construction
@@ -61,111 +62,61 @@ namespace Pyjamarama
         }
         #endregion
 
-        #region Drawing Attributes
-        // Allows draw function to be spread over several methods.
-        private int X { get; set; }
-        private int Y { get; set; }
-
-        private int Index { get; set; }
-
-        private int Offset { get; set; }
-        private ISurface Surface { get; set; } = null!;
-        #endregion
-
         #region IDrawer
-        void IDrawer.Draw(ISurface surface, int index, int x, int y)
+        void IDrawer.Draw(ISurface surface, int itemIndex, int x, int y)
         {
             IAttribute attribute = _tileDrawer as IAttribute 
                 ?? throw new InvalidCastException("Tile drawer should implement IAttribute.");
+            FurnitureDrawLogic logic = new FurnitureDrawLogic()
+            {
+                Surface = surface,
+                TileDrawer = _tileDrawer,
+                Data = _data,
+                X = x,
+                Y = y,
+                Index = Table[itemIndex]
+            };
 
-            Offset = 0;
-            Surface = surface;
-            Index = Table[index];
             bool done = false;
-
-            X = x;
-            Y = y;
 
             while(!done)
             {
-                byte code = _data[Index];
+                byte code = logic.CurrentCode;
 
                 if(code < CmdFlag)
                 {
-                    DrawTileAtCurrentPosition(Offset+code);
-                    Index++;
+                    logic.DrawTileAtCurrentPosition(logic.CurrentAsTileIndex);
                 }
                 else
                 {
                     switch(code)
                     {
                         case CmdEnd:
-                            Index++;
+                            logic.Index++;
                             done = true;
                             break;
 
                         case CmdColor:
-                            Palette.SetAttribute(_data[Index+1], attribute);
-                            Index+=2;
+                            Palette.SetAttribute(logic.GetAttributeCommand(), attribute);
                             break;
 
                         case CmdPosition:
-                            SetPositionCommand();
+                            logic.SetPositionCommand();
                             break;
 
                         case CmdOrigin:
-                            SetOriginCommand();
+                            logic.SetOriginCommand(OriginStartAddr);
                             break;
 
                         case CmdRepeat:
                         default:
-                            DrawRepeatedTileCommand(); 
+                            logic.DrawRepeatedTileCommand(); 
                             break;
                     }
                 }
             }
         }
 
-        private void DrawTileAtCurrentPosition(int index)
-        {
-                // Blit tile
-                _tileDrawer.Draw(Surface, index, X, Y);
-                X++;
-        }
-
-        private void SetPositionCommand()
-        {
-            // Offset position of next tile.
-            X += Maths.Bit8_Signed(_data[Index + 1]);
-            Y += Maths.Bit8_Signed(_data[Index + 2]);
-            Index += 3;
-        }
-
-        private void SetOriginCommand()
-        {
-            // Offset start of tiles to use,
-            // Allows original bytes to use more
-            // then 256 tiles.
-            int h = (256 * _data[Index + 2]) + _data[Index + 1];
-            
-            if (h >= OriginStartAddr)
-            {
-                Offset = (h - OriginStartAddr) / 8;
-            }
-
-            Index += 3;
-        }
-
-        private void DrawRepeatedTileCommand()
-        {
-            // Draw the same item 'n' times in a line.
-            for (int r = 0; r < _data[Index + 1]; r++)
-            {
-                DrawTileAtCurrentPosition(Offset+_data[Index+2]);
-            }
-
-            Index += 3;
-        }
         #endregion
 
     }

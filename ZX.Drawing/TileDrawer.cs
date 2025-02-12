@@ -38,7 +38,9 @@ namespace ZX.Drawing
         {
             if(index <0 || index > (TileBinaryChunk.Length/8))
             {
-                throw new ArgumentOutOfRangeException(nameof(index)); // Do nothing
+                throw new ArgumentOutOfRangeException(
+                    $"Index {index} is out of range for chunk {TileBinaryChunk.Length/8}"
+                ); // Do nothing
             }
 
             int offset = index * 8;

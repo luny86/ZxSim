@@ -36,7 +36,7 @@ public partial class Main : Node, IBuildable
 
 		try
 		{
-			Creator creator = new Creator();
+			Creator creator = new Creator(true);
 			creator.BuildAll(this);		
 			GD.Print(creator);
 
