@@ -3,6 +3,7 @@ using ZX;
 using ZX.Drawing;
 using ZX.Platform;
 using ZX.Util;
+using ZX.Game;
 
 namespace Pyjamarama
 {
@@ -44,16 +45,24 @@ namespace Pyjamarama
         private readonly IDrawer _furnitureDrawer;
 
         private readonly IDrawer _wallDrawer;
+
+        private readonly IFlags _flags;
         #endregion
 
         #region Construction
 
-        public RoomDrawer(IDrawer furnitureDrawer, IDrawer wallDrawer, IChunk data, IChunk roomAddressTable)
+        public RoomDrawer(
+            IDrawer furnitureDrawer, 
+            IDrawer wallDrawer, 
+            IChunk data, 
+            IChunk roomAddressTable,
+            IFlags flags)
         {
             _furnitureDrawer = furnitureDrawer;
             _wallDrawer = wallDrawer;
             _data = data;
             _roomAddressTable = roomAddressTable;
+            _flags = flags;
         }
 
         #endregion
@@ -71,6 +80,7 @@ namespace Pyjamarama
             {
                 byte code = _data[offset];
 
+                Console.WriteLine(code);
                 switch(code)
                 {
                     case CmdWalls:
@@ -97,8 +107,27 @@ namespace Pyjamarama
 
                     case CmdActionFlag:
                         {
-                            // To do
-                            endOfString = true;
+                            int h = (_data[offset + 2] * 256) + _data[offset + 1];
+                            string hex = string.Format("{0:X2}", h);
+                            int v = _flags[hex].Value;
+
+                            Console.WriteLine(string.Format(
+                            "[{0}] Action flag {1} = {2}",
+                            index,
+                            hex,
+                            v));
+
+                            // Test flag
+                            if (v == 0)
+                            {
+                                // Stop drawing.
+                                endOfString = true;
+                            }
+                            else
+                            {
+                                // Z - Continue
+                                offset += 3;
+                            }
                         }
                         break;
 

@@ -8,6 +8,7 @@ namespace Pyjamarama
     {
         private ZX.Drawing.IFactory _factory = null!;
         private ZX.Util.IMemoryMap _map = null!;
+        private ZX.Game.IFlags _flags = null!;
 
         IDrawer IFactory.CreateRoomDrawer(string addressTableName, string dataChunkName, string tileChunkName, string furnitureChunkName)
         {
@@ -17,7 +18,7 @@ namespace Pyjamarama
             drawer = _factory.CreateTileDrawer(MemoryChunkNames.WallTileBitmaps);
             WallDrawer walls = new WallDrawer(drawer, _map[MemoryChunkNames.WallTileBitmaps]);
 
-            return new RoomDrawer(furniture,walls,  _map[dataChunkName], _map[addressTableName]);
+            return new RoomDrawer(furniture,walls,  _map[dataChunkName], _map[addressTableName], _flags);
         }
 
         IList<IBuildable>? IBuildable.CreateBuildables()
@@ -35,6 +36,8 @@ namespace Pyjamarama
                 typeof(ZX.Drawing.IFactory));
             requests.AddRequest("Platform.Main.IMemoryMap",
                 typeof(ZX.Util.IMemoryMap));
+            requests.AddRequest("ZX.Game.Flags",
+                typeof(ZX.Game.IFlags));
         }
 
 
@@ -51,6 +54,12 @@ namespace Pyjamarama
                         typeof(ZX.Util.IMemoryMap))
                     as ZX.Util.IMemoryMap
                     ?? throw new NullReferenceException("Unable to get ZX.Util.IMemoryMap dependency. This needs to be created by the main project.");
+
+            _flags = dependencies.TryGetInstance(
+                        "ZX.Game.Flags",
+                        typeof(ZX.Game.IFlags))
+                    as ZX.Game.IFlags
+                    ?? throw new NullReferenceException("Unable to get ZX.Game.IFlags dependency.");
         }
     }
 }

@@ -8,10 +8,23 @@ using GameEditorLib.Builder;
 using ZX;
 using ZX.Util;
 using ZX.Drawing;
+using ZX.Game;
 using Pyjamarama;
 
 public partial class Main : Node, IBuildable
 {
+	private class FlagsNames
+	{
+		public static string FuelCan = "FuelCan";
+		public static string Bucket = "Bucket";
+		public static string LiftCount = "F177";    // Value is for data test.
+		public static string HelpSwitch = "F178";  
+		public static string LaserGun = "F179"; 
+		public static string LiftFloor = "F181";
+		public static string MagLockDir = "MagLockDir";
+		public static string ArcadeMode = "ArcadeMode";
+	};
+
 	private static Main _singleton = null!;
 
 	Pyjamarama.IFactory _factory = null;
@@ -24,6 +37,10 @@ public partial class Main : Node, IBuildable
 	private IView _view;
 
 	private MemoryMap _map;
+
+	private ZX.Game.IFlags _flags;
+	private ZX.Game.IFactory _gameFactory;
+
 
 	public static Main Singleton { get { return _singleton;} }
 	
@@ -46,8 +63,9 @@ public partial class Main : Node, IBuildable
 			
 			_screen.Main = _view.Surface;
 
+			CreateFlags();
 			BackgroundLayer layer = new BackgroundLayer(drawer, bg, 1);
-			layer.Index = 1;
+			layer.Index = 4;
 			layer.Update();
 			_screen.AddLayer(layer);
 			
@@ -57,6 +75,18 @@ public partial class Main : Node, IBuildable
 		{
 			GD.Print($"Error {e.Message}");
 		}
+	}
+
+	private void CreateFlags()
+	{
+		_flags.RegisterFlag(FlagsNames.LiftCount, _gameFactory.CreateFlag(1, -1));
+		_flags.RegisterFlag(FlagsNames.LiftFloor, _gameFactory.CreateFlag(4, -1));
+		_flags.RegisterFlag(FlagsNames.HelpSwitch, _gameFactory.CreateFlag(0, -1));
+		_flags.RegisterFlag(FlagsNames.LaserGun, _gameFactory.CreateFlag(0, 0x0d));
+		_flags.RegisterFlag(FlagsNames.Bucket, _gameFactory.CreateFlag(0, 0x10));
+		_flags.RegisterFlag(FlagsNames.FuelCan, _gameFactory.CreateFlag(0, 0x08));
+		_flags.RegisterFlag(FlagsNames.MagLockDir, _gameFactory.CreateFlag(0, -1));
+		_flags.RegisterFlag(FlagsNames.ArcadeMode, _gameFactory.CreateFlag(0, -1));
 	}
 
 	// Called every frame. 'delta' is the elapsed time since the previous frame.
@@ -100,6 +130,10 @@ public partial class Main : Node, IBuildable
 				typeof(ZX.Platform.IFactory));
 		requests.AddRequest("ZX.Drawing.Screen",
 				typeof(ZX.Drawing.IScreen));
+		requests.AddRequest("ZX.Game.Flags",
+				typeof(ZX.Game.IFlags));
+		requests.AddRequest("ZX.Game.Factory",
+				typeof(ZX.Game.IFactory));
 	}
 
 	void IBuildable.RegisterObjects(IDependencyPool dependencies)
@@ -142,6 +176,18 @@ public partial class Main : Node, IBuildable
 				"ZX.Drawing.Screen",
 				typeof(ZX.Drawing.IScreen))
 		as ZX.Drawing.IScreen;
+
+		_flags = dependencies.TryGetInstance(
+					"ZX.Game.Flags",
+					typeof(ZX.Game.IFlags))
+				as ZX.Game.IFlags
+				?? throw new NullReferenceException("Unable to get ZX.Game.IFlags dependency.");
+
+		_gameFactory = dependencies.TryGetInstance(
+					"ZX.Game.Factory",
+					typeof(ZX.Game.IFactory))
+				as ZX.Game.IFactory
+				?? throw new NullReferenceException("Unable to get ZX.Game.IFactory dependency.");
 	}
 	#endregion
 }

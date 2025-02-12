@@ -1102,3 +1102,6 @@ PyjamaramaTests/bin/Debug/net8.0/ZX.Platform.dll
 PyjamaramaTests/bin/Debug/net8.0/ZX.Platform.pdb
 PyjamaramaTests/bin/Debug/net8.0/ZX.Util.dll
 PyjamaramaTests/bin/Debug/net8.0/ZX.Util.pdb
+ZX.Game/obj/Debug/ZX.Game.csproj.AssemblyReference.cache
+PyjamaramaTests/bin/Debug/net8.0/ZX.Game.dll
+PyjamaramaTests/bin/Debug/net8.0/ZX.Game.pdb
