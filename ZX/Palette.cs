@@ -92,5 +92,7 @@ namespace ZX
         public static Rgba BrightCyan => rgb[ZxAttr.BrCyan];
         public static Rgba BrightYellow => rgb[ZxAttr.BrYellow];
         public static Rgba BrightWhite => rgb[ZxAttr.BrWhite];
+
+        public static Rgba Transparent => new Rgba(0,0,0,0);
     }
 }
