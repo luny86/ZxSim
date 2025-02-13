@@ -12,5 +12,7 @@ namespace Pyjamarama
         public static string RoomStrings = "Rooms";
         public static string RoomPointers = "RoomPointers";
         public static string WallTileBitmaps = "WallTiles";
+
+        public static string WallyBitmaps = "WallyBitmaps";
     }
 }

@@ -80,7 +80,6 @@ namespace Pyjamarama
             {
                 byte code = _data[offset];
 
-                Console.WriteLine(code);
                 switch(code)
                 {
                     case CmdWalls:
@@ -109,16 +108,9 @@ namespace Pyjamarama
                         {
                             int h = (_data[offset + 2] * 256) + _data[offset + 1];
                             string hex = string.Format("{0:X2}", h);
-                            int v = _flags[hex].Value;
-
-                            Console.WriteLine(string.Format(
-                            "[{0}] Action flag {1} = {2}",
-                            index,
-                            hex,
-                            v));
 
                             // Test flag
-                            if (v == 0)
+                            if (_flags[hex].Value == 0)
                             {
                                 // Stop drawing.
                                 endOfString = true;

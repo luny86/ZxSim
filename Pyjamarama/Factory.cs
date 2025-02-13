@@ -61,5 +61,10 @@ namespace Pyjamarama
                     as ZX.Game.IFlags
                     ?? throw new NullReferenceException("Unable to get ZX.Game.IFlags dependency.");
         }
+
+        void IBuildable.EndBuild()
+        {
+
+        }
     }
 }

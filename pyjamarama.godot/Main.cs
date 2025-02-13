@@ -58,12 +58,10 @@ public partial class Main : Node, IBuildable
 			GD.Print(creator);
 
 			
-
 			ISurface bg = _platformFactory.CreateSurface();
 			
 			_screen.Main = _view.Surface;
 			
-		layer.Update();
 			CreateFlags();
 			CreateLayers();
 			// Test
@@ -75,6 +73,7 @@ public partial class Main : Node, IBuildable
 		catch (InvalidOperationException e)
 		{
 			GD.Print($"Error {e.Message}");
+			GD.Print(e);
 		}
 	}
 
@@ -100,8 +99,7 @@ public partial class Main : Node, IBuildable
 			RoomIndex = 4
 		};
 
-		_screen.AddLayer(layer);
-			
+		_screen.AddLayer(layer);	
 	}
 
 	// Called every frame. 'delta' is the elapsed time since the previous frame.
@@ -162,8 +160,8 @@ public partial class Main : Node, IBuildable
 		_map.AddRange(MemoryChunkNames.RoomStrings, 0x8d6a, 0x301);
 		_map.AddRange(MemoryChunkNames.RoomPointers, 0x8d2e, 0x3c);
 		_map.AddRange(MemoryChunkNames.WallTileBitmaps, 0x8c4d, 0x18);
+		_map.AddRange(MemoryChunkNames.WallyBitmaps, 0x91eb, 0xa00);
 
-		GD.Print(_map["Furniture"][0]);
 		dependencies.Add("Platform.Main.IView", 
 			typeof(IView),
 			_view);
@@ -203,6 +201,11 @@ public partial class Main : Node, IBuildable
 					typeof(ZX.Game.IFactory))
 				as ZX.Game.IFactory
 				?? throw new NullReferenceException("Unable to get ZX.Game.IFactory dependency.");
+	}
+	
+	void IBuildable.EndBuild()
+	{
+		
 	}
 	#endregion
 }

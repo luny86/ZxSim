@@ -14,12 +14,16 @@ namespace ZX.Drawing
 
         #region IFactory
         
-        IDrawer IFactory.CreateTileDrawer(string scope)
+        IDrawer IFactory.CreateTileDrawer(string tileChunkName)
         {
-            IChunk chunk = _memoryMap[scope];
+            IChunk chunk = _memoryMap[tileChunkName];
             return new TileDrawer(chunk);
         }   
 
+        IDrawer IFactory.CreateBitmapDrawer(string bitmapChunkName, int width, int height)
+        {
+            return new BitmapDrawer(_memoryMap[bitmapChunkName], width, height);
+        }
         
         #endregion IFactory     
         
@@ -49,6 +53,10 @@ namespace ZX.Drawing
 
         }
 
+        void IBuildable.EndBuild()
+        {
+
+        }
         #endregion IBuildable
     }
 }
