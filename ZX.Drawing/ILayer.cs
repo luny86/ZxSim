@@ -15,6 +15,8 @@ namespace ZX.Drawing
         /// Name of layer, used for retrieving.
         /// </summary>
         string Name { get; }
+
+        int Z { get; }
         
         /// <summary>
         /// Handle any actual drawing here.
