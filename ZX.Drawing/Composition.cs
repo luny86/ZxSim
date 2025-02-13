@@ -48,5 +48,10 @@ namespace ZX.Drawing
         {
 
         }
+
+        void IBuildable.EndBuild()
+        {
+
+        }
     }
 }

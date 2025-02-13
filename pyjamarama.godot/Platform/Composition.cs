@@ -27,5 +27,10 @@ namespace Platform
 		void IBuildable.DependentsMet(IDependencies dependencies)
 		{
 		}
+		
+		void IBuildable.EndBuild()
+		{
+			
+		}
 	}
 }

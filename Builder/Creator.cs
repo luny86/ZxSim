@@ -150,6 +150,7 @@ public class Creator : IDisposable
         AskForDependents();
         BuildScopedDependencyPools();
         RunDependentsMet();
+        EndBuild();
     }
 
     private void FindAllBuildables()
@@ -201,6 +202,14 @@ public class Creator : IDisposable
             _scopedInfo.Add(build, requests);
 
             build.AskForDependents(requests);
+        }
+    }
+
+    private void EndBuild()
+    {
+        foreach(IBuildable build in _buildables)
+        {
+            build.EndBuild();
         }
     }
 

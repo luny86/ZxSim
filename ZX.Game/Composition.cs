@@ -31,6 +31,10 @@ namespace ZX.Game
         {
         }
 
+        void IBuildable.EndBuild()
+        {
+
+        }
         #endregion
 
 

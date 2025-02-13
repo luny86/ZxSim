@@ -37,7 +37,21 @@ public interface IBuildable
 
     /// <summary>
     /// Invoked once all registration and dependencies
-    /// have been met by all objects.
+    /// have been met by all objects. 
     /// </summary>
+    /// <remarks>
+    /// Use this method to get references to any dependencies
+    /// requested.
+    /// </remarks>
     void DependentsMet(IDependencies dependencies);
+
+    /// <summary>
+    /// Final call to build.
+    /// </summary>
+    /// <remarks>
+    /// This call allows any depedencies to be used wihtout fear of
+    /// any race conditions that might be met if any are used
+    /// earlier.
+    /// </remarks>
+    void EndBuild();
 }

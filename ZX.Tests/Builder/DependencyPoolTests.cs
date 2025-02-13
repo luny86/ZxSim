@@ -32,6 +32,11 @@ namespace Tests.Builder
             {
                 dependencies.Add("T.A", typeof(D), new D());
             }
+
+            void IBuildable.EndBuild()
+            {
+
+            }
         }
 
         private class B : IComposition, IBuildable
@@ -58,6 +63,11 @@ namespace Tests.Builder
 
             void IBuildable.RegisterObjects(IDependencyPool dependencies)
             {
+            }
+
+            void IBuildable.EndBuild()
+            {
+
             }
         }
         #endregion
