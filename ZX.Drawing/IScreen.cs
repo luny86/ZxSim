@@ -8,6 +8,8 @@ namespace ZX.Drawing
     /// </summary>
     public interface IScreen
     {
+        ILayer this[string name] { get; }
+
         ISurface Main { set; }
 
         void AddLayer(ILayer layer);

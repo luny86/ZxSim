@@ -10,13 +10,16 @@ namespace ZX.Drawing
     /// </summary>
     public abstract class Layer : ILayer, IEquatable<Layer>, IComparable<Layer>
     {
-        public Layer(ISurface surface, int z)
+        public Layer(string name, ISurface surface, int z)
         {
+            Name = name ?? throw new ArgumentNullException(nameof(name));
             Surface = surface;
             Z = z;
             X = 0;
             Y = 0;
         }
+
+        public string Name { get; }
 
         protected ISurface Surface { get; }
 

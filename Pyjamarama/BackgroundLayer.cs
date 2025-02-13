@@ -13,8 +13,8 @@ namespace Pyjamarama
         /// </summary>
         private readonly IDrawer _drawer = null!;
 
-        public BackgroundLayer(IDrawer drawer, ISurface surface, int z)
-        : base(surface, z)
+        public BackgroundLayer(IDrawer drawer, string name, ISurface surface, int z)
+        : base(name, surface, z)
         {
             _drawer = drawer;
 
@@ -22,12 +22,12 @@ namespace Pyjamarama
         }
         
 
-        public int Index { get; set; }
+        public int RoomIndex { get; set; }
 
         public override void Update()
         {
             Surface.Fill(new Rgba(0.0f, 0.0f, 0.0f, 0.0f));
-            _drawer.Draw(Surface, Index, 10,10);
+            _drawer.Draw(Surface, RoomIndex, 10,10);
         }
     }
 }

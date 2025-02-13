@@ -57,18 +57,19 @@ public partial class Main : Node, IBuildable
 			creator.BuildAll(this);		
 			GD.Print(creator);
 
-			IDrawer drawer = _factory.CreateRoomDrawer("RoomPointers", "Rooms", "Tiles", "Furniture");
+			
 
 			ISurface bg = _platformFactory.CreateSurface();
 			
 			_screen.Main = _view.Surface;
-
-			CreateFlags();
-			BackgroundLayer layer = new BackgroundLayer(drawer, bg, 1);
-			layer.Index = 4;
-			layer.Update();
-			_screen.AddLayer(layer);
 			
+		layer.Update();
+			CreateFlags();
+			CreateLayers();
+			// Test
+			ILayer layer = _screen["background"];
+			layer.Update();
+
 			_screen.Update();
 		}
 		catch (InvalidOperationException e)
@@ -87,6 +88,20 @@ public partial class Main : Node, IBuildable
 		_flags.RegisterFlag(FlagsNames.FuelCan, _gameFactory.CreateFlag(0, 0x08));
 		_flags.RegisterFlag(FlagsNames.MagLockDir, _gameFactory.CreateFlag(0, -1));
 		_flags.RegisterFlag(FlagsNames.ArcadeMode, _gameFactory.CreateFlag(0, -1));
+	}
+
+	private void CreateLayers()
+	{
+		IDrawer drawer = _factory.CreateRoomDrawer("RoomPointers", "Rooms", "Tiles", "Furniture");
+		ISurface bg = _platformFactory.CreateSurface();
+
+		BackgroundLayer layer = new BackgroundLayer(drawer, "background", bg, 1)
+		{
+			RoomIndex = 4
+		};
+
+		_screen.AddLayer(layer);
+			
 	}
 
 	// Called every frame. 'delta' is the elapsed time since the previous frame.

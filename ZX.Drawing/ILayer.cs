@@ -12,6 +12,11 @@ namespace ZX.Drawing
     public interface ILayer
     {
         /// <summary>
+        /// Name of layer, used for retrieving.
+        /// </summary>
+        string Name { get; }
+        
+        /// <summary>
         /// Handle any actual drawing here.
         /// </summary>
         void Update();

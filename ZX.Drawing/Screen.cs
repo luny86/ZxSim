@@ -1,4 +1,5 @@
 
+using System.Linq;
 using System.Collections.Generic;
 using ZX.Platform;
 
@@ -26,6 +27,18 @@ namespace ZX.Drawing
         ///  Main screen surface to which all layers will be blended to.
         /// </summary>
         public ISurface Main { get; set; } = null!;
+
+        /// <summary>
+        /// Gets a containing layer based on its name.
+        /// </summary>
+        ILayer IScreen.this[string name]
+        {
+            get 
+            {
+                ILayer found = layers.First(l => l.Name == name);
+                return found;
+            }
+        }
 
         /// <summary>
         /// Creates a new layer based on the given drawer and surface.
