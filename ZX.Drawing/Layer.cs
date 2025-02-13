@@ -8,7 +8,7 @@ namespace ZX.Drawing
     /// to the main screen. Override <see cref="Update"/> to handle
     /// how things are drawn etc.
     /// </summary>
-    public abstract class Layer : ILayer, IEquatable<Layer>, IComparable<Layer>
+    public abstract class Layer : ILayer, IEquatable<ILayer>, IComparable<ILayer>, IComparable
     {
         public Layer(string name, ISurface surface, int z)
         {
@@ -41,7 +41,7 @@ namespace ZX.Drawing
             {
                 return false;
             }
-            else if(obj is Layer layer)
+            else if(obj is ILayer layer)
             {
                 return Equals(layer);
             }
@@ -49,7 +49,7 @@ namespace ZX.Drawing
             return false;
         }
 
-        public bool Equals(Layer? other)
+        public bool Equals(ILayer? other)
         {
             if(other is null)
             {
@@ -64,12 +64,22 @@ namespace ZX.Drawing
             return Z;
         }
 
-        public int CompareTo(Layer? layer)
+        public int CompareTo(ILayer? layer)
         {
             if(layer == null)
                 return 1;
             else
                 return Z.CompareTo(layer.Z);
+        }
+
+        public int CompareTo(object? obj)
+        {
+            if(obj is ILayer layer)
+            {
+                CompareTo(layer);
+            }
+
+            return 1;
         }
         #endregion
     }
