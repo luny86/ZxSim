@@ -2,24 +2,15 @@
 namespace ZX.Game
 {
     /// <summary>
-    /// Realises an object which requires intialisation or changes during a 
-    /// game cycle, such as a new game or new level.
+    /// A <see cref="IGameItem"/> is a physical game object
+    /// that needs to be updated but also requires the 
+    /// <see cref="IGameStatic"/> properties for new games and levels. 
     /// </summary>
-    public interface IGameItem
+    public interface IGameItem : IGameStatic
     {
         /// <summary>
-        /// Invoke when a new game starts.
+        /// Updates the object ready for the next rendering.
         /// </summary>
-        /// <remarks>Method should handle any initialisation.</remarks>
-        void NewGame();
-
-        /// <summary>
-        /// Invoke when a new level starts.
-        /// </summary>
-        /// <remarks>
-        /// Method should handle any resets required when
-        /// a new level starts.
-        /// </remarks>
-        void NewLevel();
+        public void Update();
     }
 }

@@ -10,7 +10,7 @@ namespace ZX.Game
     /// that the flags are reset for a new game. Does nothing
     /// for a new level.
     /// </remarks>
-    internal class Flags : IFlags, IGameItem
+    internal class Flags : IFlags, IGameStatic
     {
         private class EmptyFlag : IFlag
         {
@@ -37,9 +37,9 @@ namespace ZX.Game
             set;
         }
 
-        #region IGameItem
+        #region IGameStatic
 
-        void IGameItem.NewGame()
+        void IGameStatic.NewGame()
         {
             foreach (var pair in Dictionary)
             {
@@ -47,7 +47,7 @@ namespace ZX.Game
             }
         }
 
-        void IGameItem.NewLevel()
+        void IGameStatic.NewLevel()
         {
 
         }
