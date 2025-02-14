@@ -13,17 +13,7 @@ using Pyjamarama;
 
 public partial class Main : Node, IBuildable
 {
-	private class FlagsNames
-	{
-		public static string FuelCan = "FuelCan";
-		public static string Bucket = "Bucket";
-		public static string LiftCount = "F177";    // Value is for data test.
-		public static string HelpSwitch = "F178";  
-		public static string LaserGun = "F179"; 
-		public static string LiftFloor = "F181";
-		public static string MagLockDir = "MagLockDir";
-		public static string ArcadeMode = "ArcadeMode";
-	};
+
 
 	private static Main _singleton = null!;
 
@@ -33,13 +23,10 @@ public partial class Main : Node, IBuildable
 
 	ZX.Drawing.IScreen _screen =  null;
 
-	private PackedScene _commandScene;
+	private PackedScene _mainScene;
 	private IView _view;
 
 	private MemoryMap _map;
-
-	private ZX.Game.IFlags _flags;
-	private ZX.Game.IFactory _gameFactory;
 
 
 	public static Main Singleton { get { return _singleton;} }
@@ -47,7 +34,7 @@ public partial class Main : Node, IBuildable
 	// Called when the node enters the scene tree for the first time.
 	public override void _Ready()
 	{
-		_commandScene = GD.Load<PackedScene>("res://view.tscn");
+		_mainScene = GD.Load<PackedScene>("res://view.tscn");
 		_singleton = this;
 		_view = CreateScreen();
 
@@ -57,12 +44,6 @@ public partial class Main : Node, IBuildable
 			creator.BuildAll(this);		
 			GD.Print(creator);
 
-			
-			ISurface bg = _platformFactory.CreateSurface();
-			
-			_screen.Main = _view.Surface;
-			
-			CreateFlags();
 			CreateLayers();
 			// Test
 			ILayer layer = _screen["background"];
@@ -73,18 +54,6 @@ public partial class Main : Node, IBuildable
 			GD.Print($"Error {e.Message}");
 			GD.Print(e);
 		}
-	}
-
-	private void CreateFlags()
-	{
-		_flags.RegisterFlag(FlagsNames.LiftCount, _gameFactory.CreateFlag(1, -1));
-		_flags.RegisterFlag(FlagsNames.LiftFloor, _gameFactory.CreateFlag(4, -1));
-		_flags.RegisterFlag(FlagsNames.HelpSwitch, _gameFactory.CreateFlag(0, -1));
-		_flags.RegisterFlag(FlagsNames.LaserGun, _gameFactory.CreateFlag(0, 0x0d));
-		_flags.RegisterFlag(FlagsNames.Bucket, _gameFactory.CreateFlag(0, 0x10));
-		_flags.RegisterFlag(FlagsNames.FuelCan, _gameFactory.CreateFlag(0, 0x08));
-		_flags.RegisterFlag(FlagsNames.MagLockDir, _gameFactory.CreateFlag(0, -1));
-		_flags.RegisterFlag(FlagsNames.ArcadeMode, _gameFactory.CreateFlag(0, -1));
 	}
 
 	private void CreateLayers()
@@ -99,28 +68,16 @@ public partial class Main : Node, IBuildable
 
 		_screen.AddLayer(layer);	
 	}
-
-	// Called every frame. 'delta' is the elapsed time since the previous frame.
-	public override void _Process(double delta)
-	{
-	}
 		
 	public IView CreateScreen()
 	{
-		Node inst = _commandScene.Instantiate();
+		Node inst = _mainScene.Instantiate();
 		AddChild(inst);
 		View view = inst as View;
 
-		if(view is IView viewer)
+		if(view is not IView)
 		{
-			Surface surface = new Surface();
-			surface.Create(256, 192);
-			surface.Fill(ZX.Palette.Green);
-			viewer.Surface = surface;
-		}
-		else
-		{
-			throw new InvalidOperationException($"Node without IView when trying to create command 'view'");
+			throw new InvalidOperationException($"Node should implment IView. Error when trying to create 'view'.");
 		}
 
 		return view;
@@ -145,10 +102,6 @@ public partial class Main : Node, IBuildable
 				typeof(ZX.Platform.IFactory));
 		requests.AddRequest("ZX.Drawing.Screen",
 				typeof(ZX.Drawing.IScreen));
-		requests.AddRequest("ZX.Game.Flags",
-				typeof(ZX.Game.IFlags));
-		requests.AddRequest("ZX.Game.Factory",
-				typeof(ZX.Game.IFactory));
 	}
 
 	void IBuildable.RegisterObjects(IDependencyPool dependencies)
@@ -192,17 +145,10 @@ public partial class Main : Node, IBuildable
 				typeof(ZX.Drawing.IScreen))
 		as ZX.Drawing.IScreen;
 
-		_flags = dependencies.TryGetInstance(
-					"ZX.Game.Flags",
-					typeof(ZX.Game.IFlags))
-				as ZX.Game.IFlags
-				?? throw new NullReferenceException("Unable to get ZX.Game.IFlags dependency.");
-
-		_gameFactory = dependencies.TryGetInstance(
-					"ZX.Game.Factory",
-					typeof(ZX.Game.IFactory))
-				as ZX.Game.IFactory
-				?? throw new NullReferenceException("Unable to get ZX.Game.IFactory dependency.");
+		ISurface surface = _platformFactory.CreateSurface();
+		surface.Create(256, 192);
+		surface.Fill(ZX.Palette.Green);
+		_view.Surface = surface;
 	}
 	
 	void IBuildable.EndBuild()

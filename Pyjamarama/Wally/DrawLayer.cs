@@ -14,9 +14,15 @@ namespace Pyjamarama.Wally
             _drawer = drawer;
         }
 
+        public int Frame
+        {
+            get;
+            set;
+        }
+
         public override void Update()
         {
-            _drawer.Draw(Surface, 0, 0, 0);
+            _drawer.Draw(Surface, Frame, 0, 0);
         }
     }
 }
