@@ -1,3 +1,13 @@
-[gd_scene format=3 uid="uid://6q5b8d113q3t"]
+[gd_scene load_steps=2 format=3 uid="uid://6q5b8d113q3t"]
+
+[ext_resource type="Texture2D" uid="uid://cm45i8n14wyrp" path="res://splash.png" id="1_i6tf5"]
 
 [node name="main" type="Node2D"]
+
+[node name="Splash" type="Sprite2D" parent="."]
+modulate = Color(1, 1, 1, 0.380392)
+z_index = -1
+texture_filter = 5
+position = Vector2(577, 324)
+scale = Vector2(4.4375, 3.61364)
+texture = ExtResource("1_i6tf5")
