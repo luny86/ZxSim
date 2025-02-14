@@ -140,6 +140,7 @@ public class Creator : IDisposable
     {
         _buildables.Clear();
         _buildables.Add(initialBuildable);
+        AddChildBuildables(initialBuildable);
         BuildAllInternal();
     }
 
