@@ -67,8 +67,6 @@ public partial class Main : Node, IBuildable
 			// Test
 			ILayer layer = _screen["background"];
 			layer.Update();
-
-			_screen.Update();
 		}
 		catch (InvalidOperationException e)
 		{
@@ -105,7 +103,6 @@ public partial class Main : Node, IBuildable
 	// Called every frame. 'delta' is the elapsed time since the previous frame.
 	public override void _Process(double delta)
 	{
-
 	}
 		
 	public IView CreateScreen()
@@ -132,7 +129,12 @@ public partial class Main : Node, IBuildable
 	#region IBuildables
 	IList<IBuildable> IBuildable.CreateBuildables()
 	{
-		return null;
+		IBuildable view = _view as IBuildable ?? throw new InvalidOperationException("View must be an IBuildable");
+
+		return new List<IBuildable>()
+		{
+			view
+		};
 	}
 
 	void IBuildable.AskForDependents(IRequests requests)

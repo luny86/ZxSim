@@ -49,6 +49,7 @@ namespace ZX.Drawing
         public void AddLayer(ILayer layer)
         {
             layers.Add(layer);
+            layers.Sort();
         }
 
         /// <summary>
@@ -56,8 +57,6 @@ namespace ZX.Drawing
         /// </summary>
         public void Update()
         {
-            layers.Sort();
-
             foreach(ILayer layer in layers)
             {
                 layer.Blend(Main);

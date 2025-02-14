@@ -14,8 +14,9 @@ namespace ZX.Game
 
         void IBuildable.RegisterObjects(IDependencyPool dependencies)
         {
-            dependencies.Add("ZX.Game.Flags", typeof(ZX.Game.IFlags), new Flags());
-            dependencies.Add("ZX.Game.Factory", typeof(ZX.Game.IFactory), new Factory());
+            dependencies.Add(ClassNames.Flags, typeof(ZX.Game.IFlags), new Flags());
+            dependencies.Add(ClassNames.Factory, typeof(ZX.Game.IFactory), new Factory());
+            dependencies.Add(ClassNames.GameProvider, typeof(ZX.Game.IGameProvider), new Provider());
         }
 
         void IBuildable.AskForDependents(IRequests requests)

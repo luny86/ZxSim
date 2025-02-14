@@ -2,8 +2,8 @@
 namespace ZX.Game
 {
     /// <summary>
-    /// <see cref="IGameStatic"/> is a game object that does not get
-    /// displayed or is physical, but is used throughout the game
+    /// <see cref="IGameStatic"/> is a game object that does not
+    /// displayable nor physical, but is used throughout the game
     /// and needs to change for a new game or a new level.
     /// </summary>
     public interface IGameStatic

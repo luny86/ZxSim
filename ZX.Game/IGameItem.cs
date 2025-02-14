@@ -6,6 +6,7 @@ namespace ZX.Game
     /// that needs to be updated but also requires the 
     /// <see cref="IGameStatic"/> properties for new games and levels. 
     /// </summary>
+    /// <seealso cref="IGameStatic"/>
     public interface IGameItem : IGameStatic
     {
         /// <summary>
