@@ -28,7 +28,7 @@ namespace ZX.Drawing
 
         void IDrawer.Draw(ISurface surface, int index, int x, int y)
         {
-            int offset = 0;
+            int offset = index * ((_width/8)*_height);
             Rgba ink = (this as IAttribute).Ink;
             surface.Fill((this as IAttribute).Paper);
 
