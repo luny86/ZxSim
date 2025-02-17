@@ -2,7 +2,7 @@ using NUnit.Framework;
 
 using Builder;
 
-namespace Tests.Builder
+namespace ZX.Tests.Builder
 {
     public class DependencyPoolTests
     {

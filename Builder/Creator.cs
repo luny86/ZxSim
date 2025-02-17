@@ -44,7 +44,7 @@ public class Creator : IDisposable
     #endregion
     
     #region Information
-    const string CompositionTypeName = "GameEditorLib.Builder.IComposition";
+    const string CompositionTypeName = "Builder.IComposition";
     #endregion
 
     #region Members

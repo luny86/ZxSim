@@ -1,7 +1,7 @@
 
 using ZX;
 
-namespace Test.ZX
+namespace ZX.Tests.ZX
 {
     public class MathsTests
     {

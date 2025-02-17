@@ -2,7 +2,7 @@ using NUnit.Framework;
 using System.Text.Json;
 using GameEditorLib.Project;
 
-namespace Tests.Builder
+namespace ZX.Tests.Project
 {
     public class CunkSerializerTests
     {

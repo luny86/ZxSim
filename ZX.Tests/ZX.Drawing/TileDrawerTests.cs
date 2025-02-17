@@ -3,7 +3,7 @@ using ZX.Util;
 using ZX.Platform;
 using ZX.Drawing;
 
-namespace ZX.Drawing.Tests
+namespace ZX.Tests.ZX.Drawing
 {
     public class TileDrawerTests
     {

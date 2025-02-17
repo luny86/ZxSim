@@ -2,11 +2,11 @@ using NUnit.Framework;
 
 using Builder;
 
-namespace Tests.Builder
+namespace ZX.Tests.Builder
 {
     public class CreatorTests
     {
-        private class Composition : IComposition
+        internal class Composition : IComposition
         {
             public string Name => "Composition"; 
         }
@@ -32,7 +32,7 @@ namespace Tests.Builder
                 }
             }
 
-            Assert.True(found, "Test composition class not found");
+            Assert.True(found, "Test composition class not found. Check the IComposition name is correct.");
         }
 
         [Test]
