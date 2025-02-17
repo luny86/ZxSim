@@ -22,6 +22,8 @@ public partial class Main : Node, IBuildable
 	ZX.Platform.IFactory _platformFactory = null;
 
 	ZX.Drawing.IScreen _screen =  null;
+	
+	private UserInputBridge _input;
 
 	private PackedScene _mainScene;
 	private IView _view;
@@ -102,6 +104,8 @@ public partial class Main : Node, IBuildable
 				typeof(ZX.Platform.IFactory));
 		requests.AddRequest("ZX.Drawing.Screen",
 				typeof(ZX.Drawing.IScreen));
+		requests.AddRequest("ZX.Platform.UserInput",
+				typeof(ZX.Platform.IUserInput));
 	}
 
 	void IBuildable.RegisterObjects(IDependencyPool dependencies)
@@ -144,6 +148,13 @@ public partial class Main : Node, IBuildable
 				"ZX.Drawing.Screen",
 				typeof(ZX.Drawing.IScreen))
 		as ZX.Drawing.IScreen;
+		
+		_input =
+			dependencies.TryGetInstance(
+				"ZX.Platform.UserInput",
+				typeof(ZX.Platform.IUserInput))
+			as UserInputBridge
+			?? throw new InvalidOperationException("Unable to get dependency ZX.Platform.UserInput");
 
 		ISurface surface = _platformFactory.CreateSurface();
 		surface.Create(256, 192);
@@ -156,4 +167,9 @@ public partial class Main : Node, IBuildable
 		
 	}
 	#endregion
+	
+	public override void _Input(InputEvent e)
+	{
+		_input?.HandleInput(e);
+	}
 }

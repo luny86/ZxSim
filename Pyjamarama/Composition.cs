@@ -67,7 +67,8 @@ namespace Pyjamarama
         {
             return new List<IBuildable>()
             {
-                _factory
+                _factory,
+                _wallyController
             };
         }
 

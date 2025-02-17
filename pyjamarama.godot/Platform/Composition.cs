@@ -17,6 +17,9 @@ namespace Platform
 			dependencies.Add("ZX.Platform.IFactory", 
 				typeof(ZX.Platform.IFactory),
 				new Factory());
+			dependencies.Add("ZX.Platform.UserInput",
+				typeof(ZX.Platform.IUserInput),
+				new UserInputBridge());
 		}
 
 		IList<IBuildable> IBuildable.CreateBuildables()
