@@ -1,5 +1,5 @@
 
-namespace GameEditorLib.Builder
+namespace Builder
 {
     /// <summary>
     /// Holds a list of requests reuired by a buildable.

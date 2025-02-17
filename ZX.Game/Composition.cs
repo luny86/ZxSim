@@ -1,4 +1,4 @@
-using GameEditorLib.Builder;
+using Builder;
 
 namespace ZX.Game
 {

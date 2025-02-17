@@ -1,7 +1,7 @@
 using Godot;
 using System;
 using System.Collections.Generic;
-using GameEditorLib.Builder;
+using Builder;
 using ZX.Platform;
 using Platform;
 using Game = ZX.Game;

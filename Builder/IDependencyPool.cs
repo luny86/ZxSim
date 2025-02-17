@@ -1,5 +1,5 @@
 
-namespace GameEditorLib.Builder
+namespace Builder
 {
     /// <summary>
     /// A pool of objects that are other

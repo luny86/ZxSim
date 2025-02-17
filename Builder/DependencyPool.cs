@@ -1,9 +1,7 @@
 
-using System;
 using System.Text;
-using System.Collections.Generic;
 
-namespace GameEditorLib.Builder
+namespace Builder
 {
     /// <summary>
     /// Holds information on all dependencies registered

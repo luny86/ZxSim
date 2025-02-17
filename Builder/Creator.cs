@@ -5,7 +5,7 @@ using System.Runtime.CompilerServices;
 [assembly:InternalsVisibleTo("ZX.Tests")]
 
 
-namespace GameEditorLib.Builder;
+namespace Builder;
 
 /// <summary>
 /// Main creator object for the builder engine.

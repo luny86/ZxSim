@@ -1,7 +1,7 @@
 
 using System;
 using ZX.Util;
-using GameEditorLib.Builder;
+using Builder;
 
 namespace ZX.Drawing
 {

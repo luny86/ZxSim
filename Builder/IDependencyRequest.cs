@@ -1,5 +1,5 @@
 
-namespace GameEditorLib.Builder
+namespace Builder
 {
     /// <summary>
     /// Implements the interface to get requests

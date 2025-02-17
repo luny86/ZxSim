@@ -1,5 +1,5 @@
 
-using GameEditorLib.Builder;
+using Builder;
 using GameEditorLib.Platform;
 using KUi;
 using ZX.Util;

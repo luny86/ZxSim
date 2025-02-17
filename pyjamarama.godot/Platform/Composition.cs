@@ -1,6 +1,6 @@
 
 using System.Collections.Generic;
-using GameEditorLib.Builder;
+using Builder;
 
 namespace Platform
 {

@@ -1,5 +1,5 @@
 
-namespace GameEditorLib.Builder;
+namespace Builder;
 
 /// <summary>
 /// Interfac describing a buildable object.

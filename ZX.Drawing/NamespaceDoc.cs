@@ -29,7 +29,7 @@ namespace ZX.Drawing
     /// </para>
     /// </remarks>
     [System.Runtime.CompilerServices.CompilerGenerated]
-     class NamespaceDocs
+     class NamespaceDoc
     {
 
     }

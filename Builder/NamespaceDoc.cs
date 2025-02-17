@@ -2,10 +2,8 @@
 namespace Builder
 {
     /// <summary>
-    /// Builder incorporates a derived Builder and Composite patterns
+    /// Builder incorporates a derived Builder and Composite design patterns
     /// to allow class instance sharing.
-    /// </summary>
-    /// <remarks>
     /// <para>
     /// This library creates a form of instance injection using interfaces
     /// which allows for easier unit testing.
@@ -32,11 +30,12 @@ namespace Builder
     /// <item><see cref="IBuildable.RegisterObjects"/> will allow instances to be registered for injection.</item>
     /// <item><see cref="IBuildable.AskForDependents"/> allows the callee to request instances to be injected.</item>
     /// <item><see cref="IBuildable.DependentsMet"/> is finally called for all, passing in any requested instances.</item> 
-    /// </ul>
+    /// </list>
     /// All requests are optional so if not found they will not be in the dependency list, returning null if asked for.
     /// </para>
-    /// </remarks>
-    public static class NamespaceDoc
+    /// </summary>
+    [System.Runtime.CompilerServices.CompilerGenerated]
+    class NamespaceDoc
     {
 
     }

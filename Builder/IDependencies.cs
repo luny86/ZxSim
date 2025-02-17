@@ -1,5 +1,5 @@
 
-namespace GameEditorLib.Builder
+namespace Builder
 {
     /// <summary>
     /// Readonly mapping of any dependencies found and

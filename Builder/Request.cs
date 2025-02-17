@@ -1,5 +1,5 @@
 
-namespace GameEditorLib
+namespace Builder
 {
     /// <summary>
     /// Data class for holding information on

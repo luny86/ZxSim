@@ -1,6 +1,6 @@
 using NUnit.Framework;
 
-using GameEditorLib.Builder;
+using Builder;
 
 namespace Tests.Builder
 {

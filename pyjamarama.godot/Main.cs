@@ -4,7 +4,7 @@ using System.Linq;
 using System.Collections.Generic;
 using Platform;
 using ZX.Platform;
-using GameEditorLib.Builder;
+using Builder;
 using ZX;
 using ZX.Util;
 using ZX.Drawing;
