@@ -113,12 +113,11 @@ namespace Pyjamarama
 
         void IBuildable.EndBuild()
         {
-           CreateFlags();
-           
-           Wally.Controller controller = CreateWally();
+           CreateFlags();  
+           SetupWally();
 
-            _screen.AddLayer(controller.Layer);
-            _gameProvider.AddItem(controller);
+            _screen.AddLayer(_wallyController.Layer);
+            _gameProvider.AddItem(_wallyController);
         }
     
         #endregion
@@ -137,7 +136,7 @@ namespace Pyjamarama
             _flags.RegisterFlag(FlagsNames.ArcadeMode, _gameFactory.CreateFlag(0, -1));
         }
 
-        private Wally.Controller CreateWally()
+        private void SetupWally()
         {
            const int ww = 16;
             const int wh = 32;
@@ -153,12 +152,7 @@ namespace Pyjamarama
                 Y = 150
             };
 
-            Wally.Controller controller = new Wally.Controller()
-            {
-                Layer = layer
-            };
-
-            return controller;
+            _wallyController.Layer = layer;
         }
         #endregion
     }
