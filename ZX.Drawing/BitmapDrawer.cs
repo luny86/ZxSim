@@ -30,7 +30,7 @@ namespace ZX.Drawing
         {
             int offset = index * ((_width/8)*_height);
             Rgba ink = (this as IAttribute).Ink;
-            surface.Fill((this as IAttribute).Paper);
+            Rgba paper = (this as IAttribute).Paper;
 
             for(int r = 0; r < _height; r++)
             {
@@ -46,7 +46,8 @@ namespace ZX.Drawing
 
                         if((b & m) != 0)
                         {
-                            surface.SetPixel(x+c+bit, r, ink);
+                            surface.SetPixel(x+c+bit, r+y, 
+                                ((b & m) == 0) ? paper : ink);
                         }
 
                         m >>=1;
