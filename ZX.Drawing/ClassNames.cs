@@ -8,5 +8,7 @@ namespace ZX.Drawing
     public static class ClassNames
     {
         public static string Screen = "ZX.Drawing.Screen";
+
+        public static string Factory = "ZX.Drawing.IFactory";
     }
 }
