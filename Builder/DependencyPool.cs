@@ -79,5 +79,35 @@ namespace Builder
 
             return instance;
         }
+
+        T IDependencies.TryGetInstance<T>(string scope)
+        {
+            T instance;
+
+            if(!string.IsNullOrWhiteSpace(scope))
+            {
+                if(_pool.TryGetValue(scope, out InnerPool? inner))
+                {
+                    inner.TryGetValue(typeof(T), out object? value);
+
+                    if(value is null)
+                    {
+                        throw new InvalidOperationException($"Unable to get {typeof(T)} from dependency pool.");
+                    }
+
+                    instance = (T)value;
+                }
+                else
+                {
+                    throw new InvalidOperationException($"Unable to get {typeof(T)} from dependency pool.");
+                }
+            }
+            else
+            {
+                throw new ArgumentNullException(nameof(scope));
+            }
+
+            return instance;
+        }
     }
 }

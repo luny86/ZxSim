@@ -16,5 +16,7 @@ namespace Builder
         /// <param name="type">Type instance implements.</param>
         /// <returns>Either an existing instance of null if not found.</returns>
         object? TryGetInstance(string scope, Type type);
+
+        T TryGetInstance<T>(string scope);
     }
 }
