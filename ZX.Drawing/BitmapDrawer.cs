@@ -32,6 +32,8 @@ namespace ZX.Drawing
             Rgba ink = (this as IAttribute).Ink;
             Rgba paper = (this as IAttribute).Paper;
 
+            surface.FillRect(new Rectangle(x,y,_width,_height), Palette.Transparent);
+
             for(int r = 0; r < _height; r++)
             {
                 for(int c = 0; c < _width; c+=8)
