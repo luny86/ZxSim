@@ -66,23 +66,15 @@ namespace Pyjamarama.Inventory
         void IBuildable.EndBuild()
         {
             IDrawer pocketDrawer = CreatePockets();
+            IDrawer livesDrawer = _drawingFactory.CreateBitmapDrawer(MemoryChunkNames.LivesBitmaps, 0x10, 0x10);
 
-            _layer = new Layer(_surface, pocketDrawer);
+            _layer = new Layer(_surface, pocketDrawer, livesDrawer);
             _screen.AddLayer(_layer);    
             CreateAndDrawScoreBoard();
-            
-            _stats = new InventoryStats
-            {
-                pocket1 = 8,
-                pocket2 = 14,
-                livesLeft = 3
-            };
 
             if(this is ZX.Util.Observing.IObservable<InventoryStats> obserable)
             {
                 obserable.Subscribe(_layer);
-
-                _subscriber.OnChanged(_stats);
             }
         }
 
@@ -103,7 +95,13 @@ namespace Pyjamarama.Inventory
 
         void IGameStatic.NewGame()
         {
-            
+           _stats = new InventoryStats
+            {
+                pocket1 = 8,
+                pocket2 = 14,
+                livesLeft = 3
+            };
+            _subscriber.OnChanged(_stats);
         }
 
         void IGameStatic.NewLevel()

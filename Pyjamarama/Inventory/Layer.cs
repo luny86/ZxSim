@@ -20,17 +20,19 @@ namespace Pyjamarama.Inventory
         private InventoryStats _stats;
 
         private readonly IDrawer _pocketDrawer;
+        private readonly IDrawer _livesDrawer;
 
         #endregion
 
         #region Construction
 
-        public Layer(ISurface surface, IDrawer pocketDrawer)
+        public Layer(ISurface surface, IDrawer pocketDrawer, IDrawer livesDrawer)
         :base("Inventory", surface, (int)LayerZOrders.Inventory)
         {
             _stats = new InventoryStats();
 
             _pocketDrawer = pocketDrawer;
+            _livesDrawer = livesDrawer;
 
             Surface.Create(_width, _height);
         }
@@ -41,11 +43,12 @@ namespace Pyjamarama.Inventory
 
         public override void Update()
         {
-            UpdatePocket(Palette.BrightCyan, _stats.pocket1, 0x90, 0);
-            UpdatePocket(Palette.BrightYellow, _stats.pocket2, 0x90, 16);
+            RedrawPockets(Palette.BrightCyan, _stats.pocket1, 0x90, 0);
+            RedrawPockets(Palette.BrightYellow, _stats.pocket2, 0x90, 16);
+            RedrawLives();
         }
 
-        private void UpdatePocket(Rgba ink, int index, int x, int y)
+        private void RedrawPockets(Rgba ink, int index, int x, int y)
         {
             IAttribute? attribute = _pocketDrawer as ZX.IAttribute;
             
@@ -60,6 +63,19 @@ namespace Pyjamarama.Inventory
             _pocketDrawer.Draw(Surface, index, x, y);
         }
 
+        private void RedrawLives()
+        {
+            const int x = 0;
+            const int y = 0x10;
+            const int w = 0x10;
+            const int h = 0x10;
+
+            Surface.FillRect(new Rectangle(X,y,w*3, h), Palette.Black);
+            for(int i = 0; i < _stats.livesLeft; i++)
+            {
+                _livesDrawer.Draw(Surface, 0, x+(i*w), y);
+            }
+        }
         #endregion
 
         #region IObserver

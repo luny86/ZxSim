@@ -122,6 +122,7 @@ public partial class Main : Node, IBuildable
 		_map.AddRange(MemoryChunkNames.WallyBitmaps, 0x91eb, 0xa00);
 		_map.AddRange(MemoryChunkNames.ObjectBitmaps, 0x9beb, 0xf00);
 		_map.AddRange(MemoryChunkNames.InventoryFurniture, 0x826c, 0x5a);
+		_map.AddRange(MemoryChunkNames.LivesBitmaps, 0x9b6b, 0x80);
 
 		dependencies.Add("Platform.Main.IView", 
 			typeof(IView),
