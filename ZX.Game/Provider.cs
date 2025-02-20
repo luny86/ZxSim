@@ -8,11 +8,21 @@ namespace ZX.Game
     /// </summary>
     internal class Provider : IGameProvider
     {   
+        private enum State
+        {
+            None,
+            NewGame,
+            GamePlay,
+            GameOver
+        };
+
         /// <summary>
         /// Objects used during a game.
         /// </summary>
         /// <remarks>This can be anything from flags to in-game sprites.</remarks>
         private readonly List<IGameStatic> _items = new List<IGameStatic>();
+
+        private State _state = State.NewGame;
 
         public Provider()
         {
@@ -27,6 +37,28 @@ namespace ZX.Game
         }
 
         void IGameProvider.Update()
+        {
+            switch(_state)
+            {
+                case State.NewGame:
+                    NewGame();
+                    break;
+
+                case State.GamePlay:
+                    GamePlay();
+                    break;
+            }
+        }
+
+        private void NewGame()
+        {
+            foreach(IGameStatic staticItem in _items)
+            {
+                staticItem.NewGame();
+            }
+        }
+
+        private void GamePlay()
         {
             foreach(IGameStatic staticItem in _items)
             {
