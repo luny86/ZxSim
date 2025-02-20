@@ -4,6 +4,10 @@ using ZX.Platform;
 
 namespace Pyjamarama.Wally
 {
+    /// <summary>
+    /// Brings together an <see cref="ISurface"/> and an <see cref="IDrawer"/>
+    /// for drawing bitmaps onto the screen.
+    /// </summary>
     internal class DrawLayer : ZX.Drawing.Layer
     {
         private IDrawer _drawer = null!;

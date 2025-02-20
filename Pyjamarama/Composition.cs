@@ -33,6 +33,8 @@ namespace Pyjamarama
 
         private Wally.Controller _wallyController = new Wally.Controller();
 
+        private Inventory.Controller _inventoryController = new Inventory.Controller();
+
         ZX.Drawing.IFactory _drawFactory = null!;
 
         ZX.Platform.IFactory _platformFactory = null!;
@@ -68,7 +70,8 @@ namespace Pyjamarama
             return new List<IBuildable>()
             {
                 _factory,
-                _wallyController
+                _wallyController,
+                _inventoryController
             };
         }
 
@@ -118,6 +121,7 @@ namespace Pyjamarama
 
             _screen.AddLayer(_wallyController.Layer);
             _gameProvider.AddItem(_wallyController);
+            _gameProvider.AddItem(_inventoryController);
         }
     
         #endregion
@@ -138,13 +142,12 @@ namespace Pyjamarama
 
         private void SetupWally()
         {
-           const int ww = 16;
+            const int ww = 16;
             const int wh = 32;
 
             ISurface surface = _platformFactory.CreateSurface();
             IDrawer drawer = _drawFactory.CreateBitmapDrawer(MemoryChunkNames.WallyBitmaps, ww, wh);
             surface.Create(ww, wh);
-            surface.Fill(ZX.Palette.BrightMagenta);
             
             Wally.DrawLayer layer = new Wally.DrawLayer(drawer, surface, 3)
             {
@@ -154,6 +157,7 @@ namespace Pyjamarama
 
             _wallyController.Layer = layer;
         }
+
         #endregion
     }
 }
