@@ -17,5 +17,6 @@ namespace Pyjamarama
         public static string ObjectBitmaps = "ObjectBitmaps";
 
         public static string InventoryFurniture = "Inventory";
+        public static string LivesBitmaps = "Lives";
     }
 }
