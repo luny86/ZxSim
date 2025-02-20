@@ -1,6 +1,7 @@
 
 using System.Collections.Generic;
 using Builder;
+using ZX.Platform;
 
 namespace Platform
 {
@@ -14,10 +15,10 @@ namespace Platform
 
 		void IBuildable.RegisterObjects(IDependencyPool dependencies)
 		{
-			dependencies.Add("ZX.Platform.IFactory", 
+			dependencies.Add(ClassNames.Factory, 
 				typeof(ZX.Platform.IFactory),
 				new Factory());
-			dependencies.Add("ZX.Platform.UserInput",
+			dependencies.Add(ClassNames.UserInput,
 				typeof(ZX.Platform.IUserInput),
 				new UserInputBridge());
 		}

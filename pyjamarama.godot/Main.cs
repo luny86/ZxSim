@@ -63,9 +63,9 @@ public partial class Main : Node, IBuildable
 		IDrawer drawer = _factory.CreateRoomDrawer("RoomPointers", "Rooms", "Tiles", "Furniture");
 		ISurface bg = _platformFactory.CreateSurface();
 
-		BackgroundLayer layer = new BackgroundLayer(drawer, "background", bg, 1)
+		BackgroundLayer layer = new BackgroundLayer(drawer, "background", bg, (int)LayerZOrders.Background)
 		{
-			RoomIndex = 4
+			RoomIndex = 2
 		};
 
 		_screen.AddLayer(layer);	
@@ -120,6 +120,8 @@ public partial class Main : Node, IBuildable
 		_map.AddRange(MemoryChunkNames.RoomPointers, 0x8d2e, 0x3c);
 		_map.AddRange(MemoryChunkNames.WallTileBitmaps, 0x8c4d, 0x18);
 		_map.AddRange(MemoryChunkNames.WallyBitmaps, 0x91eb, 0xa00);
+		_map.AddRange(MemoryChunkNames.ObjectBitmaps, 0x9beb, 0xf00);
+		_map.AddRange(MemoryChunkNames.InventoryFurniture, 0x826c, 0x5a);
 
 		dependencies.Add("Platform.Main.IView", 
 			typeof(IView),
