@@ -4,11 +4,13 @@ using ZX.Util;
 
 namespace ZX.Drawing
 {
-    internal class BitmapDrawer : IDrawer, IAttribute
+    internal class BitmapDrawer : IDrawer, IAttribute, ISizeableDrawer
     {
         private IChunk _data = null!;
         private int _width;
         private int _height;
+
+        private Rectangle _blitRect;
 
         /// <summary>
         /// Converts 8 bit data into a 2 colour bitmap
@@ -21,18 +23,54 @@ namespace ZX.Drawing
             _data = bitmapData;
             _width = width;
             _height = height;
+            _blitRect = new Rectangle(0,0,_width,_height);
+            (this as ISizeableDrawer).PreClear = true;
         }
 
         Rgba IAttribute.Paper { get; set; } = Palette.Transparent;
         Rgba IAttribute.Ink { get; set; } = Palette.Yellow;
 
+        bool ISizeableDrawer.PreClear { get; set; }
+
+        /// <summary>
+        /// Gets and sets the area that is blitted from the original image.
+        /// </summary>
+        public Rectangle BlitRect 
+        { 
+            get
+            {
+                return _blitRect;
+            }
+
+            set
+            {
+                if(value.IsEmpty)
+                {
+                    _blitRect = new Rectangle(0,0,_width,_height);
+                }
+                else
+                {
+                    _blitRect = value;
+                }
+            }
+        }
+        
+
         void IDrawer.Draw(ISurface surface, int index, int x, int y)
         {
-            int offset = index * ((_width/8)*_height);
             Rgba ink = (this as IAttribute).Ink;
             Rgba paper = (this as IAttribute).Paper;
 
-            surface.FillRect(new Rectangle(x,y,_width,_height), Palette.Transparent);
+            int h = BlitRect.H;
+            int w = BlitRect.W;
+
+            if((this as ISizeableDrawer).PreClear)
+            {
+                surface.FillRect(new Rectangle(x,y,_width,_height), Palette.Transparent);
+            }
+
+            int offset = index * ((_width/8)*_height)
+                ;//+ ((BlitRect.Left/8) + (BlitRect.Top*(_width/8)));
 
             for(int r = 0; r < _height; r++)
             {
@@ -46,7 +84,7 @@ namespace ZX.Drawing
                         if(c+bit > _width)
                             break;
 
-                        if((b & m) != 0)
+                        if(BlitRect.InRect(c+bit, r))
                         {
                             surface.SetPixel(x+c+bit, r+y, 
                                 ((b & m) == 0) ? paper : ink);
