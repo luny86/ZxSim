@@ -2,15 +2,16 @@ Git repo for ZX projects.
 =========================
 
 The ZX project acts as a simulator for ease of porting Z80 Spectrum games
-to C#. This is a collection of libraries which handle colours, drawing using a 
-generic interface that can be plugged into a modern front-end such as Godot.
+to C#. This is a collection of libraries which handle colours, drawing and raw
+game data  using a generic interface that can be plugged into a modern front-end 
+such as Godot.
 
-Pyjamarama has been included as an example of a game specific library and a Godot 
+Pyjamarama (WIP) has been included as an example of a game specific library and a Godot 
 project.
 
 The idea is that the libraries allow the original binary data to be used to create the
-graphics, rooms etc. Any Z80 which puts these items together can then be ported into c#.
-In the mean time other libraries will eventually exist to aid converting this raw info
+graphics, rooms etc. Any Z80 which puts these items together can then be ported into C#.
+Over time other libraries will eventually exist to aid converting this raw info
 into bitmaps and JSON for quicker use. All portable to different UI platforms.
 
 
@@ -56,6 +57,20 @@ Once all this information has been collected for all instances, the creator will
 	IBuilder.DependenciesMet
 
 for all instances. It is at this point that each object can ask for the dependent instances it requested.
+
+ZX.Drawing
+----------
+This holds classes to aid converting 8 bit bits into onscreen graphics. Graphic drawing is made up of
+ILayers, ISurfaces and IDrawers. 
+
+The IDrawers takes the raw bytes fomr the original game and converts then into colur pixels on the
+ISurface.
+
+The ISurfaces acts as a generic interface between the ZX drawing and the platform (Windows / Godot etc).
+
+ILayers can be created to handle any amount of drawers and blend them onto the final screen surface. This 
+can be done automatically by adding a layer to the IScreen. Each layer has a Z order as set by ILayer.Z,
+and is used by the screen to determine the order of blending.
 
 
 Setting up a new project
