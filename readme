@@ -63,7 +63,7 @@ ZX.Drawing
 This holds classes to aid converting 8 bit bits into onscreen graphics. Graphic drawing is made up of
 ILayers, ISurfaces and IDrawers. 
 
-The IDrawers takes the raw bytes fomr the original game and converts then into colur pixels on the
+The IDrawers takes the raw bytes from the original game and converts then into colour pixels on the
 ISurface.
 
 The ISurfaces acts as a generic interface between the ZX drawing and the platform (Windows / Godot etc).
