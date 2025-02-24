@@ -42,6 +42,7 @@ namespace ZX.Game
             {
                 case State.NewGame:
                     NewGame();
+                    _state = State.GamePlay;
                     break;
 
                 case State.GamePlay:
