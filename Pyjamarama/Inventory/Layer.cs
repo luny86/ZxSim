@@ -21,18 +21,24 @@ namespace Pyjamarama.Inventory
 
         private readonly IDrawer _pocketDrawer;
         private readonly IDrawer _livesDrawer;
+        private readonly ISizeableDrawer _energy;
 
         #endregion
 
         #region Construction
 
-        public Layer(ISurface surface, IDrawer pocketDrawer, IDrawer livesDrawer)
+        public Layer(
+            ISurface surface, 
+            IDrawer pocketDrawer, 
+            IDrawer livesDrawer,
+            ISizeableDrawer energy)
         :base("Inventory", surface, (int)LayerZOrders.Inventory)
         {
             _stats = new InventoryStats();
 
             _pocketDrawer = pocketDrawer;
             _livesDrawer = livesDrawer;
+            _energy = energy;
 
             Surface.Create(_width, _height);
         }
@@ -46,6 +52,7 @@ namespace Pyjamarama.Inventory
             RedrawPockets(Palette.BrightCyan, _stats.pocket1, 0x90, 0);
             RedrawPockets(Palette.BrightYellow, _stats.pocket2, 0x90, 16);
             RedrawLives();
+            RedrawEnergy();
         }
 
         private void RedrawPockets(Rgba ink, int index, int x, int y)
@@ -75,6 +82,21 @@ namespace Pyjamarama.Inventory
             {
                 _livesDrawer.Draw(Surface, 0, x+(i*w), y);
             }
+        }
+
+        private void RedrawEnergy()
+        {
+            _energy.PreClear = false;
+            _energy.BlitRect = Rectangle.Empty;
+            _energy.Draw(Surface, 1, 0x68, 0);
+
+            Rectangle o = _energy.BlitRect;
+            _energy.BlitRect = new Rectangle(
+                0,
+                o.H - _stats.Energy,
+                o.W,
+                o.H);
+            _energy.Draw(Surface, 0, 0x68, 0);
         }
         #endregion
 

@@ -1,5 +1,6 @@
 
 using Builder;
+using ZX;
 using ZX.Drawing;
 using ZX.Game;
 using ZX.Platform;
@@ -67,8 +68,15 @@ namespace Pyjamarama.Inventory
         {
             IDrawer pocketDrawer = CreatePockets();
             IDrawer livesDrawer = _drawingFactory.CreateBitmapDrawer(MemoryChunkNames.LivesBitmaps, 0x10, 0x10);
+            ISizeableDrawer energy = _drawingFactory.CreateBitmapDrawer(MemoryChunkNames.MilkGlass, 0x18, 0x20)
+                as ISizeableDrawer 
+                ?? throw new InvalidOperationException("Unable to create milk bitmap.");
 
-            _layer = new Layer(_surface, pocketDrawer, livesDrawer);
+            if(energy is IAttribute attribute)
+            {
+                Palette.SetAttribute(Palette.BrightWhite, Palette.Black, attribute);
+            }
+            _layer = new Layer(_surface, pocketDrawer, livesDrawer, energy);
             _screen.AddLayer(_layer);    
             CreateAndDrawScoreBoard();
 

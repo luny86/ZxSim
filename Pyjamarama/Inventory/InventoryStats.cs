@@ -6,6 +6,11 @@ namespace Pyjamarama.Inventory
     /// </summary>
     internal struct InventoryStats
     {
+        public InventoryStats()
+        {
+            Energy = 16;
+        }
+
         /// <summary>
         /// First (top) pocket, holding an object.
         /// </summary>
@@ -20,5 +25,10 @@ namespace Pyjamarama.Inventory
         /// Number of lives left.
         /// </summary>
         public int livesLeft;
+
+        /// <summary>
+        /// Amount of energy left;
+        /// </summary>
+        public int Energy { get; set; }
     }
 }
