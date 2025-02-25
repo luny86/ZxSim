@@ -124,11 +124,13 @@ public partial class Main : Node, IBuildable
 		_map.AddRange(MemoryChunkNames.InventoryFurniture, 0x826c, 0x5a);
 		_map.AddRange(MemoryChunkNames.LivesBitmaps, 0x9b6b, 0x80);
 		_map.AddRange(MemoryChunkNames.MilkGlass, 0x8302, 0xc0);
+		_map.AddRange(MemoryChunkNames.ObjectTextTable, 0xe48e, 0x40);
+		_map.AddRange(MemoryChunkNames.ObjectText, 0xe27d, 0x211);
 
 		dependencies.Add("Platform.Main.IView", 
 			typeof(IView),
 			_view);
-		dependencies.Add("Platform.Main.IMemoryMap",
+		dependencies.Add(ZX.Platform.ClassNames.MemoryMap,
 			typeof(ZX.Util.IMemoryMap),
 			_map);
 	}

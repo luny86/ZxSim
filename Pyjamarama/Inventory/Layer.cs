@@ -21,6 +21,7 @@ namespace Pyjamarama.Inventory
 
         private readonly IDrawer _pocketDrawer;
         private readonly IDrawer _livesDrawer;
+        private readonly IDrawer _textDrawer;
         private readonly ISizeableDrawer _energy;
 
         #endregion
@@ -31,6 +32,7 @@ namespace Pyjamarama.Inventory
             ISurface surface, 
             IDrawer pocketDrawer, 
             IDrawer livesDrawer,
+            IDrawer textDrawer,
             ISizeableDrawer energy)
         :base("Inventory", surface, (int)LayerZOrders.Inventory)
         {
@@ -38,6 +40,7 @@ namespace Pyjamarama.Inventory
 
             _pocketDrawer = pocketDrawer;
             _livesDrawer = livesDrawer;
+            _textDrawer = textDrawer;
             _energy = energy;
 
             Surface.Create(_width, _height);
@@ -49,13 +52,14 @@ namespace Pyjamarama.Inventory
 
         public override void Update()
         {
-            RedrawPockets(Palette.BrightCyan, _stats.pocket1, 0x90, 0);
-            RedrawPockets(Palette.BrightYellow, _stats.pocket2, 0x90, 16);
+            RedrawPocket(Palette.BrightCyan, _stats.pocket1, 0x90, 0);
+            RedrawPocket(Palette.BrightYellow, _stats.pocket2, 0x90, 16);
+            DrawText();
             RedrawLives();
             RedrawEnergy();
         }
 
-        private void RedrawPockets(Rgba ink, int index, int x, int y)
+        private void RedrawPocket(Rgba ink, int index, int x, int y)
         {
             IAttribute? attribute = _pocketDrawer as ZX.IAttribute;
             
@@ -68,6 +72,19 @@ namespace Pyjamarama.Inventory
             }
 
             _pocketDrawer.Draw(Surface, index, x, y);
+        }
+
+        private void DrawText()
+        {
+            const int x = 21;
+
+            IAttribute attribute = _textDrawer as IAttribute ?? 
+                throw new InvalidOperationException("_textDrawer should implement IAttribute");
+
+            attribute.Ink = Palette.BrightGreen;
+            _textDrawer.Draw(Surface, _stats.pocket1, x,0);
+            attribute.Ink = Palette.BrightCyan;
+            _textDrawer.Draw(Surface, _stats.pocket2, x,2);
         }
 
         private void RedrawLives()

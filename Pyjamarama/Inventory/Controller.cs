@@ -4,6 +4,7 @@ using ZX;
 using ZX.Drawing;
 using ZX.Game;
 using ZX.Platform;
+using ZX.Util;
 using ZX.Util.Observing;
 
 namespace Pyjamarama.Inventory
@@ -16,10 +17,12 @@ namespace Pyjamarama.Inventory
     {
         #region Private Members
 
+        private IMemoryMap _memoryMap = null!;
         private IFactory _factory = null!;
         private ZX.Platform.IFactory _platformFactory = null!;
         private ZX.Drawing.IFactory _drawingFactory = null!;
         private IScreen _screen = null!;
+        private IFlags _flags = null!;
 
         private Layer _layer = null!;
         private ISurface _surface = null!;
@@ -52,6 +55,8 @@ namespace Pyjamarama.Inventory
             requests.AddRequest(ZX.Drawing.ClassNames.Screen, typeof(ZX.Drawing.IScreen));
             requests.AddRequest(ZX.Drawing.ClassNames.Factory, typeof(ZX.Drawing.IFactory));
             requests.AddRequest(ZX.Platform.ClassNames.Factory, typeof(ZX.Platform.IFactory));
+            requests.AddRequest(ZX.Platform.ClassNames.MemoryMap, typeof(ZX.Util.IMemoryMap));
+            requests.AddRequest(ZX.Game.ClassNames.Flags, typeof(IFlags));
         }
 
         void IBuildable.DependentsMet(IDependencies dependencies)
@@ -60,6 +65,8 @@ namespace Pyjamarama.Inventory
             _platformFactory = dependencies.TryGetInstance<ZX.Platform.IFactory>(ZX.Platform.ClassNames.Factory);
             _drawingFactory = dependencies.TryGetInstance<ZX.Drawing.IFactory>(ZX.Drawing.ClassNames.Factory);
             _factory = dependencies.TryGetInstance<IFactory>("Pyjamarama.Factory");
+            _memoryMap = dependencies.TryGetInstance<IMemoryMap>(ZX.Platform.ClassNames.MemoryMap);
+            _flags = dependencies.TryGetInstance<IFlags>(ZX.Game.ClassNames.Flags);
 
             _surface = _platformFactory.CreateSurface();
         }
@@ -68,6 +75,7 @@ namespace Pyjamarama.Inventory
         {
             IDrawer pocketDrawer = CreatePockets();
             IDrawer livesDrawer = _drawingFactory.CreateBitmapDrawer(MemoryChunkNames.LivesBitmaps, 0x10, 0x10);
+            IDrawer textDrawer = CreateTextDrawer();
             ISizeableDrawer energy = _drawingFactory.CreateBitmapDrawer(MemoryChunkNames.MilkGlass, 0x18, 0x20)
                 as ISizeableDrawer 
                 ?? throw new InvalidOperationException("Unable to create milk bitmap.");
@@ -76,7 +84,7 @@ namespace Pyjamarama.Inventory
             {
                 Palette.SetAttribute(Palette.BrightWhite, Palette.Black, attribute);
             }
-            _layer = new Layer(_surface, pocketDrawer, livesDrawer, energy);
+            _layer = new Layer(_surface, pocketDrawer, livesDrawer, textDrawer, energy);
             _screen.AddLayer(_layer);    
             CreateAndDrawScoreBoard();
 
@@ -96,6 +104,17 @@ namespace Pyjamarama.Inventory
         private IDrawer CreatePockets()
         {
             return _drawingFactory.CreateBitmapDrawer(MemoryChunkNames.ObjectBitmaps, 0x10, 0x10);
+        }
+
+        private IDrawer CreateTextDrawer()
+        {
+            IDrawer tileDrawer = _drawingFactory.CreateTileDrawer(MemoryChunkNames.TileBitmaps);
+            return new ObjectTextDrawer(
+                tileDrawer,
+                _memoryMap[MemoryChunkNames.TileBitmaps],
+                _memoryMap[MemoryChunkNames.ObjectTextTable],
+                _memoryMap[MemoryChunkNames.ObjectText],
+                _flags);
         }
         #endregion
 

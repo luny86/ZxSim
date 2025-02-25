@@ -19,5 +19,15 @@ namespace Pyjamarama
         public static string InventoryFurniture = "Inventory";
         public static string LivesBitmaps = "Lives";
         public static string MilkGlass = "MilkGlass";
+        
+        /// <summary>
+        /// Table of pointers for each object text.
+        /// </summary>
+        public static string ObjectTextTable = "ObjectTextTable";
+
+        /// <summary>
+        /// Text for each object.
+        /// </summary>
+        public static string ObjectText = "ObjectText";
     }
 }
