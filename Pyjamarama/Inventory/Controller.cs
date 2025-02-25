@@ -111,7 +111,6 @@ namespace Pyjamarama.Inventory
             IDrawer tileDrawer = _drawingFactory.CreateTileDrawer(MemoryChunkNames.TileBitmaps);
             return new ObjectTextDrawer(
                 tileDrawer,
-                _memoryMap[MemoryChunkNames.TileBitmaps],
                 _memoryMap[MemoryChunkNames.ObjectTextTable],
                 _memoryMap[MemoryChunkNames.ObjectText],
                 _flags);

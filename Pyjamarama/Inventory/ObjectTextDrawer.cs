@@ -31,7 +31,6 @@ namespace Pyjamarama.Inventory
 
         private readonly IDrawer _tileDrawer;
         private readonly IAttribute _attribute;
-        private readonly IChunk _tiles;
         private readonly IChunk _textTable;
         private readonly IChunk _text;
 
@@ -43,14 +42,12 @@ namespace Pyjamarama.Inventory
 
         public ObjectTextDrawer(
             IDrawer tileDrawer, 
-            IChunk tiles,
             IChunk textTable,
             IChunk text,
             IFlags objectFlags)
         {
             _tileDrawer = tileDrawer;
             _attribute = _tileDrawer as IAttribute ?? throw new ArgumentException("tileDrawer should implement IAttribute.");
-            _tiles = tiles;
             _textTable = textTable;
             _text = text;
             _objectFlags =objectFlags;
@@ -74,7 +71,18 @@ namespace Pyjamarama.Inventory
             int next = CalculateStringAddress(index);
             _attribute.Ink = Ink;
             _attribute.Paper = Paper;
-            Draw(surface, index, _text, next, x, y);
+
+            FurnitureDrawLogic logic = new FurnitureDrawLogic()
+            {
+                Surface = surface,
+                TileDrawer = _tileDrawer,
+                Data = _text,
+                X = x,
+                Y = y,
+                Index = next
+            };
+
+            Draw(logic);
         }
 
         private int CalculateStringAddress(int index)
@@ -82,50 +90,44 @@ namespace Pyjamarama.Inventory
             return _textTable.Word(index*2) - _text.Start;
         }
 
-        private void Draw(ISurface surface, int index, IChunk text, int start, int x, int y)
+        private void Draw(FurnitureDrawLogic logic)
         {
-            int next =start;
-
-            while(text[next] != CmdEndOfString)
+            while(logic.CurrentCode != CmdEndOfString)
             {
-                switch (text[next])
+                switch (logic.CurrentCode)
                 {
                     case CmdOffsetPosition:
-                        // Offset position
-                        x += ZX.Maths.Bit8_Signed(text[next + 1]);
-                        y += ZX.Maths.Bit8_Signed(text[next + 2]);
-                        next += 3;
+                        logic.SetPositionCommand();
                         break;
 
-
                         default:
-                        if ((text[next] & 0x80) == 0)
+                        if ((logic.CurrentCode & 0x80) == 0)
                         {
-                            _tileDrawer.Draw(
-                                surface,
-                                text[next],
-                                x,
-                                y);
+                            logic.DrawTileAtCurrentPosition(logic.CurrentCode);
                         }
-                        next++;
-                        x++;
-                        // Ignore anything above 0x7F
+                        else
+                        {
+                            // Ignore anything above 0x7F
+                            logic.Index++;
+                            logic.X++;
+                        }
                         break;
                 }
             }
 
-            next++; 
+            logic.Index++; 
 
         
-            if (next < text.Length && text[next] == CmdCheckAttribute)
+            if (logic.Index < logic.Data.Length && 
+                logic.CurrentCode == CmdCheckAttribute)
             {
-                CheckForEmptyOrFull(surface, index, x, y);
+                CheckForEmptyOrFull(logic);
             }
         }
 
-        private void CheckForEmptyOrFull(ISurface surface, int index, int x, int y)
+        private void CheckForEmptyOrFull(FurnitureDrawLogic logic)
         {
-            IFlag flag = _objectFlags.GetByObjectIndex(index);
+            IFlag flag = _objectFlags.GetByObjectIndex(logic.CurrentCode);
 
             if (flag != null)
             {
@@ -137,7 +139,10 @@ namespace Pyjamarama.Inventory
                 }
 
                 _attribute.Ink = Palette.BrightYellow;
-                Draw(surface, index, chunk, 0, x + 1, y);
+                logic.X++;
+                logic.Data = chunk;
+                logic.Index = 0;
+                Draw(logic);
             }
         }
 

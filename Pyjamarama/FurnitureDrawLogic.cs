@@ -35,7 +35,7 @@ namespace Pyjamarama
         /// <summary>
         /// Chunk holding the furniture draw strings.
         /// </summary>
-        public IChunk Data { get; init; } = null!;
+        public IChunk Data { get; set; } = null!;
 
         public int X { get; set; }
         public int Y { get; set; }
