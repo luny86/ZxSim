@@ -23,5 +23,41 @@ namespace ZX.Util
         public float G { get; }
         public float B { get; }
         public float A { get; }
+
+        public override int GetHashCode()
+        {
+            return R.GetHashCode() ^
+                G.GetHashCode() ^
+                B.GetHashCode() ^
+                A.GetHashCode();
+        }
+
+        public override bool Equals(object? obj)
+        {
+            if(obj is null)
+            {
+                return false;
+            }
+            else if(obj is Rgba rgba)
+            {
+                return R == rgba.R &&
+                    G == rgba.G &&
+                    B == rgba.B &&
+                    A == rgba.A;
+            }
+            else
+            {
+                return false;
+            }
+        }
+        static public bool operator==(Rgba lvalue, Rgba rvalue)
+        {
+            return lvalue.Equals(rvalue);
+        }
+
+        static public bool operator!=(Rgba lvalue, Rgba rvalue)
+        {
+            return !(lvalue == rvalue);
+        }
     }
 }
