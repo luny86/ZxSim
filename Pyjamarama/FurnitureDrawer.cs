@@ -76,7 +76,8 @@ namespace Pyjamarama
                 Data = _data,
                 X = x,
                 Y = y,
-                Index = Table[itemIndex]
+                Index = Table[itemIndex],
+                Attributes = _attributeTable
             };
 
             bool done = false;
@@ -102,7 +103,7 @@ namespace Pyjamarama
                         {
                             byte colour = logic.GetAttributeCommand();
                             Palette.SetAttribute(colour, attribute);
-                            _attributeTable.SetAt(logic.X, logic.Y, colour);
+                            
                         }
                             break;
 

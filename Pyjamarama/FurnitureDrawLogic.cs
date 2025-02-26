@@ -37,6 +37,16 @@ namespace Pyjamarama
         /// </summary>
         public IChunk Data { get; set; } = null!;
 
+        /// <summary>
+        /// Gets and sets the reference to an attribute table.
+        /// </summary>
+        /// <remarks>
+        /// This can be null, but if set then every draw
+        /// stores the colour used into the table as if
+        /// it was drawn on a ZX Spectrum's display.
+        /// </remarks>
+        public IAttributeTable? Attributes { get; init; }
+
         public int X { get; set; }
         public int Y { get; set; }
 
@@ -65,6 +75,11 @@ namespace Pyjamarama
                 return Data[Index] + Offset;
             }
         }
+
+        /// <summary>
+        /// Gets the last attribute colour set by the command.
+        /// </summary>
+        private byte LastAttribute { get; set; }
         #endregion
 
         #region Logic Methods
@@ -73,6 +88,7 @@ namespace Pyjamarama
         {
             // Blit tile
             TileDrawer.Draw(Surface, index, X, Y);
+            Attributes?.SetAt(X, Y, LastAttribute);
             X++;
         }
 
@@ -113,9 +129,9 @@ namespace Pyjamarama
 
         public byte GetAttributeCommand()
         {
-            byte attr = Data[Index+1];
+            LastAttribute = Data[Index+1];
             Index+=2;
-            return attr;
+            return LastAttribute;
         }
         #endregion
     }
