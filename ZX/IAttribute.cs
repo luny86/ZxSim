@@ -12,11 +12,11 @@ namespace ZX
         /// <summary>
         /// Rgba version of a 'paper' colour.
         /// </summary>
-        public Rgba Paper {get; set;}
+        Rgba Paper {get; set;}
 
         /// <summary>
         /// Rgba version of an 'ink' colour.
         /// </summary>
-        public Rgba Ink {get; set;}
+        Rgba Ink {get; set;}
     }
 }
