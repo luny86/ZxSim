@@ -24,9 +24,39 @@ namespace Pyjamarama.Wally
             set;
         }
 
+        private int HeadFrame
+        {
+            get
+            {
+                int frame = Frame;
+
+                if(HeadTurned)
+                {
+                    if(frame < 0x10)
+                    {
+                        frame += 0x3e;
+                    }
+                    else
+                    {
+                        frame += 0x2f;
+                    }
+                }
+
+                return frame;
+            }
+        }
+
+        public bool HeadTurned
+        {
+            get;
+            set;
+        }
+
         public override void Update()
         {
-            _drawer.Draw(Surface, Frame, 0, 0);
+            _drawer.Draw(Surface, HeadFrame, 0, 0);
+            _drawer.Draw(Surface, Frame+1, 0, 0x10);
         }
+
     }
 }

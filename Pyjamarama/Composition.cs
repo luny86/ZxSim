@@ -150,11 +150,11 @@ namespace Pyjamarama
         private void SetupWally()
         {
             const int ww = 16;
-            const int wh = 32;
+            const int wh = 16;
 
             ISurface surface = _platformFactory.CreateSurface();
             IDrawer drawer = _drawFactory.CreateBitmapDrawer(MemoryChunkNames.WallyBitmaps, ww, wh);
-            surface.Create(ww, wh);
+            surface.Create(ww, wh*2);
             
             Wally.DrawLayer layer = new Wally.DrawLayer(drawer, surface, 3)
             {

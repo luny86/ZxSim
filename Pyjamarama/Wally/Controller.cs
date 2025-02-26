@@ -31,6 +31,9 @@ namespace Pyjamarama.Wally
 
         #region Private Members
 
+        private const int WallyFrameLeft = 0;
+        private const int WallyFrameRight = 0x10;
+
         private IUserInput _input = null!;
         private readonly IAttributeTable _attributeTable;
 
@@ -97,10 +100,18 @@ namespace Pyjamarama.Wally
         /// <value><c>true</c> if head turned; otherwise, <c>false</c>.</value>
         public bool HeadTurned
         {
+            get { return Layer.HeadTurned; }
+            set { Layer.HeadTurned = value; }
+        }
+
+        /// <summary>
+        /// Gets and sets the countdown to the next head turn.
+        /// </summary>
+        private int HeadCount
+        {
             get;
             set;
         }
-
 
         private bool Falling
         {
@@ -156,7 +167,23 @@ namespace Pyjamarama.Wally
 
         void IGameStatic.NewLevel()
         {
+            HeadTurned = false;
+            Falling = false;
+            Direction = DirType.None;
+            //Disabled = false;
+            //IsDead = false;
+            Jump.Reset();
 
+            if (Position.X < 0x78)
+            {
+                Frame = WallyFrameRight;
+                LastDir = DirType.Right;
+            }
+            else
+            {
+                Frame = WallyFrameLeft;
+                LastDir = DirType.Left;
+            }
         }
 
         #region Movement
@@ -229,6 +256,23 @@ namespace Pyjamarama.Wally
         {
             UserInputFlags input = UserInput;
 
+
+            if ((input & UserInputFlags.FireA) == UserInputFlags.FireA)
+            {
+                //if (_flags[FlagsNames.ArcadeMode].Value == 0)
+                {
+                    // Set up jump
+                    //Energy.Update();
+
+                    DirType direction = Direction;
+                    if (direction == DirType.None)
+                    {
+                        direction = LastDir;
+                    }
+
+                    Jump.Initialise(direction);
+                }
+            }
             if((input & UserInputFlags.Left) == UserInputFlags.Left)
             {
                 Direction = DirType.Left;
@@ -252,19 +296,19 @@ namespace Pyjamarama.Wally
             // Move Left
             if (Direction == DirType.Left)
             {
-                //HeadTurn();
+                HeadTurn();
 
-                if (frame >= 0x08)
+                if (frame >= WallyFrameRight)
                 {
-                    frame = 0x00;
+                    frame = WallyFrameLeft;
                     HeadTurned = false;
                 }
                 else
                 {
                     frame += 2;
-                    if (frame >= 0x08)
+                    if (frame >= WallyFrameRight)
                     {
-                        frame = 0;
+                        frame = WallyFrameLeft;
                         HeadTurned = false;
                     }
                 }
@@ -279,18 +323,18 @@ namespace Pyjamarama.Wally
             }
             else if (Direction == DirType.Right)
             {
-                //HeadTurn();
-                if (frame < 0x08)
+                HeadTurn();
+                if (frame < WallyFrameRight)
                 {
-                    frame = 0x10;
+                    frame = WallyFrameRight;
                     HeadTurned = false;
                 }
                 else
                 {
                     frame += 2;
-                    if (frame >= 0x10)
+                    if (frame >= 0x20)
                     {
-                        frame = 0x08;
+                        frame = WallyFrameRight;
                         HeadTurned = false;
                     }
                 }
@@ -309,6 +353,45 @@ namespace Pyjamarama.Wally
             Layer.Y = y;
         }
 
+        private void HeadTurn()
+        {
+            Random r = new Random();
+
+            switch (Frame)
+            {
+                case WallyFrameLeft:
+                case WallyFrameRight:
+                    if (HeadCount > 0)
+                    {
+                        HeadCount--;
+                    }
+                    else
+                    {
+                        HeadTurned = true;
+                    }
+                    break;
+
+                case 0x0c:
+                case 0x1c:
+                    if (HeadCount > 0)
+                    {
+                        HeadCount--;
+                    }
+                    else
+                    {
+                        HeadTurned = false;
+                        HeadCount = (r.Next() & 0x1f);
+                    }
+                    break;
+
+                default:
+                    if (HeadCount > 0)
+                    {
+                        HeadCount--;             
+                    }
+                    break;
+            }
+        }
         #endregion
 
         #region Attribute Checks
@@ -364,6 +447,8 @@ namespace Pyjamarama.Wally
 
         #endregion
 
+        #region IBuildable
+
         void IBuildable.RegisterObjects(IDependencyPool dependencies)
         {
         }
@@ -394,6 +479,9 @@ namespace Pyjamarama.Wally
         {
         }
 
+        #endregion
+
+        #region Input Handlers
         private void InputPressedHandler(object? sender, UserInputFlags inputFlags)
         {
             UserInput = inputFlags;
@@ -403,5 +491,7 @@ namespace Pyjamarama.Wally
         {
             UserInput = inputFlags;
         }
+
+        #endregion
     }
 }
