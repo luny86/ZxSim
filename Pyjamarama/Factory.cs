@@ -1,8 +1,7 @@
 
 using Builder;
-using ZX.Util;
-using ZX.Platform;
 using ZX.Drawing;
+using ZX;
 
 namespace Pyjamarama
 {
@@ -14,7 +13,7 @@ namespace Pyjamarama
         private ZX.Platform.IFactory _platformFactory = null!;
         private ZX.Util.IMemoryMap _map = null!;
         private ZX.Game.IFlags _flags = null!;
-
+        private IAttributeTable _attributeTable = new AttributeTable();
         #endregion
 
         #region IFactory
@@ -22,15 +21,21 @@ namespace Pyjamarama
         IDrawer IFactory.CreateFurnitureDrawer(string tileChunkName, string furnitureChunkName)
         {
             ZX.Drawing.IDrawer drawer = _factory.CreateTileDrawer(tileChunkName);
-            return new FurnitureDrawer(drawer, _map[furnitureChunkName]);
+            return new FurnitureDrawer(drawer, _map[furnitureChunkName], _attributeTable);
         }
+
         IDrawer IFactory.CreateRoomDrawer(string addressTableName, string dataChunkName, string tileChunkName, string furnitureChunkName)
         {
             IDrawer furniture = (this as IFactory).CreateFurnitureDrawer(tileChunkName, furnitureChunkName);
             IDrawer drawer = _factory.CreateTileDrawer(MemoryChunkNames.WallTileBitmaps);
-            WallDrawer walls = new WallDrawer(drawer, _map[MemoryChunkNames.WallTileBitmaps]);
+            WallDrawer walls = new WallDrawer(drawer, _map[MemoryChunkNames.WallTileBitmaps], _attributeTable);
 
             return new RoomDrawer(furniture,walls,  _map[dataChunkName], _map[addressTableName], _flags);
+        }
+
+        IAttributeTable IFactory.GetAttributeTable()
+        {
+            return _attributeTable;
         }
         #endregion
 

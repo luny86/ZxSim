@@ -1,6 +1,7 @@
 
 using Builder;
 using System.Runtime.CompilerServices;
+using ZX;
 using ZX.Drawing;
 using ZX.Platform;
 using Game = ZX.Game;
@@ -29,11 +30,13 @@ namespace Pyjamarama
 
         #region Members
 
-        private Factory _factory = new Factory();
+        private IFactory _factory = new Factory();
 
-        private Wally.Controller _wallyController = new Wally.Controller();
+        private Wally.Controller _wallyController = null!;
 
         private Inventory.Controller _inventoryController = new Inventory.Controller();
+
+        private IAttributeTable _attributeTable = null!;
 
         ZX.Drawing.IFactory _drawFactory = null!;
 
@@ -67,9 +70,12 @@ namespace Pyjamarama
 
         IList<IBuildable>? IBuildable.CreateBuildables()
         {
+            _attributeTable = _factory.GetAttributeTable();
+            _wallyController = new Wally.Controller(_attributeTable);
+
             return new List<IBuildable>()
             {
-                _factory,
+                (_factory as IBuildable)  ?? throw new InvalidOperationException("Factory not buildable"),
                 _wallyController,
                 _inventoryController
             };
@@ -116,6 +122,7 @@ namespace Pyjamarama
 
         void IBuildable.EndBuild()
         {
+            
            CreateFlags();  
            SetupWally();
 
@@ -152,7 +159,7 @@ namespace Pyjamarama
             Wally.DrawLayer layer = new Wally.DrawLayer(drawer, surface, 3)
             {
                 X = 64,
-                Y = 150
+                Y = 100
             };
 
             _wallyController.Layer = layer;

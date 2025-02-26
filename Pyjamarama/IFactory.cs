@@ -1,4 +1,5 @@
 
+using ZX;
 using ZX.Drawing;
 
 
@@ -23,5 +24,11 @@ namespace Pyjamarama
         /// the tile-set and the furniture draw strings.
         /// </summary>
         IDrawer CreateRoomDrawer(string addressTableName, string dataChunkName, string tileChunkName, string furnitureChunkName);
+
+        /// <summary>
+        /// Create an attribute table to emulate the ZX Attribute display
+        /// </summary>
+        /// <returns><see cref="IAttributeTable"/> instance.</returns>
+        IAttributeTable GetAttributeTable();
     }
 }

@@ -1,5 +1,7 @@
 
+using System.Drawing;
 using Builder;
+using ZX;
 using ZX.Game;
 using ZX.Platform;
 
@@ -13,34 +15,49 @@ namespace Pyjamarama.Wally
         #region Private Types
 
         /// <summary>
-        /// Determines which way Wally is facing.
+        /// Different states during the death scenes.
         /// </summary>
-        private enum DirType
+        private enum DeathScene
         {
             None,
-            Left,
-            Right
-        };
+            Falling,
+            SittingDown,
+            OnTheDeck,
+            LyingDown,
+            Resurrect
+        }
 
         #endregion
 
         #region Private Members
 
         private IUserInput _input = null!;
+        private readonly IAttributeTable _attributeTable;
 
         #endregion
 
         #region Construction
+
+        public Controller(IAttributeTable attributeTable)
+        {
+            _attributeTable = attributeTable;
+            Jump = new JumpHandler();
+        }
+        #endregion
+
+        #region Properties
+
+        public bool Visible
+        {
+            get;
+            set;
+        } = true;
 
         public DrawLayer Layer
         {
             get;
             set;
         } = null!;
-
-        #endregion
-
-        #region Properties
 
         /// <summary>
         /// Copy of the user input flags from the last event.
@@ -51,10 +68,24 @@ namespace Pyjamarama.Wally
             set;
         }
 
+        public Point Position
+        {
+            get
+            {
+                return new Point(Layer.X, Layer.Y);
+            }
+
+            set
+            {
+                Layer.X = value.X;
+                Layer.Y = value.Y;
+            }
+        }
+
         /// <summary>
         /// Current direction of Wally.
         /// </summary>
-        private DirType Direction
+        public DirType Direction
         {
             get;
             set;
@@ -64,12 +95,39 @@ namespace Pyjamarama.Wally
         /// Determines if Wally's head is turned towards the camera.
         /// </summary>
         /// <value><c>true</c> if head turned; otherwise, <c>false</c>.</value>
-        private bool HeadTurned
+        public bool HeadTurned
         {
             get;
             set;
         }
 
+
+        private bool Falling
+        {
+            get;
+            set;
+        }
+
+        public int Frame
+        {
+            get { return Layer.Frame; }
+            set { Layer.Frame = value; }
+        }
+
+        public bool IsOnPlatform
+        {
+            get
+            {
+                bool isOn = false;
+
+                if (IsPlatform(LastAttr))
+                {
+                    isOn = (Position.Y & 0x07) == 0x00;
+                }
+
+                return isOn;
+            }
+        }
 
         /// <summary>
         /// Last direction when moved.
@@ -79,25 +137,92 @@ namespace Pyjamarama.Wally
             get;
             set;
         }
+
+        private JumpHandler Jump
+        {
+            get;
+            set;
+        }
+
         #endregion
 
         void IGameStatic.NewGame()
         {
             UserInput = UserInputFlags.None;
             Direction = DirType.None;
+
+            //_attributeTable.Clear(0x46);
         }
 
         void IGameStatic.NewLevel()
         {
+
         }
 
         #region Movement
 
         void IGameItem.Update()
         {
-            CheckForMovement();
-            UpdateFrameAndPosition();
+            StandardUpdate();
             Layer?.Update();
+        }
+
+
+        private void StandardUpdate()
+        {
+            if (Visible)
+            {
+                CheckAttr();
+
+                if (!Jump.IsJumping)
+                {
+                    CheckForFall();
+                }
+                else
+                {
+                    HeadTurned = false;
+                    // Handle jump in progress.
+                    Jump.Update(this);
+
+                    return;
+                }
+
+
+                if (!Jump.IsJumping && !Falling)
+                {
+                    CheckForMovement();
+                    UpdateFrameAndPosition();
+                }
+            }
+        }
+
+        private void CheckForFall()
+        {
+            // ATTR under feet.
+            // See code $ab98
+            bool hasPlatform = IsPlatform(LastAttr);
+
+            if (!Falling && !hasPlatform)
+            {
+                Falling = true;
+            }
+
+            if (Falling)
+            {
+                // Check Falling ($AC4A)
+                if (hasPlatform)
+                {
+                    if ((Position.Y & 0x07) == 0)
+                    {
+                        Falling = false;
+                    }
+                }
+
+                if (Falling)
+                {
+                    Position = new Point(Position.X, Position.Y + 4);
+                }
+            }
         }
 
         private void CheckForMovement()
@@ -182,6 +307,59 @@ namespace Pyjamarama.Wally
             Layer.Frame = frame;
             Layer.X = x;
             Layer.Y = y;
+        }
+
+        #endregion
+
+        #region Attribute Checks
+
+        private byte LastAttr
+        {
+            get;
+            set;
+        }
+
+        private void CheckAttr()
+        {
+            if (CharAligned)
+            {
+                // check Wally ATTR
+                // See code $ab82
+                Point p = new Point(
+                    (Position.X + 0x08) / 8,
+                    (Position.Y + 0x20) / 8);
+
+                LastAttr = _attributeTable.GetAt(p);
+            }
+            else
+            {
+                // $ab9b - Get colour from previous store.
+                LastAttr = _attributeTable.GetAt(
+                    new Point(
+                        (Position.X / 8) + 1,
+                        (Position.Y / 8) + 4));
+            }
+        }
+
+        private bool CharAligned
+        {
+            get
+            {
+                return (Layer.Y & 0x07) == 0;
+            }
+        }
+
+        /// <summary>
+        /// Determines whether the given colours represent a platform or not.
+        /// </summary>
+        /// <param name="colours">Colours.</param>
+        /// <returns>
+        /// <c>true</c> if this colour is a platform.; 
+        /// otherwise, <c>false</c>.
+        /// </returns>
+        internal static bool IsPlatform(byte colours)
+        {
+            return (colours == 0x42 || colours == 0x45);
         }
 
         #endregion

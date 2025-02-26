@@ -32,14 +32,15 @@ namespace Pyjamarama
 
         private readonly IDrawer _tileDrawer;
         private readonly IChunk _data;
-
+        private readonly IAttributeTable _attributeTable;
         #endregion
 
         #region Construction
-        public FurnitureDrawer(IDrawer tileDrawer, IChunk data)
+        public FurnitureDrawer(IDrawer tileDrawer, IChunk data, IAttributeTable attributeTable)
         {
             _tileDrawer = tileDrawer ?? throw new ArgumentNullException(nameof(tileDrawer));
             _data = data ?? throw new ArgumentNullException(nameof(data));
+            _attributeTable = attributeTable;
         }
         #endregion
 
@@ -67,6 +68,7 @@ namespace Pyjamarama
         {
             IAttribute attribute = _tileDrawer as IAttribute 
                 ?? throw new InvalidCastException("Tile drawer should implement IAttribute.");
+
             FurnitureDrawLogic logic = new FurnitureDrawLogic()
             {
                 Surface = surface,
@@ -97,7 +99,11 @@ namespace Pyjamarama
                             break;
 
                         case CmdColor:
-                            Palette.SetAttribute(logic.GetAttributeCommand(), attribute);
+                        {
+                            byte colour = logic.GetAttributeCommand();
+                            Palette.SetAttribute(colour, attribute);
+                            _attributeTable.SetAt(logic.X, logic.Y, colour);
+                        }
                             break;
 
                         case CmdPosition:

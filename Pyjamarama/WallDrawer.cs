@@ -13,21 +13,29 @@ namespace Pyjamarama
     {
         #region Private Members
 
+        private const byte FloorColour = 0x45;
+
+        private const byte WallColour = 0x42;
+
         private readonly IChunk _tiles;
 
         private readonly IDrawer _tileDrawer;
 
         private readonly IAttribute _attribute;
+
+        private readonly IAttributeTable _attributeTable;
+
         #endregion
 
         #region Construction
         
-        public WallDrawer(IDrawer tileDrawer, IChunk tiles)
+        public WallDrawer(IDrawer tileDrawer, IChunk tiles, IAttributeTable attributeTable)
         {
             _tileDrawer = tileDrawer;
             _tiles = tiles;
             _attribute = _tileDrawer as IAttribute 
                 ?? throw new InvalidCastException("Tile drawer should implement IAttribute.");
+            _attributeTable = attributeTable;
         }
 
         #endregion
@@ -53,22 +61,25 @@ namespace Pyjamarama
 
         private void DrawFloor(ISurface surface)
         {
-            Palette.SetAttribute(0x45, _attribute);
+            Palette.SetAttribute(FloorColour, _attribute);
 
             for(int i = 0; i < 0x20; i++)
             {
                 _tileDrawer.Draw(surface, 1, i, 0x17);
+                _attributeTable.SetAt(i, 0x17, FloorColour);
             }   
         }
 
         private void DrawWalls(ISurface surface)
         {
-            Palette.SetAttribute(0x42, _attribute);
+            Palette.SetAttribute(WallColour, _attribute);
 
             for(int i = 0; i < 0x11; i++)
             {
                 _tileDrawer.Draw(surface, 2, 0, i+6);
+                _attributeTable.SetAt(0, i+6, WallColour);
                 _tileDrawer.Draw(surface, 2, 0x1f, i+6);
+                _attributeTable.SetAt(0x1f, i+6, WallColour);
             }   
         }
         #endregion
