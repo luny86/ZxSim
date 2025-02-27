@@ -21,9 +21,9 @@ Architect
 
 		 ------------- ------------
 		|   ZX Util   |   Builder  |
-		 -------------             |
-		|     ZX      |            |
-		 ------------- -------------
+		 ------------- ------------
+		|     ZX      |  Bindings  |
+		 ------------- ------------
 		| ZX Platform | ZX Drawing |
 		 --------------------------
 		| Godot project / Platform |
@@ -57,6 +57,14 @@ Once all this information has been collected for all instances, the creator will
 	IBuilder.DependenciesMet
 
 for all instances. It is at this point that each object can ask for the dependent instances it requested.
+
+Bindings
+=========
+Bindings is a way to share values across different scopes and to report when a value changes.
+Any module can get the shared BindingsManager and create a bound object. Bound Objects (IBoundObject)
+are generic so any value type can be defined during creation. Other modules may then bind to the
+object through the manager, if they wish to know when a value has changed. Additionally the object
+can be gotten through the manager if another scope wishes to change the value as well. 
 
 ZX.Drawing
 ----------
