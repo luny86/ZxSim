@@ -26,5 +26,6 @@
   <ItemGroup>
     <ProjectReference Include="..\ZX.Util\ZX.Util.csproj" />
     <ProjectReference Include="..\ZX.Drawing\ZX.Drawing.csproj" />
+    <ProjectReference Include="..\Bindings\Bindings.csproj" />
   </ItemGroup>
 </Project>

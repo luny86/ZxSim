@@ -13,8 +13,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Builder", "Builder\Builder.
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Project", "Project\Project.csproj", "{E9682F49-2E7C-42E3-A4EF-B0FE39DAAD72}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ZX.Drawing", "ZX.Drawing\ZX.Drawing.csproj", "{A9540EDF-C2BB-4C8F-A656-F736E1668E5A}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Pyjamarama", "Pyjamarama\Pyjamarama.csproj", "{2CAF0E29-ACAA-4478-9CC4-A52A8D70FE5E}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ZX.Tests", "ZX.Tests\ZX.Tests.csproj", "{370DF847-9BCE-45E5-B0AF-1577A54C0C52}"
@@ -22,6 +20,10 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ZX.Game", "ZX.Game\ZX.Game.csproj", "{B935CA58-2A0A-4D92-B2DF-339444558945}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PyjamaramaTests", "PyjamaramaTests\PyjamaramaTests.csproj", "{A0B3B7BE-B32A-4A05-89A9-7D903BAA5940}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ZX.Drawing", "ZX.Drawing\ZX.Drawing.csproj", "{58726C70-01DB-40C6-9A73-38B6D9FA7255}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Bindings", "Bindings\Bindings.csproj", "{D6B81918-D072-4B7A-A5A7-D0E4E19B50A0}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -76,5 +78,13 @@ Global
 		{A0B3B7BE-B32A-4A05-89A9-7D903BAA5940}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A0B3B7BE-B32A-4A05-89A9-7D903BAA5940}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A0B3B7BE-B32A-4A05-89A9-7D903BAA5940}.Release|Any CPU.Build.0 = Release|Any CPU
+		{58726C70-01DB-40C6-9A73-38B6D9FA7255}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{58726C70-01DB-40C6-9A73-38B6D9FA7255}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{58726C70-01DB-40C6-9A73-38B6D9FA7255}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{58726C70-01DB-40C6-9A73-38B6D9FA7255}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D6B81918-D072-4B7A-A5A7-D0E4E19B50A0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D6B81918-D072-4B7A-A5A7-D0E4E19B50A0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D6B81918-D072-4B7A-A5A7-D0E4E19B50A0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D6B81918-D072-4B7A-A5A7-D0E4E19B50A0}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
