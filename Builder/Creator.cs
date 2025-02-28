@@ -271,6 +271,8 @@ public class Creator : IDisposable
             {
                 System.Reflection.Assembly.Load(refAssembly);
             }
+
+            System.Reflection.Assembly.Load("Bindings");
     }
 
     public static IEnumerable<IComposition> Compositions
