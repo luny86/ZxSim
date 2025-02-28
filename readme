@@ -55,11 +55,11 @@ the builder process by calling
 Once all this information has been collected for all instances, the creator will call 
 
 	IBuilder.DependenciesMet
-
+  
 for all instances. It is at this point that each object can ask for the dependent instances it requested.
 
 Bindings
-=========
+--------
 Bindings is a way to share values across different scopes and to report when a value changes.
 Any module can get the shared BindingsManager and create a bound object. Bound Objects (IBoundObject)
 are generic so any value type can be defined during creation. Other modules may then bind to the
@@ -77,7 +77,7 @@ ISurface.
 The ISurfaces acts as a generic interface between the ZX drawing and the platform (Windows / Godot etc).
 
 ILayers can be created to handle any amount of drawers and blend them onto the final screen surface. This 
-can be done automatically by adding a layer to the IScreen. Each layer has a Z order as set by ILayer.Z,
+can be done automatically by adding a layer to the IScreen. Each layer has a Z order as set by **ILayer.Z**,
 and is used by the screen to determine the order of blending.
 
 
@@ -114,6 +114,18 @@ The composition should expose the main view (IView) as "Platform.Main.View".
 Sub projects are class libraries
 
     dotnet new classlib -n <NAME>
+
+Make sure new projects build to the output folder.
+In the project build file update the main property group:
+
+	<PropertyGroup>
+      <TargetFramework>net8.0</TargetFramework>
+      <ImplicitUsings>enable</ImplicitUsings>
+      <Nullable>enable</Nullable>
+      <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
+      <AppendRuntimeIdentifierToOutputPath>false</AppendRuntimeIdentifierToOutputPath>
+      <OutputPath>../output/$(Configuration)</OutputPath>
+  	</PropertyGroup>
 
 
 Example node use
