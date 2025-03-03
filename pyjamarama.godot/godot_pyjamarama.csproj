@@ -16,6 +16,11 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Reference Include="../output/$(Configuration)/Bindings.dll">
+      <Hint>../output/$(Configuration)/Bindings.dll</Hint>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
     <Reference Include="../output/$(Configuration)/ZX.Util.dll">
       <Hint>../output/$(Configuration)/ZX.Util.dll</Hint>
     </Reference>

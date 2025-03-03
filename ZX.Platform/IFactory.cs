@@ -22,12 +22,5 @@ namespace ZX.Platform
         /// </summary>
         /// <returns>New surface object.</returns>
         ISurface CreateSurface();
-
-        /// <summary>
-        /// Creates an icon/view command on the platform.
-        /// </summary>
-        /// <param name="name">Name of command</param>
-        /// <returns>Reference to the view created by the command.</returns>
-        IView CreateCommand(string name);
     }
 }

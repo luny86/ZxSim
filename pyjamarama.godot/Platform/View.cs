@@ -80,7 +80,6 @@ public partial class View : TextureRect, IView, IBuildable
 	void IBuildable.EndBuild()
 	{
 		_ready = true;
-		Console.WriteLine("READY");
 	}
 
 	#endregion

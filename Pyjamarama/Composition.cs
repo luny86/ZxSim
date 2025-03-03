@@ -1,8 +1,10 @@
 
 using Builder;
+using Pyjamarama.House;
 using System.Runtime.CompilerServices;
 using ZX;
 using ZX.Drawing;
+using ZX.Game;
 using ZX.Platform;
 using Game = ZX.Game;
 
@@ -36,6 +38,8 @@ namespace Pyjamarama
 
         private Inventory.Controller _inventoryController = new Inventory.Controller();
 
+        private IAnimationLayer _animationLayer = null!;
+
         private IAttributeTable _attributeTable = null!;
 
         ZX.Drawing.IFactory _drawFactory = null!;
@@ -47,6 +51,10 @@ namespace Pyjamarama
         IScreen _screen = null!;
 
         Game.IGameProvider _gameProvider = null!;
+
+        private RoomProvider _roomProvider = null!;
+
+        private ActionController _actionController = null!;
 
 	    private ZX.Game.IFlags _flags = null!;
 
@@ -72,19 +80,25 @@ namespace Pyjamarama
         {
             _attributeTable = _factory.GetAttributeTable();
             _wallyController = new Wally.Controller(_attributeTable);
+            _roomProvider = new RoomProvider();
+
+            ActionProvider actions = new ActionProvider();
+            _actionController = new ActionController(actions);
 
             return new List<IBuildable>()
             {
                 (_factory as IBuildable)  ?? throw new InvalidOperationException("Factory not buildable"),
                 _wallyController,
-                _inventoryController
+                _inventoryController,
+                _roomProvider,
+                actions
             };
         }
 
         void IBuildable.RegisterObjects(IDependencyPool dependencies)
         {
-            dependencies.Add("Pyjamarama.Factory", typeof(IFactory), _factory);
-            dependencies.Add("Pyjamarama.Wally", typeof(Wally.Controller), _wallyController);
+            dependencies.Add(ClassNames.Factory, typeof(IFactory), _factory);
+            dependencies.Add(ClassNames.Wally, typeof(Wally.Controller), _wallyController);
         }
 
         void IBuildable.DependentsMet(IDependencies dependencies)
@@ -125,12 +139,18 @@ namespace Pyjamarama
             
            CreateFlags();  
            SetupWally();
+           CreateAnimationLayer();
 
             _screen.AddLayer(_wallyController.Layer);
+            _screen.AddLayer(_animationLayer as ILayer 
+               ?? throw new InvalidOperationException(nameof(_animationLayer)));
+            
             _gameProvider.AddItem(_wallyController);
             _gameProvider.AddItem(_inventoryController);
+            _gameProvider.AddItem(_animationLayer as IGameStatic 
+                ?? throw new InvalidOperationException("Animation layer should be based on IGameStatic"));
         }
-    
+
         #endregion
 
         #region Private helpers
@@ -156,7 +176,7 @@ namespace Pyjamarama
             IDrawer drawer = _drawFactory.CreateBitmapDrawer(MemoryChunkNames.WallyBitmaps, ww, wh);
             surface.Create(ww, wh*2);
             
-            Wally.DrawLayer layer = new Wally.DrawLayer(drawer, surface, 3)
+            Wally.DrawLayer layer = new Wally.DrawLayer(drawer, surface, (int)LayerZOrders.Wally)
             {
                 X = 64,
                 Y = 100
@@ -165,6 +185,14 @@ namespace Pyjamarama
             _wallyController.Layer = layer;
         }
 
+        private void CreateAnimationLayer()
+        {
+            ISurface surface = _platformFactory.CreateSurface();
+            IDrawer drawer = _drawFactory.CreateBitmapDrawer(MemoryChunkNames.AnimationBitmaps, 0x10, 0x10);
+
+            surface.Create(Hardware.ScreenWidth, Hardware.ScreenHeight);
+            _animationLayer = _drawFactory.CreateAnimationLayer("Animation", drawer, surface, (int)LayerZOrders.Animation);
+        }
         #endregion
     }
 }

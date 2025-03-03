@@ -80,7 +80,7 @@ namespace ZX.Drawing
                 return false;
             }
 
-            return Z.Equals(other.Z);
+            return Equals(other);
         }
 
         public override int GetHashCode()
@@ -100,7 +100,7 @@ namespace ZX.Drawing
         {
             if(obj is ILayer layer)
             {
-                CompareTo(layer);
+                return CompareTo(layer);
             }
 
             return 1;

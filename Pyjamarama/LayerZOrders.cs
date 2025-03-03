@@ -7,7 +7,9 @@ namespace Pyjamarama
     public enum LayerZOrders : int
     {
         Background = 1,
-        Inventory = 2,
-        Wally = 3
+        Inventory,
+        Wally,
+
+        Animation
     };
 }

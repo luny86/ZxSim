@@ -2,6 +2,7 @@
 using System;
 using ZX.Util;
 using Builder;
+using ZX.Platform;
 
 namespace ZX.Drawing
 {
@@ -23,6 +24,21 @@ namespace ZX.Drawing
         IDrawer IFactory.CreateBitmapDrawer(string bitmapChunkName, int width, int height)
         {
             return new BitmapDrawer(_memoryMap[bitmapChunkName], width, height);
+        }
+        
+        IAnimationLayer IFactory.CreateAnimationLayer(string name, IDrawer spriteDrawer, ISurface surface, int z)
+        {
+            return new AnimationLayer(name, spriteDrawer, surface, z);
+        }
+    
+        IAnimation IFactory.CreateStaticAnimation(string name, int start, int end, int freq)
+        {
+            return new StaticAnimation(name)
+            {
+                StartFrame = start,
+                LastFrame = end,
+                Frequency = freq
+            };
         }
         
         #endregion IFactory     

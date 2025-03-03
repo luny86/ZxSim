@@ -5,6 +5,7 @@
     <ProjectReference Include="..\ZX.Platform\ZX.Platform.csproj" />
     <ProjectReference Include="..\ZX.Util\ZX.Util.csproj" />
     <ProjectReference Include="..\ZX\ZX.csproj" />
+    <ProjectReference Include="..\ZX.Game\ZX.Game.csproj" />
   </ItemGroup>
 
   <PropertyGroup>

@@ -38,7 +38,7 @@ public partial class Main : Node, IBuildable
 	{
 		_mainScene = GD.Load<PackedScene>("res://view.tscn");
 		_singleton = this;
-		_view = CreateScreen();
+		_view = CreateView();
 
 		try
 		{
@@ -46,7 +46,6 @@ public partial class Main : Node, IBuildable
 			creator.BuildAll(this);		
 			GD.Print(creator);
 
-			CreateLayers();
 			// Test
 			ILayer layer = _screen["background"];
 			layer.Update();
@@ -57,21 +56,8 @@ public partial class Main : Node, IBuildable
 			GD.Print(e);
 		}
 	}
-
-	private void CreateLayers()
-	{
-		IDrawer drawer = _factory.CreateRoomDrawer("RoomPointers", "Rooms", "Tiles", "Furniture");
-		ISurface bg = _platformFactory.CreateSurface();
-
-		BackgroundLayer layer = new BackgroundLayer(drawer, "background", bg, (int)LayerZOrders.Background)
-		{
-			RoomIndex = 2
-		};
-
-		_screen.AddLayer(layer);	
-	}
 		
-	public IView CreateScreen()
+	public IView CreateView()
 	{
 		Node inst = _mainScene.Instantiate();
 		AddChild(inst);
@@ -126,6 +112,7 @@ public partial class Main : Node, IBuildable
 		_map.AddRange(MemoryChunkNames.MilkGlass, 0x8302, 0xc0);
 		_map.AddRange(MemoryChunkNames.ObjectTextTable, 0xe48e, 0x40);
 		_map.AddRange(MemoryChunkNames.ObjectText, 0xe27d, 0x211);
+		_map.AddRange(MemoryChunkNames.AnimationBitmaps, 0x9beb, 0xf00);
 
 		dependencies.Add("Platform.Main.IView", 
 			typeof(IView),

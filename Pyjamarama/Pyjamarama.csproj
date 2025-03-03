@@ -10,6 +10,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\ZX.Game\ZX.Game.csproj" />
+    <ProjectReference Include="..\Bindings\Bindings.csproj" />
   </ItemGroup>
 
   <PropertyGroup>

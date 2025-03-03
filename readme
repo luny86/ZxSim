@@ -24,7 +24,9 @@ Architect
 		 ------------- ------------
 		|     ZX      |  Bindings  |
 		 ------------- ------------
-		| ZX Platform | ZX Drawing |
+		| ZX Platform | ZX Game    |
+		 --------------------------
+	    | ZX Drawing               |
 		 --------------------------
 		| Godot project / Platform |
 		 --------------------------
@@ -77,8 +79,26 @@ ISurface.
 The ISurfaces acts as a generic interface between the ZX drawing and the platform (Windows / Godot etc).
 
 ILayers can be created to handle any amount of drawers and blend them onto the final screen surface. This 
-can be done automatically by adding a layer to the IScreen. Each layer has a Z order as set by **ILayer.Z**,
+can be done automatically by adding a layer to the IScreen. Each layer has a Z order as set by ILayer.Z,
 and is used by the screen to determine the order of blending.
+
+  [Optional]
+ --------------       ---------         --------
+| GFX / IChunk | --> | IDrawer | >---> |        |           ---------
+ --------------       ---------        |        |          |         | [Update() - Blends all layers in order.]
+   ----------                          | ILayer | >------> | IScreen |
+  | ISurface | ----------------------> |        |          |         |
+   ----------                          |        |           ---------
+                                        -------- 
+										[Blend() - Blends surface to another (normally screen)]
+										[Update() - Uses IDrawers to draw onto surface.]
+
+The Animation layer (ZX.Drawing.IAnimationLayer), is a surface of a given size which will hold a list of animations
+(IAnimation) which all use the same IDrawer object to be displayed and updated for each game cycle.
+There are the standard components, which can be used or the user can create their own IAnimation and IDrawer.
+
+ZX.Game
+-------
 
 
 Setting up a new project

@@ -26,12 +26,5 @@ namespace Platform
 		/// </summary>
 		/// <returns>ISurface object holding an image.</returns>
 		public ISurface CreateSurface() { return new Surface(); }
-
-		public IView CreateCommand(string name)
-		{
-			IView view = Main.Singleton.CreateScreen();
-			view.Surface = CreateSurface();
-			return view;
-		}
 	}
 }
