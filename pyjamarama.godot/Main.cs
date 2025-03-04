@@ -30,6 +30,8 @@ public partial class Main : Node, IBuildable
 
 	private MemoryMap _map;
 
+	private IAttributeTable _attributes;
+
 
 	public static Main Singleton { get { return _singleton;} }
 	
@@ -157,12 +159,17 @@ public partial class Main : Node, IBuildable
 	
 	void IBuildable.EndBuild()
 	{
-		
+		_attributes = _factory.GetAttributeTable();
 	}
 	#endregion
 	
 	public override void _Input(InputEvent e)
 	{
 		_input?.HandleInput(e);
+
+		if(e.IsActionPressed("dump"))
+		{
+			Console.WriteLine(_attributes);
+		}
 	}
 }

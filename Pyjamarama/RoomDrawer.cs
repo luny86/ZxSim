@@ -47,6 +47,8 @@ namespace Pyjamarama
         private readonly IDrawer _wallDrawer;
 
         private readonly IFlags _flags;
+
+         private IAttributeTable _attributeTable;
         #endregion
 
         #region Construction
@@ -56,13 +58,15 @@ namespace Pyjamarama
             IDrawer wallDrawer, 
             IChunk data, 
             IChunk roomAddressTable,
-            IFlags flags)
+            IFlags flags,
+            IAttributeTable attributeTable)
         {
             _furnitureDrawer = furnitureDrawer;
             _wallDrawer = wallDrawer;
             _data = data;
             _roomAddressTable = roomAddressTable;
             _flags = flags;
+            _attributeTable = attributeTable;
         }
 
         #endregion
@@ -74,6 +78,7 @@ namespace Pyjamarama
             bool endOfString = false;
             int offset = CalculateRoomIndex(index);
 
+            _attributeTable.Clear(0x00);
             surface.Fill(Palette.Black);
 
             while(!endOfString)

@@ -30,7 +30,7 @@ namespace Pyjamarama
             IDrawer drawer = _factory.CreateTileDrawer(MemoryChunkNames.WallTileBitmaps);
             WallDrawer walls = new WallDrawer(drawer, _map[MemoryChunkNames.WallTileBitmaps], _attributeTable);
 
-            return new RoomDrawer(furniture,walls,  _map[dataChunkName], _map[addressTableName], _flags);
+            return new RoomDrawer(furniture,walls,  _map[dataChunkName], _map[addressTableName], _flags, _attributeTable);
         }
 
         IAttributeTable IFactory.GetAttributeTable()
