@@ -1,4 +1,5 @@
 
+using System.Text;
 using Bindings;
 using Builder;
 using ZX;
@@ -28,10 +29,19 @@ namespace Pyjamarama.House
 
         private IFactory _factory = null!;
         ZX.Platform.IFactory _platformFactory = null!;
+        ZX.Drawing.IFactory _drawingFactory = null!;
+
         IScreen _screen = null!;
         private IBindingManager _bindingManager = null!;
 
         private BackgroundLayer _layer = null!;
+        private ObjectLayer _objectLayer = null!;
+
+        /// <summary>
+        /// Room index bound item.
+        /// </summary>
+        private IBoundObject<int> _roomIndex = null!;
+
         #endregion
 
         /// <summary>
@@ -39,7 +49,7 @@ namespace Pyjamarama.House
         /// </summary>
         public RoomProvider()
         {
-            Rooms = new List<Room>();
+            Initialise();
             //RoomEvents = new RoomEvents();
             Palette.SetAttribute(0, this);
         }
@@ -79,7 +89,7 @@ namespace Pyjamarama.House
         {
             get;
             set;
-        }
+        } = null!;
 
 
         /// <summary>
@@ -95,11 +105,37 @@ namespace Pyjamarama.House
                     return Rooms[index];
                 }
 
-                throw new IndexOutOfRangeException("index");
+                throw new IndexOutOfRangeException($"Index out of range for RoomProvider ({index})");
             }
         }
 
+        private int RoomIndex
+        {
+            get 
+            { 
+                return _roomIndex.Value;
+            }
+
+            set
+            {
+                // Use bound object to let other classes know.
+                _roomIndex.Value = value;
+                OnRoomIndexValueChanged();
+            }
+        }
         #endregion 
+
+
+        private void OnRoomIndexValueChanged()
+        {
+             int roomIndex = RoomIndex;
+
+            _layer.RoomIndex = roomIndex;
+            _layer.Update();
+
+            _objectLayer.Slot = Rooms[roomIndex].Slot;
+            _objectLayer.Update();
+        }
 
         void IGameStatic.NewGame()
         {
@@ -107,6 +143,8 @@ namespace Pyjamarama.House
             {
                 room.NewGame();
             }
+
+            RoomIndex = 3;
         }
 
         /// <summary>
@@ -120,9 +158,9 @@ namespace Pyjamarama.House
         /// <summary>
         /// Creates the original games' data.
         /// </summary>
-        public void Initialise()
+        private void Initialise()
         {
-            Room[] data = new Room[]
+            Rooms = new List<Room>()
             {
                 // Room 00
                 new Room() { FloorHeight = 0x88, Slot = new ObjectSlot(0x3a, 0x88,2)},
@@ -187,18 +225,6 @@ namespace Pyjamarama.House
                 // Room 1e
                 new Room() { FloorHeight = 0x98, Slot = new ObjectSlot(0,0, 0) { Enabled = false} }
             };
-
-            foreach (Room room in data)
-            {
-                // Set to original start object.
-                room.NewGame();
-                Rooms.Add(room);
-            }
-        }
-
-        private void RoomIndexValueChanged(string name,  Type  type, object? value)
-        {
-            _layer.Update();
         }
 
         #region IBuildable
@@ -216,6 +242,7 @@ namespace Pyjamarama.House
         {
             requests.AddRequest(ClassNames.Factory, typeof(IFactory));
             requests.AddRequest(ZX.Platform.ClassNames.Factory, typeof(ZX.Platform.IFactory));
+            requests.AddRequest(ZX.Drawing.ClassNames.Factory, typeof(ZX.Drawing.IFactory));
             requests.AddRequest(ZX.Drawing.ClassNames.Screen, typeof(IScreen));
             requests.AddRequest(Bindings.ClassNames.BindingManager, typeof(IBindingManager));
         }
@@ -226,14 +253,17 @@ namespace Pyjamarama.House
             _platformFactory = dependencies.TryGetInstance<ZX.Platform.IFactory>(ZX.Platform.ClassNames.Factory);
             _screen = dependencies.TryGetInstance<IScreen>(ZX.Drawing.ClassNames.Screen);
             _bindingManager = dependencies.TryGetInstance<IBindingManager>(Bindings.ClassNames.BindingManager);
+            _drawingFactory = dependencies.TryGetInstance<ZX.Drawing.IFactory>(ZX.Drawing.ClassNames.Factory);
+
+            _roomIndex = _bindingManager.CreateObject<int>(BoundValueNames.RoomIndex, 0);
         }
 
         void IBuildable.EndBuild()
         {
             Attributes = _factory.GetAttributeTable();
             CreateBackgroundLayer();
-            _bindingManager.CreateObject<int>(BoundValueNames.RoomIndex, 1);
-            _bindingManager.Bind(BoundValueNames.RoomIndex, RoomIndexValueChanged);
+            CreateObjectLayer();
+            
         }
 
     
@@ -244,14 +274,36 @@ namespace Pyjamarama.House
 
             _layer = new BackgroundLayer(drawer, "background", bg, (int)LayerZOrders.Background)
             {
-                RoomIndex = 1
+                RoomIndex = 0
             };
 
-            // TEST
-            _layer.Update();
-            //
-
             _screen.AddLayer(_layer);	
+        }
+
+        private void CreateObjectLayer()
+        {
+            IDrawer drawer = _drawingFactory.CreateBitmapDrawer(
+                MemoryChunkNames.ObjectBitmaps,
+                0x10, 0x10);
+
+            ISurface surface = _platformFactory.CreateSurface();
+
+            _objectLayer = new ObjectLayer(drawer, surface);
+
+            _screen.AddLayer(_objectLayer);
+        }
+
+        public override string ToString()
+        {
+            StringBuilder sb = new StringBuilder();
+            sb.AppendLine("Room Provider");
+
+            foreach(Room room in Rooms)
+            {
+                sb.AppendLine(room.ToString());
+            }
+
+            return sb.ToString();
         }
         #endregion
     }

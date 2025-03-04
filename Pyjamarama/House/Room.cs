@@ -48,5 +48,10 @@ namespace Pyjamarama.House
             get;
             set;
         }
+
+        public override string ToString()
+        {
+            return $"Room - Slot {Slot}";
+        }
     }
 }

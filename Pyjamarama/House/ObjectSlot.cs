@@ -19,6 +19,7 @@ namespace Pyjamarama.House
             X = x;
             Y = y;
             InitialIndex = index;
+            ObjectIndex = index;
             Enabled = true;
         }
 
@@ -72,6 +73,11 @@ namespace Pyjamarama.House
         {
             get;
             set;
+        }
+
+        public override string ToString()
+        {
+            return $"Object slot X:{X} Y:{Y} I:{ObjectIndex} ({InitialIndex})";
         }
     }
 }

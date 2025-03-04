@@ -8,6 +8,7 @@ namespace Pyjamarama
     {
         Background = 1,
         Inventory,
+        Object,
         Wally,
 
         Animation
