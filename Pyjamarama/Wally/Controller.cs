@@ -10,7 +10,7 @@ namespace Pyjamarama.Wally
     /// <summary>
     /// Main wally controller
     /// </summary>
-    internal class Controller : IGameItem, IBuildable
+    internal class Controller : IGameItem, IBuildable, IPlayer
     {
         #region Private Types
 
@@ -49,6 +49,23 @@ namespace Pyjamarama.Wally
         #endregion
 
         #region Properties
+        public bool Disabled
+        {
+            get;
+            private set;
+        } = false;
+
+        public bool IsDead
+        {
+            get;
+            private set;
+        } = false;
+
+        public bool JustPickedUp
+        {
+            get;
+            private set;
+        } = false;
 
         public bool Visible
         {

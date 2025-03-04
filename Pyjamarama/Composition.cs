@@ -1,4 +1,5 @@
 
+using Bindings;
 using Builder;
 using Pyjamarama.House;
 using System.Runtime.CompilerServices;
@@ -13,7 +14,7 @@ using Game = ZX.Game;
 
 namespace Pyjamarama
 {
-    internal class Composition : IComposition, IBuildable
+    internal class Composition : IComposition, IBuildable, IGameItem
     {
         #region Flag names
         private class FlagsNames
@@ -58,6 +59,9 @@ namespace Pyjamarama
 
 	    private ZX.Game.IFlags _flags = null!;
 
+        private IBindingManager _bindingManager = null!;
+
+        private int _roomIndex = 0;
         #endregion
 
         string IComposition.Name => "Pyjamarama";
@@ -74,6 +78,7 @@ namespace Pyjamarama
 				typeof(ZX.Game.IFlags));
 		    requests.AddRequest("ZX.Game.Factory",
 				typeof(ZX.Game.IFactory));
+            requests.AddRequest(Bindings.ClassNames.BindingManager, typeof(IBindingManager));
         }
 
         IList<IBuildable>? IBuildable.CreateBuildables()
@@ -98,7 +103,7 @@ namespace Pyjamarama
         void IBuildable.RegisterObjects(IDependencyPool dependencies)
         {
             dependencies.Add(ClassNames.Factory, typeof(IFactory), _factory);
-            dependencies.Add(ClassNames.Wally, typeof(Wally.Controller), _wallyController);
+            dependencies.Add(ClassNames.Wally, typeof(IPlayer), _wallyController);
         }
 
         void IBuildable.DependentsMet(IDependencies dependencies)
@@ -132,11 +137,14 @@ namespace Pyjamarama
 				typeof(ZX.Game.IFactory))
 				as ZX.Game.IFactory
 				?? throw new NullReferenceException("Unable to get ZX.Game.IFactory dependency.");
+
+            _bindingManager = dependencies.TryGetInstance<IBindingManager>(Bindings.ClassNames.BindingManager);
+
         }
 
         void IBuildable.EndBuild()
         {
-            
+            _bindingManager.Bind(BoundValueNames.RoomIndex, RoomIndexValueChanged);
            CreateFlags();  
            SetupWally();
            CreateAnimationLayer();
@@ -146,6 +154,8 @@ namespace Pyjamarama
                ?? throw new InvalidOperationException(nameof(_animationLayer)));
             
             _gameProvider.AddItem(_wallyController);
+            _gameProvider.AddItem(this);
+            _gameProvider.AddItem(_roomProvider);
             _gameProvider.AddItem(_inventoryController);
             _gameProvider.AddItem(_animationLayer as IGameStatic 
                 ?? throw new InvalidOperationException("Animation layer should be based on IGameStatic"));
@@ -154,6 +164,14 @@ namespace Pyjamarama
         #endregion
 
         #region Private helpers
+        private void RoomIndexValueChanged(string name,  Type  type, object? value)
+        {
+            if(name == BoundValueNames.RoomIndex &&
+                value is not null)
+            { 
+                _roomIndex = (int)value;
+            }
+        }
         
         private void CreateFlags()
         {
@@ -194,5 +212,25 @@ namespace Pyjamarama
             _animationLayer = _drawFactory.CreateAnimationLayer("Animation", drawer, surface, (int)LayerZOrders.Animation);
         }
         #endregion
+
+        #region IGameItem
+
+        void IGameItem.Update()
+        {
+            _actionController.CheckActions(_roomIndex);
+        }
+
+        void IGameStatic.NewGame()
+        {
+
+        }
+
+        void IGameStatic.NewLevel()
+        {
+   
+        }
+
+        #endregion
+
     }
 }
