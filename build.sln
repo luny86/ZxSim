@@ -25,6 +25,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ZX.Drawing", "ZX.Drawing\ZX
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Bindings", "Bindings\Bindings.csproj", "{D6B81918-D072-4B7A-A5A7-D0E4E19B50A0}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Logging", "Logging\Logging.csproj", "{820CF841-9D49-45A8-B58F-5936D2D55000}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LoggingTests", "LoggingTests\LoggingTests.csproj", "{29E31D59-8E84-4EFB-B080-EDF055D2C38B}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -86,5 +90,13 @@ Global
 		{D6B81918-D072-4B7A-A5A7-D0E4E19B50A0}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D6B81918-D072-4B7A-A5A7-D0E4E19B50A0}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D6B81918-D072-4B7A-A5A7-D0E4E19B50A0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{820CF841-9D49-45A8-B58F-5936D2D55000}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{820CF841-9D49-45A8-B58F-5936D2D55000}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{820CF841-9D49-45A8-B58F-5936D2D55000}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{820CF841-9D49-45A8-B58F-5936D2D55000}.Release|Any CPU.Build.0 = Release|Any CPU
+		{29E31D59-8E84-4EFB-B080-EDF055D2C38B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{29E31D59-8E84-4EFB-B080-EDF055D2C38B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{29E31D59-8E84-4EFB-B080-EDF055D2C38B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{29E31D59-8E84-4EFB-B080-EDF055D2C38B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

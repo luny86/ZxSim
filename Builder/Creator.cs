@@ -273,6 +273,7 @@ public class Creator : IDisposable
             }
 
             System.Reflection.Assembly.Load("Bindings");
+            System.Reflection.Assembly.Load("Logging");
     }
 
     public static IEnumerable<IComposition> Compositions
