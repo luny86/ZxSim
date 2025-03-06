@@ -36,7 +36,7 @@ namespace Logging
         /// <returns>Standard dated logging header.</returns>
         static private string CreateHeader(LogLevel level)
         {
-            return $"{DateTime.Now.ToString(CultureInfo.InvariantCulture)}:{level.ToString()}:";
+            return $"{DateTime.Now.ToString(CultureInfo.InvariantCulture)} [{level.ToString()}] ";
         }
 
         /// <summary>

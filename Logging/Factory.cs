@@ -17,13 +17,18 @@ namespace Logging
 
         ILogger IFactory.GetLogger()
         {
-            if(_logger == null)
-            {
-                // TODO determine type...
-                _logger = new ConsoleLogger(_settings);
-            }
+            // TODO determine type...
+            _logger ??= CreateLogger(_settings.Type);
 
             return _logger; 
         }
+
+        private ILogger CreateLogger(LogType type) =>
+            type switch
+            {
+                LogType.Console => new ConsoleLogger(_settings),
+                LogType.TextFile => new TextFileLogger(_settings),
+                _ => throw new ArgumentException(nameof(type), "Invalid LogType used when creating logger.")
+            };
     }
 }

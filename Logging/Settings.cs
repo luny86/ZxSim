@@ -8,7 +8,7 @@ namespace Logging
     {
         public Settings()
         {
-
+            Path = Directory.GetCurrentDirectory();
         }
 
         public Settings(Settings copy)
@@ -34,7 +34,7 @@ namespace Logging
         {
             get;
             set;
-        } = LogType.Console;
+        } = LogType.TextFile;
 
         /// <summary>
         /// Determines where to put any file output.
@@ -43,6 +43,6 @@ namespace Logging
         {
             get;
             set;
-        } = ".";
+        }
     }
 }
