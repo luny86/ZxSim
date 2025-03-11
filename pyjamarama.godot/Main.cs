@@ -10,6 +10,7 @@ using ZX.Util;
 using ZX.Drawing;
 using ZX.Game;
 using Pyjamarama;
+using Logging;
 
 public partial class Main : Node, IBuildable
 {
@@ -20,6 +21,8 @@ public partial class Main : Node, IBuildable
 	Pyjamarama.IFactory _factory = null;
 
 	ZX.Platform.IFactory _platformFactory = null;
+
+	ILogger _logger = null;
 
 	ZX.Drawing.IScreen _screen =  null;
 	
@@ -94,6 +97,8 @@ public partial class Main : Node, IBuildable
 				typeof(ZX.Drawing.IScreen));
 		requests.AddRequest("ZX.Platform.UserInput",
 				typeof(ZX.Platform.IUserInput));
+		requests.AddRequest(Logging.ClassNames.Factory,
+				typeof(Logging.IFactory));
 	}
 
 	void IBuildable.RegisterObjects(IDependencyPool dependencies)
@@ -151,6 +156,9 @@ public partial class Main : Node, IBuildable
 			as UserInputBridge
 			?? throw new InvalidOperationException("Unable to get dependency ZX.Platform.UserInput");
 
+		Logging.IFactory logFactory = dependencies.TryGetInstance<Logging.IFactory>(Logging.ClassNames.Factory);
+		_logger = logFactory.GetLogger();
+
 		ISurface surface = _platformFactory.CreateSurface();
 		surface.Create(256, 192);
 		surface.Fill(ZX.Palette.Green);
@@ -169,7 +177,7 @@ public partial class Main : Node, IBuildable
 
 		if(e.IsActionPressed("dump"))
 		{
-			Console.WriteLine(_attributes);
+			_logger.WriteLog(LogLevel.Info, "Main", _attributes.ToString());
 		}
 	}
 }
