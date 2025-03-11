@@ -64,16 +64,17 @@ namespace Pyjamarama.House
         #region Construction
         public ActionProvider()
         {
+            Initialise();
         }
 
-        public void Initialise()
+        private void Initialise()
         {
             // Register all the action test methods.
             // Order is important.
             // TODO - Use names instead of indicies
             // when data is XML.
-            RegisterTest(new TestDummy(2)); //new TestPosition());
-            RegisterTest(new TestDummy(2)); //new TestPickupPosition());
+            RegisterTest(new TestPosition());
+            RegisterTest(new TestPickupPosition());
             RegisterTest(new TestDummy(1)); //new TestCarrying());
             RegisterTest(new TestDummy(0)); //new TestFuelCanFull());
             RegisterTest(new TestDummy(0)); //new TestLiftOn());
@@ -84,8 +85,8 @@ namespace Pyjamarama.House
 
             // Same here for actions.
             RegisterAction(new ActionDummy()); //new ActionSwapObject());     // 0x00
-            RegisterAction(new ActionDummy()); //new ActionPickUp());         // 0x01
-            RegisterAction(new ActionDummy()); //new ActionEnterRoom());      // 0x02
+            RegisterAction(new ActionPickUp());         // 0x01
+            RegisterAction(new ActionEnterRoom());      // 0x02
             RegisterAction(new ActionDummy()); //new ActionFillBucket());     // 0x03
             RegisterAction(new ActionDummy()); //new ActionChargeLaser());    // 0x04
             RegisterAction(new ActionDummy()); //new ActionEmptyLaser());     // 0x05
