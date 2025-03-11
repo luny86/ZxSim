@@ -104,6 +104,8 @@ namespace Pyjamarama
         {
             dependencies.Add(ClassNames.Factory, typeof(IFactory), _factory);
             dependencies.Add(ClassNames.Wally, typeof(IPlayer), _wallyController);
+            dependencies.Add(ClassNames.RoomProvider, typeof(IRoomProvider), _roomProvider);
+            dependencies.Add(ClassNames.Inventory, typeof(Inventory.IInventory), _inventoryController);
         }
 
         void IBuildable.DependentsMet(IDependencies dependencies)
