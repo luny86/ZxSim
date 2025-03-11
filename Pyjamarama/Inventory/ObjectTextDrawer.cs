@@ -72,6 +72,10 @@ namespace Pyjamarama.Inventory
             _attribute.Ink = Ink;
             _attribute.Paper = Paper;
 
+            surface.FillRect(
+                new Rectangle(x*8,y*8, 160,16),
+                Palette.Black);
+
             FurnitureDrawLogic logic = new FurnitureDrawLogic()
             {
                 Surface = surface,
