@@ -64,15 +64,22 @@ namespace Pyjamarama.Wally
         public bool JustPickedUp
         {
             get;
-            private set;
+            set;
         } = false;
 
         public bool Visible
         {
-            get;
-            set;
-        } = true;
+            get 
+            { 
+                return Layer?.Visible ?? false; 
+            }
 
+            set
+            {
+                Layer.Visible = value;
+            }
+        }
+        
         public DrawLayer Layer
         {
             get;
