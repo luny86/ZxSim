@@ -13,7 +13,7 @@ namespace Pyjamarama.House
     /// <summary>
     /// Holds a list of all the available rooms.
     /// </summary>
-    internal class RoomProvider : IBuildable, IAttribute, IGameStatic
+    internal class RoomProvider : IRoomProvider, IBuildable, IAttribute, IGameStatic
     {
         #region Members
 
@@ -96,7 +96,7 @@ namespace Pyjamarama.House
         /// Gets a room based on index.
         /// </summary>
         /// <param name="index">Index of room required.</param>
-        public Room this[int index]
+        public IRoom this[int index]
         {
             get
             {
@@ -123,6 +123,8 @@ namespace Pyjamarama.House
                 OnRoomIndexValueChanged();
             }
         }
+
+        IRoom IRoomProvider.CurrentRoom => this[RoomIndex];
         #endregion 
 
 
@@ -304,6 +306,17 @@ namespace Pyjamarama.House
             }
 
             return sb.ToString();
+        }
+
+        void IRoomProvider.SetRoom(int newRoom)
+        {
+            RoomIndex = newRoom;
+        }
+        
+        void IRoomProvider.UpdateSlot(int newObjectIndex)
+        {
+            (this as IRoomProvider).CurrentRoom.Slot.ObjectIndex = newObjectIndex;
+            _objectLayer.Update();
         }
         #endregion
     }

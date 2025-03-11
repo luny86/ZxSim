@@ -4,7 +4,7 @@ namespace Pyjamarama.House
     /// Class for handling and displaying a room
     /// in Pyjamarama.
     /// </summary>
-    public class Room
+    public class Room : IRoom
     {
         /// <summary>
         /// Creates an instance of a <see cref="Room"/> 
