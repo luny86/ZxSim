@@ -9,5 +9,7 @@ namespace Pyjamarama
     {
         public const string Factory = "Pyjamarama.Factory";
         public const string Wally = "Pyjamarama.Wally";
+        public const string RoomProvider = "Pyjamarama.RoomProvider";
+        public const string Inventory = "Pyjamarama.Inventory";
     }
 }
