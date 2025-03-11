@@ -12,7 +12,7 @@ namespace Pyjamarama.Inventory
     /// <summary>
     /// Inventory controller 
     /// </summary>
-    internal class Controller : IGameItem, IBuildable, 
+    internal class Controller : IInventory, IGameItem, IBuildable, 
         ZX.Util.Observing.IObservable<InventoryStats>
     {
         #region Private Members
@@ -115,6 +115,21 @@ namespace Pyjamarama.Inventory
                 _memoryMap[MemoryChunkNames.ObjectText],
                 _flags);
         }
+        #endregion
+
+        #region IInventory
+        
+        int IInventory.RotatePockets(int newObjectIndex)
+        {
+            int outIndex = _stats.pocket2;
+            _stats.pocket2 = _stats.pocket1;
+            _stats.pocket1 = newObjectIndex;
+
+            _subscriber.OnChanged(_stats);
+
+            return outIndex;
+        }
+
         #endregion
 
         #region IGameItem
