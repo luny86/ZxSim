@@ -59,7 +59,10 @@ namespace ZX.Drawing
         {
             foreach(ILayer layer in layers)
             {
-                layer.Blend(Main);
+                if(layer.Visible)
+                {
+                    layer.Blend(Main);
+                }
             }
         }
     }

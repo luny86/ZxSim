@@ -27,6 +27,8 @@ namespace ZX.Drawing
         /// </summary>
         public string Name { get; }
 
+        public bool Visible { get; set; } = true;
+
         /// <summary>
         /// Gets the surface that holds the image
         /// of the layer.

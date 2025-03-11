@@ -19,6 +19,11 @@ namespace ZX.Drawing
         int Z { get; }
         
         /// <summary>
+        /// Determines if the layer is shown or not
+        /// </summary>
+        bool Visible { get; set; }
+        
+        /// <summary>
         /// Handle any actual drawing here.
         /// </summary>
         void Update();
