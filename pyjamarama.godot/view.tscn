@@ -1,6 +1,6 @@
 [gd_scene load_steps=2 format=3 uid="uid://c7shxglgbjoqi"]
 
-[ext_resource type="Script" path="res://Platform/View.cs" id="1_ydvyv"]
+[ext_resource type="Script" uid="uid://s7kkgdbtsqw6" path="res://Platform/View.cs" id="1_ydvyv"]
 
 [node name="view" type="TextureRect"]
 texture_filter = 3
