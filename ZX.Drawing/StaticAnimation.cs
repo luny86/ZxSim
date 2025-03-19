@@ -8,12 +8,19 @@ namespace ZX.Drawing
     /// </summary>
     internal class StaticAnimation : IAnimation
     {
+        /// <summary>
+        /// Invoked when a non-looping animation has reached
+        /// the end.
+        /// </summary>
+        public event EventHandler? AnimationComplete;
+
         private int _startFrame = 0;
 
         private int _frame = 0;
 
         private int _startFreq;
         private int _freqCount = 0;
+        private int _hold = 0;
 
         public StaticAnimation(string name)
         {
@@ -29,12 +36,12 @@ namespace ZX.Drawing
         /// <remarks>
         /// Looping animations never end.
         /// Non=looping will complete once the last frame has
-        /// been reached.
+        /// been reached and Hold is zero.
         public bool Completed 
         { 
             get
             {
-                 return Loop == false && Frame == LastFrame;
+                 return Loop == false && Frame == LastFrame && Hold == 0;
             }
         }
 
@@ -70,6 +77,19 @@ namespace ZX.Drawing
             }
         }
 
+        /// <summary>
+        /// Number of frames the last image is displayed
+        /// once a single shot animation has occurred.
+        /// </summary>
+        public int Hold
+        {
+            get { return _hold; }
+            set
+            {
+                _hold = value;
+            }
+        }
+
         public Point Position { get; set; }
 
         public void Update()
@@ -78,14 +98,33 @@ namespace ZX.Drawing
             {
                 _freqCount = _startFreq;
 
-                if(_frame++ == LastFrame)
+                if(_frame < LastFrame)
+                {
+                    _frame++;
+                }
+
+                if(_frame == LastFrame)
                 {
                     if(Loop)
                     {
                         _frame = _startFrame;
                     }
+                    else
+                    {
+                        OnAnimationComplete();
+                    }
+
+                    if(_hold > 0)
+                    {
+                        _hold--;
+                    }
                 }
             }
+        }
+
+        private void OnAnimationComplete()
+        {
+            AnimationComplete?.Invoke(this, EventArgs.Empty);
         }
     }
 }

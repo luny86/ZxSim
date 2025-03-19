@@ -103,11 +103,12 @@ namespace Pyjamarama.Inventory
 
         private void RedrawEnergy()
         {
-            _energy.PreClear = false;
+            _energy.PreClear = true;
             _energy.BlitRect = Rectangle.Empty;
             _energy.Draw(Surface, 1, 0x68, 0);
 
             Rectangle o = _energy.BlitRect;
+            _energy.PreClear = false;
             _energy.BlitRect = new Rectangle(
                 0,
                 o.H - _stats.Energy,

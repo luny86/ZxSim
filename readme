@@ -19,17 +19,17 @@ into bitmaps and JSON for quicker use. All portable to different UI platforms.
 Architect
 =========
 
-		 ------------- ------------
-		|   ZX Util   |   Builder  |
-		 ------------- ------------
-		|     ZX      |  Bindings  |
-		 ------------- ------------
-		| ZX Platform | ZX Game    |
-		 --------------------------
-	    | ZX Drawing               |
-		 --------------------------
-		| Godot project / Platform |
-		 --------------------------
+		 ------------- ----------------------
+		|   ZX Util   |   Builder            |
+		 ------------- ----------------------
+		|     ZX      |  Bindings  | Logging |
+		------------- ------------------     |
+		| ZX Platform | ZX Game    	    |    |
+		 ------------------------------------
+	    | ZX Drawing                         |
+		 ------------------------------------
+		| Godot project / Platform           |
+		 ------------------------------------
 
 
 Builder
@@ -99,6 +99,10 @@ There are the standard components, which can be used or the user can create thei
 
 ZX.Game
 -------
+The game module holds the main state machine and game loop. It holds an IGameProvider which keeps track of the current
+game state (Titles, game loop, game over etc) and is called by the main game loop. Objects based on the IGameItem (and
+any derived interfaces) can be added to the provider and will in turn be called when a game starts, a new level and the
+main game frame cycle.
 
 
 Setting up a new project

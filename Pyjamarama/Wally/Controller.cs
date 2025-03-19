@@ -52,7 +52,7 @@ namespace Pyjamarama.Wally
         public bool Disabled
         {
             get;
-            private set;
+            set;
         } = false;
 
         public bool IsDead
@@ -221,7 +221,7 @@ namespace Pyjamarama.Wally
 
         private void StandardUpdate()
         {
-            if (Visible)
+            if (Visible && !Disabled)
             {
                 CheckAttr();
 
@@ -415,6 +415,15 @@ namespace Pyjamarama.Wally
                     }
                     break;
             }
+        }
+        #endregion
+
+        #region State Change
+
+        void IPlayer.Falling()
+        {
+            HeadTurned = false;
+            Jump.Reset();
         }
         #endregion
 

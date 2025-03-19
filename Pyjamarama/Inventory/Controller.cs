@@ -130,6 +130,21 @@ namespace Pyjamarama.Inventory
             return outIndex;
         }
 
+        bool IInventory.IsCarrying(int objectIndex)
+        {
+            return _stats.pocket1 == objectIndex || _stats.pocket2 == objectIndex;
+        }
+
+        void IInventory.LoseEnergy(int by)
+        {
+            _stats.Energy -= by;
+            if(_stats.Energy < 0)
+            {
+                _stats.Energy = 0;
+            }
+
+            _subscriber.OnChanged(_stats);
+        }
         #endregion
 
         #region IGameItem
@@ -140,7 +155,8 @@ namespace Pyjamarama.Inventory
             {
                 pocket1 = 8,
                 pocket2 = 14,
-                livesLeft = 3
+                livesLeft = 3,
+                Energy = 0x20
             };
             _subscriber.OnChanged(_stats);
         }

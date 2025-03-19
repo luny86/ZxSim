@@ -13,5 +13,19 @@ namespace Pyjamarama.Inventory
         /// <param name="newObjectIndex">Index to new object to place into pockets</param>
         /// <returns>Index to object taken out of pockets.</returns>
         int RotatePockets(int newObjectIndex);
+
+        /// <summary>
+        /// Determines if either pocket contains 
+        /// the given object index.
+        /// </summary>
+        /// <param name="objectIndex">Index of object to check for.</param>
+        /// <returns>True if being carried.</returns>
+        bool IsCarrying(int objectIndex);
+
+        /// <summary>
+        /// Update energy by a given difference.
+        /// </summary>
+        /// <param name="by">Amount of energy to lose.</param>
+        void LoseEnergy(int by);
     }
 }

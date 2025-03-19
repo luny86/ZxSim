@@ -10,6 +10,14 @@ namespace ZX.Drawing
     public interface IAnimation
     {
         /// <summary>
+        /// Invoked by when an animation determines it is 
+        /// complete. A completion is on a per animation basis,
+        /// such as a one-shot could invoke the event when
+        /// all frames have been displayed.
+        /// </summary>
+        event EventHandler? AnimationComplete;
+
+        /// <summary>
         /// Gets the unique name of the animation.
         /// </summary>
         string Name
@@ -83,6 +91,16 @@ namespace ZX.Drawing
         {
             get;
             init;
+        }
+
+        /// <summary>
+        /// Determines how long the image stays alive
+        /// after s ginle shot of animation has occurred.
+        /// </summary>
+        int Hold
+        {
+            get;
+            set;
         }
 
         /// <summary>

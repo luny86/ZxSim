@@ -115,27 +115,30 @@ namespace Pyjamarama.House
 
             if (roomIndex >= 0)
             {
-                IReadOnlyList<byte> actions = _actionProvider.RoomActionData(roomIndex);
+                IReadOnlyList<byte> script = _actionProvider.RoomActionData(roomIndex);
 
                 // Check for actions.
                 do
                 {
                     do
                     {
-                        if(i > actions.Count)
+                        if(i > script.Count)
                         {
                             throw new IndexOutOfRangeException($"Index out of range for Actions. Index = {i}");
                         }
 
-                        ITest test = _actionProvider.Tests[actions[i++]];
+                        ITest test = _actionProvider.Tests[script[i++]];
 
-                        data = CopyDataFromRoomActionData(actions, i, test.TestDataSize);
+                        data = CopyDataFromRoomActionData(script, i, test.TestDataSize);
                         i += test.TestDataSize;
 
                         // Call test
                         if(test.Test(data))
                         {
-                            updatesRequired = ScanActions(actions, ref i);
+                            if(script[i] == CmdThen)
+                            {
+                                updatesRequired = ScanActions(script, ref i);
+                            }
                         }
                         else
                         {
@@ -147,22 +150,22 @@ namespace Pyjamarama.House
                             }
 
                             // Skip onto next test / end of data.
-                            while(i < actions.Count &&
-                                  actions[i] != CmdEndOfString &&
-                                  actions[i] != CmdEndOfStatement)
+                            while(i < script.Count &&
+                                  /*script[i] != CmdEndOfString &&*/
+                                  script[i] != CmdEndOfStatement)
                             {
                                 i++;
                             }
                         }
                     }
-                    while(!done && actions[i] != CmdEndOfStatement);
+                    while(!done && script[i] != CmdEndOfStatement);
 
-                    if(actions[i] == CmdEndOfStatement)
+                    if(script[i] == CmdEndOfStatement)
                     {
                         i++;
                     }
                 } 
-                while(!done && actions[i] != CmdEndOfString);
+                while(!done && script[i] != CmdEndOfString);
             }
 
             return updatesRequired;
@@ -185,31 +188,24 @@ namespace Pyjamarama.House
         {
             bool updatesRequired = false;
 
-            if(roomActionData[dataIndex] == CmdThen)
+            dataIndex++;
+            while(roomActionData[dataIndex] != CmdEndIf)
             {
-                dataIndex++;
-                while(roomActionData[dataIndex] != CmdEndIf)
-                {
-                    IAction action = _actionProvider.Actions[roomActionData[dataIndex++]];
-                    IList<byte> data = CopyDataFromRoomActionData(roomActionData, dataIndex, action.DataSize);
-                    dataIndex+= action.DataSize;
+                IAction action = _actionProvider.Actions[roomActionData[dataIndex++]];
+                IList<byte> data = CopyDataFromRoomActionData(roomActionData, dataIndex, action.DataSize);
+                dataIndex+= action.DataSize;
 
-                    if(action.Invoke(data))
+                if(action.Invoke(data))
+                {
+                    // TODO - Can only have one action update
+                    // at a time on a successful test.
+                    // Might need to stack them
+                    if(action is IUpdate update)
                     {
-                        // TODO - Can only have one action update
-                        // at a time on a successful test.
-                        // Might need to stack them
-                        if(action is IUpdate update)
-                        {
-                            this.actionQueue.Enqueue(update);
-                            updatesRequired = true;
-                        }
+                        this.actionQueue.Enqueue(update);
+                        updatesRequired = true;
                     }
                 }
-            }
-            else
-            { 
-                throw new InvalidOperationException($"Invalid room action data for room.");
             }
 
             return updatesRequired;

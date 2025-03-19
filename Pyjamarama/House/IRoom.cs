@@ -11,5 +11,10 @@ namespace Pyjamarama.House
         /// for interactive object in each room.
         /// </summary>
         IObjectSlot Slot { get; }
+
+        /// <summary>
+        /// Position of the floor.
+        /// </summary>
+        int FloorHeight { get; }
     }
 }

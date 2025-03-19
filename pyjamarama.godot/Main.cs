@@ -112,7 +112,7 @@ public partial class Main : Node, IBuildable
 		_map.AddRange(MemoryChunkNames.RoomStrings, 0x8d6a, 0x301);
 		_map.AddRange(MemoryChunkNames.RoomPointers, 0x8d2e, 0x3c);
 		_map.AddRange(MemoryChunkNames.WallTileBitmaps, 0x8c4d, 0x18);
-		_map.AddRange(MemoryChunkNames.WallyBitmaps, 0x91eb, 0xa00);
+		_map.AddRange(MemoryChunkNames.WallyBitmaps, 0x91eb, 0x1900);
 		_map.AddRange(MemoryChunkNames.ObjectBitmaps, 0x9beb, 0xf00);
 		_map.AddRange(MemoryChunkNames.InventoryFurniture, 0x826c, 0x5a);
 		_map.AddRange(MemoryChunkNames.LivesBitmaps, 0x9b6b, 0x80);
