@@ -146,7 +146,7 @@ namespace Pyjamarama.House
                 room.NewGame();
             }
 
-            RoomIndex = 3;
+            RoomIndex = 1;
         }
 
         /// <summary>
