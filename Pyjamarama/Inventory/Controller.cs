@@ -153,7 +153,7 @@ namespace Pyjamarama.Inventory
         {
            _stats = new InventoryStats
             {
-                pocket1 = 8,
+                pocket1 = 0x0b,
                 pocket2 = 14,
                 livesLeft = 3,
                 Energy = 0x20

@@ -13,9 +13,9 @@ namespace Pyjamarama.Inventory
     internal class Layer : ZX.Drawing.Layer, Observing.IObserver<InventoryStats>
     {
         #region Private Members
-        
+
         private const int _width = 256;
-        private const int _height = 6*8;
+        private const int _height = 6 * 8;
 
         private InventoryStats _stats;
 
@@ -29,12 +29,12 @@ namespace Pyjamarama.Inventory
         #region Construction
 
         public Layer(
-            ISurface surface, 
-            IDrawer pocketDrawer, 
+            ISurface surface,
+            IDrawer pocketDrawer,
             IDrawer livesDrawer,
             IDrawer textDrawer,
             ISizeableDrawer energy)
-        :base("Inventory", surface, (int)LayerZOrders.Inventory)
+        : base("Inventory", surface, (int)LayerZOrders.Inventory)
         {
             _stats = new InventoryStats();
 
@@ -52,8 +52,8 @@ namespace Pyjamarama.Inventory
 
         public override void Update()
         {
-            RedrawPocket(Palette.BrightCyan, _stats.pocket1, 0x90, 0);
-            RedrawPocket(Palette.BrightYellow, _stats.pocket2, 0x90, 16);
+            RedrawPocket(Palette.BrightCyan, _stats.pocket1, 0x88, 0);
+            RedrawPocket(Palette.BrightYellow, _stats.pocket2, 0x88, 16);
             DrawText();
             RedrawLives();
             RedrawEnergy();
@@ -62,12 +62,12 @@ namespace Pyjamarama.Inventory
         private void RedrawPocket(Rgba ink, int index, int x, int y)
         {
             IAttribute? attribute = _pocketDrawer as ZX.IAttribute;
-            
-            if(attribute != null)
+
+            if (attribute != null)
             {
                 Palette.SetAttribute(
-                    ink, 
-                    Palette.Black, 
+                    ink,
+                    Palette.Black,
                     attribute);
             }
 
@@ -76,15 +76,15 @@ namespace Pyjamarama.Inventory
 
         private void DrawText()
         {
-            const int x = 21;
+            const int charX = 20;
 
-            IAttribute attribute = _textDrawer as IAttribute ?? 
+            IAttribute attribute = _textDrawer as IAttribute ??
                 throw new InvalidOperationException("_textDrawer should implement IAttribute");
 
             attribute.Ink = Palette.BrightGreen;
-            _textDrawer.Draw(Surface, _stats.pocket1, x,0);
+            _textDrawer.Draw(Surface, _stats.pocket1, charX, 0);
             attribute.Ink = Palette.BrightCyan;
-            _textDrawer.Draw(Surface, _stats.pocket2, x,2);
+            _textDrawer.Draw(Surface, _stats.pocket2, charX, 2);
         }
 
         private void RedrawLives()
@@ -94,10 +94,10 @@ namespace Pyjamarama.Inventory
             const int w = 0x10;
             const int h = 0x10;
 
-            Surface.FillRect(new Rectangle(X,y,w*3, h), Palette.Black);
-            for(int i = 0; i < _stats.livesLeft; i++)
+            Surface.FillRect(new Rectangle(X, y, w * 3, h), Palette.Black);
+            for (int i = 0; i < _stats.livesLeft; i++)
             {
-                _livesDrawer.Draw(Surface, 0, x+(i*w), y);
+                _livesDrawer.Draw(Surface, 0, x + (i * w), y);
             }
         }
 
