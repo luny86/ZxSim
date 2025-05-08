@@ -21,7 +21,7 @@ namespace Pyjamarama.House
     /// The trap will then be set in the next room from a list
     /// of rooms that can hold the trap.
     /// </remarks>
-    internal class TestBoxingGlove: ITest, IUpdate, IBuildable
+    internal class TestBoxingGlove : ITest, IUpdate, IBuildable
     {
         #region Metrics
 
@@ -48,7 +48,7 @@ namespace Pyjamarama.House
 
         #region Dependencies
 
-        private IInventory  _inventory = null!;
+        private IInventory _inventory = null!;
         private IPlayer _player = null!;
         private IRoomProvider _room = null!;
         private ZXD.IFactory _drawFactory = null!;
@@ -115,14 +115,14 @@ namespace Pyjamarama.House
 
                 IAnimation animation = _drawFactory.CreateStaticAnimation(
                     "glove",
-                    BoxingGloveStartFrame, BoxingGloveStartFrame+7,
+                    BoxingGloveStartFrame, BoxingGloveStartFrame + 7,
                     2);
-                
+
                 animation.Hold = 14;
                 animation.Position = new Point(0xe8, 0x98);
                 animation.AnimationComplete += AnimationComplete;
 
-                if(_screen["Animation"] is IAnimationLayer layer)
+                if (_screen["Animation"] is IAnimationLayer layer)
                 {
                     layer.RegisterAnimation(animation);
                 }
@@ -133,11 +133,11 @@ namespace Pyjamarama.House
             return trip;
 
         }
-       
+
         private void SetTrapInNextRoom()
         {
             RoomTrapIsSetIn++;
-            if(RoomTrapIsSetIn >= rooms.Length)
+            if (RoomTrapIsSetIn >= rooms.Length)
             {
                 RoomTrapIsSetIn = 0;
             }
@@ -156,7 +156,7 @@ namespace Pyjamarama.House
 
         bool IUpdate.Update()
         {
-            switch(UpdateState)
+            switch (UpdateState)
             {
                 case State.Punch:
                     _player.Position = new Point(_player.Position.X - 1, _player.Position.Y);
@@ -164,7 +164,7 @@ namespace Pyjamarama.House
                     break;
 
                 case State.Sit:
-                    SittingWaitState();
+                    SitState();
                     break;
 
                 case State.Wait1:
@@ -204,9 +204,9 @@ namespace Pyjamarama.House
             if (_tripAnimationCount < 0x14)
             {
                 _player.Frame = 0x9d;
-            }                
+            }
 
-            if (--_tripAnimationCount == 0)
+            if (--_tripAnimationCount <= 0)
             {
                 _player.Frame = 0x10;
                 UpdateState = State.Wait2;
@@ -217,7 +217,7 @@ namespace Pyjamarama.House
 
         private void FinalWaitState()
         {
-            if(--_tripAnimationCount == 0)
+            if (--_tripAnimationCount == 0)
             {
                 _player.Disabled = false;
                 UpdateState = State.End;
@@ -225,7 +225,7 @@ namespace Pyjamarama.House
         }
 
         #endregion
-        
+
         #region IBuildable
 
         IList<IBuildable>? IBuildable.CreateBuildables()
@@ -267,7 +267,7 @@ namespace Pyjamarama.House
         /// </summary>
         private void RoomIndex_Change(string name, Type type, object? value)
         {
-            if(name == BoundValueNames.RoomIndex &&
+            if (name == BoundValueNames.RoomIndex &&
                 value is int index)
             {
                 _roomIndex = index;
