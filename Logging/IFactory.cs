@@ -6,6 +6,6 @@ namespace Logging
     /// </summary>
     public interface IFactory
     {
-        ILogger GetLogger();
+        ILogger GetLogger(string name);
     }
 }

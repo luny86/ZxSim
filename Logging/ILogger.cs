@@ -7,6 +7,11 @@ namespace Logging
     public interface ILogger
     {
         /// <summary>
+        /// Determines if logger outputs or not.
+        /// </summary>
+        bool Enabled { get; set; }
+
+        /// <summary>
         /// Writes a simple string message to the logger.
         /// </summary>
         /// <param name="level">Level of log message.</param>

@@ -14,7 +14,7 @@ namespace Logging
 
         void ILogger.WriteLog(LogLevel level, string subject, string message)
         {
-            if(IsSameLevel(level))
+            if (Enabled && IsSameLevel(level))
             {
                 Console.WriteLine(FormatMessage(level, subject, message));
             }

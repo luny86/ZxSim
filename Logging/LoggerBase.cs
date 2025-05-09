@@ -18,6 +18,12 @@ namespace Logging
             Settings = new Settings(settings);
         }
 
+        public bool Enabled
+        {
+            get;
+            set;
+        }
+
         protected Settings Settings
         {
             get;
@@ -44,7 +50,7 @@ namespace Logging
         /// </summary>
         static protected string FormatMessage(LogLevel level, string subject, string message)
         {
-            return CreateHeader(level)+$"{subject}:{message}";
+            return CreateHeader(level) + $"{subject}:{message}";
         }
     }
 }

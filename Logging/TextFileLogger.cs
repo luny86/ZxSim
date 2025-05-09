@@ -14,18 +14,21 @@ namespace Logging
 
         void ILogger.WriteLog(LogLevel level, string subject, string message)
         {
-            string path = Path.Join([ Settings.Path, 
+            if (Enabled)
+            {
+                string path = Path.Join([ Settings.Path,
                 $"log_{DateTime.Now.ToString(TimeStampFormat)}.log"]);
 
-            Console.WriteLine(path);
-            if(!Path.IsPathFullyQualified(path))
-            {
-                throw new FileNotFoundException("Path is not valid for logger settings.");
-            }
+                Console.WriteLine(path);
+                if (!Path.IsPathFullyQualified(path))
+                {
+                    throw new FileNotFoundException("Path is not valid for logger settings.");
+                }
 
-            using(StreamWriter file = new StreamWriter(path, true))
-            {
-                file.WriteLine(FormatMessage(level, subject, message));
+                using (StreamWriter file = new StreamWriter(path, true))
+                {
+                    file.WriteLine(FormatMessage(level, subject, message));
+                }
             }
         }
     }

@@ -6,7 +6,7 @@ namespace Logging
     /// </summary>
     internal class Factory : IFactory
     {
-        private ILogger _logger = null!;
+        private Dictionary<string, ILogger> _logPool = new Dictionary<string, ILogger>();
 
         private Settings _settings;
 
@@ -15,12 +15,16 @@ namespace Logging
             _settings = settings;
         }
 
-        ILogger IFactory.GetLogger()
+        ILogger IFactory.GetLogger(string name)
         {
-            // TODO determine type...
-            _logger ??= CreateLogger(_settings.Type);
+            if (!_logPool.TryGetValue(name, out ILogger? logger))
+            {
+                logger = CreateLogger(_settings.Type);
+                // TODO determine type...
+                _logPool.Add(name, logger);
+            }
 
-            return _logger; 
+            return logger;
         }
 
         private ILogger CreateLogger(LogType type) =>
