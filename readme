@@ -19,17 +19,17 @@ into bitmaps and JSON for quicker use. All portable to different UI platforms.
 Architect
 =========
 
-		 ------------- ----------------------
-		|   ZX Util   |   Builder            |
-		 ------------- ----------------------
-		|     ZX      |  Bindings  | Logging |
-		------------- ------------------     |
-		| ZX Platform | ZX Game    	    |    |
-		 ------------------------------------
-	    | ZX Drawing                         |
-		 ------------------------------------
-		| Godot project / Platform           |
-		 ------------------------------------
+ ------------- ----------------------
+|   ZX Util   |   Builder            |
+ ------------- ----------------------
+|     ZX      |  Bindings  | Logging |
+ ------------- ------------------    |
+| ZX Platform | ZX Game    	    |    |
+ ------------------------------------
+| ZX Drawing                         |
+ ------------------------------------
+| Godot project / Platform           |
+ ------------------------------------
 
 
 Builder
@@ -90,8 +90,8 @@ and is used by the screen to determine the order of blending.
   | ISurface | ----------------------> |        |          |         |
    ----------                          |        |           ---------
                                         -------- 
-										[Blend() - Blends surface to another (normally screen)]
-										[Update() - Uses IDrawers to draw onto surface.]
+ 	                                             [Blend() - Blends surface to another (normally screen)]
+                                                 [Update() - Uses IDrawers to draw onto surface.]
 
 The Animation layer (ZX.Drawing.IAnimationLayer), is a surface of a given size which will hold a list of animations
 (IAnimation) which all use the same IDrawer object to be displayed and updated for each game cycle.
