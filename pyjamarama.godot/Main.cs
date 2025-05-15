@@ -157,7 +157,7 @@ public partial class Main : Node, IBuildable
 			?? throw new InvalidOperationException("Unable to get dependency ZX.Platform.UserInput");
 
 		Logging.IFactory logFactory = dependencies.TryGetInstance<Logging.IFactory>(Logging.ClassNames.Factory);
-		_logger = logFactory.GetLogger();
+		_logger = logFactory.GetLogger("Main");
 
 		ISurface surface = _platformFactory.CreateSurface();
 		surface.Create(256, 192);
