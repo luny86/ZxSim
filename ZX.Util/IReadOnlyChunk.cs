@@ -7,11 +7,19 @@ namespace ZX.Util
     /// </summary>
     public interface IReadOnlyChunk : IChunkAttributes
     {
-        
+
         byte this[int index]
         {
             get;
         }
+
+        /// <summary>
+        /// Determines if  the given absolute address
+        /// is in range of this chunk's memory.
+        /// </summary>
+        /// <param name="address">Address to check.</param>
+        /// <returns>True if address is valid for this chunk.</returns>
+        bool IsInRange(int address);
 
         /// <summary>
         /// Return the two bytes as a word (big endian)

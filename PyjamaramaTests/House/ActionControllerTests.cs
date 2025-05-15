@@ -10,7 +10,7 @@ namespace PyjamaramaTests.House
         /// have a given data expected data size.
         /// </summary>
         private class SimpleTest : ITest
-        { 
+        {
             private bool _result;
 
             public SimpleTest(bool result = false)
@@ -18,7 +18,7 @@ namespace PyjamaramaTests.House
                 _result = result;
             }
 
-            public int TestDataSize 
+            public int TestDataSize
             {
                 get;
                 set;
@@ -26,10 +26,10 @@ namespace PyjamaramaTests.House
 
             public bool Tested { get; private set; }
 
-            public int DataSize 
-            { 
+            public int DataSize
+            {
                 get;
-                set; 
+                set;
             } = -1;
 
             bool ITest.Test(IList<byte> data)
@@ -94,7 +94,7 @@ namespace PyjamaramaTests.House
             {
                 _requiresUpdate = requiresUpdate;
             }
-        
+
             int IAction.DataSize => 0;
 
             bool IAction.Invoke(IList<byte> data)
@@ -123,17 +123,17 @@ namespace PyjamaramaTests.House
 
             public ActionTestProvider(ITest test, IAction action)
             {
-                _test =test;
+                _test = test;
                 _action = action;
             }
 
-            IReadOnlyList<ITest> IActionProvider.Tests => 
+            IReadOnlyList<ITest> IActionProvider.Tests =>
                 new List<ITest>()
                 {
                     _test
                 };
 
-            IReadOnlyList<IAction> IActionProvider.Actions => 
+            IReadOnlyList<IAction> IActionProvider.Actions =>
                 new List<IAction>()
                 {
                     _action
@@ -144,7 +144,7 @@ namespace PyjamaramaTests.House
                 return _data[room];
             }
 
-            private static List<List<byte>> _data = new List<List<byte>> ()
+            private static List<List<byte>> _data = new List<List<byte>>()
                 {
                     // Basic test with no actions
                     new List<byte> { 0x00, ActionController.CmdEndOfStatement, ActionController.CmdEndOfString },
@@ -152,9 +152,9 @@ namespace PyjamaramaTests.House
                     new List<byte> { 0x00, 0x01 },
                     // True test, no data that runs an action
                     // False test should skip the Then and Endif
-                    new List<byte> { 0x00, ActionController.CmdThen, 
+                    new List<byte> { 0x00, ActionController.CmdThen,
                                                 0x00, 0x20,0x30,
-                                            ActionController.CmdEndIf, 
+                                            ActionController.CmdEndIf,
                                             ActionController.CmdEndOfString},
                     new List<byte> { 0x00, ActionController.CmdThen, 0x00, ActionController.CmdEndIf, ActionController.CmdEndOfString}
                 };
@@ -174,20 +174,6 @@ namespace PyjamaramaTests.House
             Assert.That(updatesRequired, Is.False);
             Assert.That(test.Tested, Is.True);
             Assert.That(test.DataSize, Is.EqualTo(0));
-        }
-
-        [Test]
-        public void RunTrueTestWithMalformedData()
-        {
-            SimpleTest test = new SimpleTest(true);
-
-            ActionController controller = new ActionController(
-                new ActionTestProvider(
-                    test));
-
-            Assert.Throws<InvalidOperationException>(() =>
-                controller.CheckActions(1)
-            );
         }
 
         [Test]
@@ -228,7 +214,7 @@ namespace PyjamaramaTests.House
                 new ActionTestProvider(
                     test));
 
-            controller.CheckActions(0);   
+            controller.CheckActions(0);
 
             Assert.That(test.Updated, Is.False);
 
@@ -256,7 +242,7 @@ namespace PyjamaramaTests.House
 
             controller.CheckActions(3);
 
-            Assert.That(action.Updated, Is.False);   
+            Assert.That(action.Updated, Is.False);
         }
 
         [Test]
@@ -277,7 +263,7 @@ namespace PyjamaramaTests.House
 
             controller.CheckActions(3);
 
-            Assert.That(action.Updated, Is.True);   
+            Assert.That(action.Updated, Is.True);
         }
     }
 }

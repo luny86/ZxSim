@@ -10,11 +10,11 @@ namespace ZX.Tests.ZX.Drawing
         /// <summary>
         /// Tile bitmap as would be stored in a spectrum game.
         /// </summary>
-        static readonly byte[] _tileBinary = 
+        static readonly byte[] _tileBinary =
                 [
                     0xff, 0x00, 0x81, 0x7e, 0x00,0x00,0x81,0xff
                 ];
-                
+
         /// <summary>
         /// Final result of the tile draw based on
         /// how the test drawer to do it.
@@ -46,13 +46,13 @@ namespace ZX.Tests.ZX.Drawing
 
             }
 
-            public byte this[int index] 
-            { 
+            public byte this[int index]
+            {
                 get
                 {
                     return _tile[index];
-                } 
-                
+                }
+
                 set
                 {
                     //
@@ -76,6 +76,13 @@ namespace ZX.Tests.ZX.Drawing
             int IChunkAttributes.Start => 0;
 
             int IChunkAttributes.Length => 64;
+
+
+            public bool IsInRange(int address)
+            {
+                return (address >= (this as IChunkAttributes).Start &&
+                        address < (this as IChunkAttributes).Start + (this as IChunkAttributes).Length);
+            }
         }
 
         /// <summary>
@@ -139,7 +146,7 @@ namespace ZX.Tests.ZX.Drawing
                     (colour.A == 1 && colour.R == 0 && colour.G == 0 && colour.B == 0 ?
                     0 : 1);
 
-                _pattern[x+(y*8)] = value;
+                _pattern[x + (y * 8)] = value;
             }
 
             /// <summary>
@@ -150,9 +157,9 @@ namespace ZX.Tests.ZX.Drawing
             {
                 bool same = true;
 
-                for(int i= 0; i< _pattern.Length; i++)
+                for (int i = 0; i < _pattern.Length; i++)
                 {
-                    if(_pattern[i] != pattern[i])
+                    if (_pattern[i] != pattern[i])
                     {
                         same = false;
                         break;
@@ -170,8 +177,8 @@ namespace ZX.Tests.ZX.Drawing
             Pattern tile = new Pattern();
             TileDrawer drawer = new TileDrawer(tile);
             // Make sure things are drawn with specific RGB values.
-            (drawer as IAttribute).Paper = new Rgba(0,0,0,1);
-            (drawer as IAttribute).Ink = new Rgba(1,1,1,1);
+            (drawer as IAttribute).Paper = new Rgba(0, 0, 0, 1);
+            (drawer as IAttribute).Ink = new Rgba(1, 1, 1, 1);
 
             Surface surface = new Surface();
 

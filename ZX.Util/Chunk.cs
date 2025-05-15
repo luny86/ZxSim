@@ -13,13 +13,13 @@ namespace ZX.Util
         public Chunk(string name, int start, int length, byte[] buffer)
         {
             Name = name ?? throw new ArgumentNullException(nameof(name));
-            
-            if(buffer == null)
+
+            if (buffer == null)
             {
                 throw new ArgumentNullException(nameof(buffer));
             }
 
-            if(length < 1)
+            if (length < 1)
             {
                 throw new ArgumentException($"Length cannot be less than 1");
             }
@@ -28,14 +28,14 @@ namespace ZX.Util
             Length = length;
 
             byte[] memory = new byte[length];
-            Array.Copy(buffer, start-RamStart, memory, 0, length);
+            Array.Copy(buffer, start - RamStart, memory, 0, length);
             Memory = memory;
         }
 
-        public string Name 
+        public string Name
         {
-             get;
-             private set;
+            get;
+            private set;
         }
 
         public static ushort Word(byte h, byte l)
@@ -45,15 +45,15 @@ namespace ZX.Util
 
         public ushort Word(int index)
         {
-            return (index >=0 && index <Length-1) ? 
-                (ushort)(Memory[index] + (256 * Memory[index+1]))
+            return (index >= 0 && index < Length - 1) ?
+                (ushort)(Memory[index] + (256 * Memory[index + 1]))
                 : (ushort)0xff;
         }
 
         public byte[] CopyRange(int index, int length)
         {
             byte[] copy = new byte[length];
-            Array.Copy(Memory, index,  copy, 0, length);
+            Array.Copy(Memory, index, copy, 0, length);
             return copy;
         }
 
@@ -61,16 +61,21 @@ namespace ZX.Util
         {
             get
             {
-                return (index >=0 && index <Length) ? Memory[index] : (byte)0xff;
+                return (index >= 0 && index < Length) ? Memory[index] : (byte)0xff;
             }
 
             set
             {
-                if(index >=0 && index < Length)
+                if (index >= 0 && index < Length)
                 {
                     Memory[index] = value;
                 }
             }
+        }
+
+        public bool IsInRange(int address)
+        {
+            return (address >= Start && address < Start + Length);
         }
 
         public int Start { get; }
