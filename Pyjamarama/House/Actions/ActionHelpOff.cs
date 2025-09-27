@@ -4,6 +4,9 @@ using ZX.Game;
 
 namespace Pyjamarama.House
 {
+    /// <summary>
+    /// Help Off action.
+    /// </summary>
     public class ActionHelpOff : IAction, IBuildable
     {
         private IFlags _flags = null!;
