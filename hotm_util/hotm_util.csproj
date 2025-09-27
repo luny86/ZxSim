@@ -1,0 +1,26 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <ItemGroup>
+    <ProjectReference Include="..\ZX.Util\ZX.Util.csproj" />
+    <ProjectReference Include="..\ZX\ZX.csproj" />
+    <projectReference Include="..\Builder\Builder.csproj" />
+    <projectReference Include="..\Logging\Logging.csproj" />
+    <ProjectReference Include="..\Bindings\Bindings.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="IronSoftware.System.Drawing" Version="2025.3.6" />
+  </ItemGroup>
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net8.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
+    <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
+    <AppendRuntimeIdentifierToOutputPath>false</AppendRuntimeIdentifierToOutputPath>
+    <OutputPath>../output/$(Configuration)</OutputPath>
+  </PropertyGroup>
+
+</Project>
