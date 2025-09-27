@@ -6,6 +6,7 @@
     <ProjectReference Include="..\ZX.Util\ZX.Util.csproj" />
     <ProjectReference Include="..\ZX\ZX.csproj" />
     <projectReference Include="..\Builder\Builder.csproj" />
+    <projectReference Include="..\Logging\Logging.csproj" />
   </ItemGroup>
 
   <ItemGroup>

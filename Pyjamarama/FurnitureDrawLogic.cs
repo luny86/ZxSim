@@ -25,7 +25,7 @@ namespace Pyjamarama
         /// <summary>
         /// Surface to draw to.
         /// </summary>
-        public ISurface Surface { get; init; } = null!;  
+        public ISurface Surface { get; init; } = null!;
 
         /// <summary>
         /// Drawer for converting 8 bit data into bitmap tiles.
@@ -121,7 +121,7 @@ namespace Pyjamarama
             // Draw the same item 'n' times in a line.
             for (int r = 0; r < Data[Index + 1]; r++)
             {
-                DrawTileAndUpdatePosition(Offset+Data[Index+2]);
+                DrawTileAndUpdatePosition(Offset + Data[Index + 2]);
             }
 
             Index += 3;
@@ -129,8 +129,8 @@ namespace Pyjamarama
 
         public byte GetAttributeCommand()
         {
-            LastAttribute = Data[Index+1];
-            Index+=2;
+            LastAttribute = Data[Index + 1];
+            Index += 2;
             return LastAttribute;
         }
         #endregion

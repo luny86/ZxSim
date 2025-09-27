@@ -9,7 +9,7 @@ namespace Pyjamarama.House
     /// </summary>
     internal class ActionProvider : IActionProvider, IBuildable
     {
-        
+
         #region Private Types
 
         private class ActionDummy : IAction
@@ -81,7 +81,7 @@ namespace Pyjamarama.House
             RegisterTest(new TestDummy(0)); //new TestLiftOn());
             RegisterTest(new TestDummy(1)); //new TestLiftLocation());
             RegisterTest(new TestDummy(0)); //new TestLiftOff());
-            RegisterTest(new TestDummy(0)); //new TestHelpOff());
+            RegisterTest(new TestHelpOff());
             RegisterTest(new TestBoxingGlove());
 
             // Same here for actions.
@@ -100,7 +100,7 @@ namespace Pyjamarama.House
             RegisterAction(new ActionDummy()); //new ActionLiftLight());      // 0x0C
             RegisterAction(new ActionDummy()); //new ActionOpenMagLock());    // 0x0D
             RegisterAction(new ActionDummy()); //new ActionHelpOn());         // 0x0E
-            RegisterAction(new ActionDummy()); //new ActionHelpOff());        // 0x0F
+            RegisterAction(new ActionHelpOff());        // 0x0F
             RegisterAction(new ActionDummy()); //new ActionRocket(true));     // 0x10
             RegisterAction(new ActionDummy()); //new ActionRocket(false));    // 0x11
             RegisterAction(new ActionDummy()); //new ActionGrabRope());       // 0x12
@@ -113,7 +113,7 @@ namespace Pyjamarama.House
         {
             testList.Add(actionTest);
         }
-        
+
         internal void RegisterAction(IAction action)
         {
             actionList.Add(action);
@@ -131,7 +131,7 @@ namespace Pyjamarama.House
         /// <exception cref="ArgumentOutOfRangeException">If index is out of range from available data.</exception>
         IReadOnlyList<byte> IActionProvider.RoomActionData(int room)
         {
-            if(room <0 || room > _actions.Count)
+            if (room < 0 || room > _actions.Count)
             {
                 throw new ArgumentOutOfRangeException("$Index ({index}) is out of range.");
             }
@@ -150,17 +150,17 @@ namespace Pyjamarama.House
         {
             List<IBuildable>? buildables = new List<IBuildable>();
 
-            foreach(ITest test in testList)
+            foreach (ITest test in testList)
             {
-                if(test is IBuildable buildable)
+                if (test is IBuildable buildable)
                 {
                     buildables.Add(buildable);
                 }
             }
 
-            foreach(IAction action in actionList)
+            foreach (IAction action in actionList)
             {
-                if(action is IBuildable buildable)
+                if (action is IBuildable buildable)
                 {
                     buildables.Add(buildable);
                 }
@@ -209,29 +209,44 @@ namespace Pyjamarama.House
         static List<List<byte>> _actions = new List<List<byte>>()
         {
             // Item 1
-            new List<byte>  { 
-                0x01, 0x3a, 0x88, 0xfd, 0x01, 0xfe, 
-                0x00, 0x08, 0xa0, 0xfd, 
-                0x02, 0x11, 0xe8, 0x98, 0xfe, 0xff },
+            new List<byte>  {
+                TestSlotPosition, 0x3a, 0x88, ActionController.CmdThen,
+                    ActionPickup,
+                ActionController.CmdEndIf,
+                TestPosition, 0x08, 0xa0, ActionController.CmdThen,
+                    ActionEnterRoom, 0x11, 0xe8, 0x98,
+                ActionController.CmdEndIf,
+                ActionController.CmdEndOfString },
             // Item 2
-            new List<byte> { 
-                TestSlotPosition, 0x48, 0x98, ActionController.CmdThen, 
-                    ActionPickup, ActionController.CmdEndIf,
-                TestPosition, 0xc8, 0x88, ActionController.CmdThen, 
-                    ActionEnterRoom, 0x02, 0x08, 0x98, ActionController.CmdEndIf, 
-                TestPosition, 0x00, 0x48, ActionController.CmdThen, 
-                    ActionEnterRoom, 0x05, 0xd8, 0x98, ActionController.CmdEndIf, 
-                TestPosition, 0xe8, 0x88, TestBoxingGlove, ActionController.CmdThen, 
-                    ActionEnterRoom, 0x03, 0x2e, 0x98, ActionController.CmdEndIf, 
+            new List<byte> {
+                TestSlotPosition, 0x48, 0x98, ActionController.CmdThen,
+                    ActionPickup,
+                ActionController.CmdEndIf,
+                TestPosition, 0xc8, 0x88, ActionController.CmdThen,
+                    ActionEnterRoom, 0x02, 0x08, 0x98,
+                ActionController.CmdEndIf,
+                TestPosition, 0x00, 0x48, ActionController.CmdThen,
+                    ActionEnterRoom, 0x05, 0xd8, 0x98,
+                ActionController.CmdEndIf,
+                TestPosition, 0xe8, 0x88, TestBoxingGlove, ActionController.CmdThen,
+                    ActionEnterRoom, 0x03, 0x2e, 0x98,
+                ActionController.CmdEndIf,
                 ActionController.CmdEndOfString },
             // Item 3
-            new List<byte> { 
-                TestSlotPosition, 0x98, 0x98, 
-                TestCarrying, 0x0b, ActionController.CmdThen, 
-                    ActionPickup, ActionController.CmdEndIf, 
-                0x00, 0x08, 0x88, 0xfd, 0x02, 0x01, 0xc8, 0x98, 0xfe, 0x00, 0xe8, 0x88, 0xfd, 0x02, 0x04, 0x08, 0x98, 0xfe, 0x00, 0x38, 0x88, 0xfd, 0x02, 0x03, 0xe8, 0x98, 0xfe, 0xff },
+            new List<byte> {
+                TestSlotPosition, 0x98, 0x98,
+                TestCarrying, 0x0b, ActionController.CmdThen,
+                    ActionPickup, ActionController.CmdEndIf,
+                TestPosition, 0x08, 0x88, ActionController.CmdThen,
+                    ActionEnterRoom, 0x01, 0xc8, 0x98, ActionController.CmdEndIf,
+                TestPosition, 0xe8, 0x88, ActionController.CmdThen,
+                    ActionEnterRoom, 0x04, 0x08, 0x98, ActionController.CmdEndIf,
+                TestPosition, 0x38, 0x88, ActionController.CmdThen,
+                    ActionEnterRoom, 0x03, 0xe8, 0x98, ActionController.CmdEndIf,
+                ActionController.CmdEndOfString },
             // Item 4
-            new List<byte> { 0x01, 0xcc, 0x70, 0xfd, 0x01, 0xfe, 0x00, 0xe8, 0x88, 0x08, 0xfd, 0x02, 0x02, 0x38, 0x98, 0xfe, 0x00, 0x30, 0x88, 0xfd, 0x02, 0x01, 0xe8, 0x98, 0xfe, 0x00, 0x08, 0x88, 0xfd, 0x02, 0x06, 0x08, 0x98, 0xfe, 0xff },
+            new List<byte> {
+                0x01, 0xcc, 0x70, 0xfd, 0x01, 0xfe, 0x00, 0xe8, 0x88, 0x08, 0xfd, 0x02, 0x02, 0x38, 0x98, 0xfe, 0x00, 0x30, 0x88, 0xfd, 0x02, 0x01, 0xe8, 0x98, 0xfe, 0x00, 0x08, 0x88, 0xfd, 0x02, 0x06, 0x08, 0x98, 0xfe, 0xff },
             // Item 5
             new List<byte> { 0x01, 0x78, 0x98, 0xfd, 0x01, 0xfe, 0x00, 0x78, 0x88, 0x06, 0xfd, 0x09, 0xfe, 0x00, 0xe8, 0x98, 0xfd, 0x02, 0x09, 0xe8, 0x98, 0xfe, 0x00, 0x08, 0x88, 0x02, 0x03, 0xfd, 0x02, 0x02, 0xe8, 0x98, 0xfe, 0xff },
             // Item 6

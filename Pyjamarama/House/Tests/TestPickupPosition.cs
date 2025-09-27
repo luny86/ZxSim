@@ -38,22 +38,21 @@ namespace Pyjamarama.House
                 int pickupSlotX = (int)data[DataX];
                 int pickupSlotY = (int)data[DataY];
 
-                bool isInRange = 
-                    (playerPosition.X >= (pickupSlotX - SlotMargin) && playerPosition.X < (pickupSlotX + SlotMargin)) &
+                bool isInRange =
+                    (playerPosition.X >= (pickupSlotX - SlotMargin) && playerPosition.X < (pickupSlotX + SlotMargin)) &&
                     (playerPosition.Y >= (pickupSlotY - SlotMargin) && playerPosition.Y < (pickupSlotY + SlotMargin));
 
                 if (_player.JustPickedUp)
                 {
-                    if(!isInRange)
+                    if (!isInRange)
                     {
                         _player.JustPickedUp = false;
                     }
                 }
                 else
                 {
-                    if(isInRange)
+                    if (isInRange)
                     {
-                        Console.WriteLine("Pickup found...");
                         passed = true;
                     }
                 }

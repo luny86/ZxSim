@@ -122,7 +122,7 @@ namespace Pyjamarama.House
                 {
                     do
                     {
-                        if(i > script.Count)
+                        if (i > script.Count)
                         {
                             throw new IndexOutOfRangeException($"Index out of range for Actions. Index = {i}");
                         }
@@ -133,9 +133,9 @@ namespace Pyjamarama.House
                         i += test.TestDataSize;
 
                         // Call test
-                        if(test.Test(data))
+                        if (test.Test(data))
                         {
-                            if(script[i] == CmdThen)
+                            if (script[i] == CmdThen)
                             {
                                 updatesRequired = ScanActions(script, ref i);
                             }
@@ -143,14 +143,14 @@ namespace Pyjamarama.House
                         else
                         {
                             // See if the test is an update.
-                            if(test is IUpdate update)
+                            if (test is IUpdate update)
                             {
                                 this.actionQueue.Enqueue(update);
                                 updatesRequired = true;
                             }
 
                             // Skip onto next test / end of data.
-                            while(i < script.Count &&
+                            while (i < script.Count &&
                                   /*script[i] != CmdEndOfString &&*/
                                   script[i] != CmdEndOfStatement)
                             {
@@ -158,14 +158,14 @@ namespace Pyjamarama.House
                             }
                         }
                     }
-                    while(!done && script[i] != CmdEndOfStatement);
+                    while (!done && script[i] != CmdEndOfStatement);
 
-                    if(script[i] == CmdEndOfStatement)
+                    if (script[i] == CmdEndOfStatement)
                     {
                         i++;
                     }
-                } 
-                while(!done && script[i] != CmdEndOfString);
+                }
+                while (!done && script[i] != CmdEndOfString);
             }
 
             return updatesRequired;
@@ -176,7 +176,7 @@ namespace Pyjamarama.House
             List<byte> data = new List<byte>();
 
             // Fill in with a copy of the data.
-            for(int k=0;k<amountToCopy;k++)
+            for (int k = 0; k < amountToCopy; k++)
             {
                 data.Add(roomActionData[fromIndex++]);
             }
@@ -189,18 +189,19 @@ namespace Pyjamarama.House
             bool updatesRequired = false;
 
             dataIndex++;
-            while(roomActionData[dataIndex] != CmdEndIf)
+
+            while (roomActionData[dataIndex] != CmdEndIf)
             {
                 IAction action = _actionProvider.Actions[roomActionData[dataIndex++]];
                 IList<byte> data = CopyDataFromRoomActionData(roomActionData, dataIndex, action.DataSize);
-                dataIndex+= action.DataSize;
+                dataIndex += action.DataSize;
 
-                if(action.Invoke(data))
+                if (action.Invoke(data))
                 {
                     // TODO - Can only have one action update
                     // at a time on a successful test.
                     // Might need to stack them
-                    if(action is IUpdate update)
+                    if (action is IUpdate update)
                     {
                         this.actionQueue.Enqueue(update);
                         updatesRequired = true;

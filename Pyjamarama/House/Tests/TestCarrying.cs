@@ -4,12 +4,12 @@ using Pyjamarama.Inventory;
 
 namespace Pyjamarama.House
 {
-   public class TestCarrying : ITest, IBuildable
+    public class TestCarrying : ITest, IBuildable
     {
         const int ObjectIndex = 0;
 
-        private IInventory  _inventory = null!;
-        
+        private IInventory _inventory = null!;
+
         public TestCarrying()
         {
         }

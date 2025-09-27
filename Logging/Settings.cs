@@ -34,7 +34,7 @@ namespace Logging
         {
             get;
             set;
-        } = LogType.TextFile;
+        } = LogType.Console;
 
         /// <summary>
         /// Determines where to put any file output.

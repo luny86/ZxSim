@@ -2,6 +2,7 @@
 
 using System.Drawing;
 using Builder;
+using Logging;
 using ZX.Platform;
 
 namespace Pyjamarama.House
@@ -12,6 +13,7 @@ namespace Pyjamarama.House
 
         private IPlayer _player = null!;
         private IRoomProvider _roomProvider = null!;
+        private ILogger _logger = null!;
 
         private int newRoom;
         private Point newPos = Point.Empty;
@@ -37,6 +39,7 @@ namespace Pyjamarama.House
 
         bool IAction.Invoke(IList<byte> data)
         {
+            _logger.WriteLog(Logging.LogLevel.Info, "House", $"New room {data[0]:x}");
             this.newRoom = data[0];
             this.newPos = new Point(data[1], data[2]);
             this.count = 8;
@@ -76,12 +79,13 @@ namespace Pyjamarama.House
             return done;
         }
 
-       #region Buildable
+        #region Buildable
 
         void IBuildable.AskForDependents(IRequests requests)
         {
             requests.AddRequest(ClassNames.Wally, typeof(IPlayer));
             requests.AddRequest(ClassNames.RoomProvider, typeof(IRoomProvider));
+            requests.AddRequest(Logging.ClassNames.Factory, typeof(Logging.IFactory));
         }
 
         IList<IBuildable>? IBuildable.CreateBuildables()
@@ -93,6 +97,9 @@ namespace Pyjamarama.House
         {
             _player = dependencies.TryGetInstance<IPlayer>(ClassNames.Wally);
             _roomProvider = dependencies.TryGetInstance<IRoomProvider>(ClassNames.RoomProvider);
+
+            Logging.IFactory factory = dependencies.TryGetInstance<Logging.IFactory>(Logging.ClassNames.Factory);
+            _logger = factory.GetLogger("House");
         }
 
         void IBuildable.EndBuild()

@@ -1,6 +1,7 @@
 
 using Bindings;
 using Builder;
+using Logging;
 using Pyjamarama.House;
 using System.Runtime.CompilerServices;
 using ZX;
@@ -10,29 +11,15 @@ using ZX.Platform;
 using Game = ZX.Game;
 
 
-[assembly:InternalsVisibleTo("PyjamaramaTests")]
+[assembly: InternalsVisibleTo("PyjamaramaTests")]
 
 namespace Pyjamarama
 {
     internal class Composition : IComposition, IBuildable, IGameItem
     {
-        #region Flag names
-        private class FlagsNames
-        {
-            public static string FuelCan = "FuelCan";
-            public static string Bucket = "Bucket";
-            public static string LiftCount = "F177";    // Value is for data test.
-            public static string HelpSwitch = "F178";  
-            public static string LaserGun = "F179"; 
-            public static string LiftFloor = "F181";
-            public static string MagLockDir = "MagLockDir";
-            public static string ArcadeMode = "ArcadeMode";
-        };
-
-        #endregion
-
         #region Members
 
+        private ILogger _logger = null!;
         private IFactory _factory = new Factory();
 
         private Wally.Controller _wallyController = null!;
@@ -57,7 +44,7 @@ namespace Pyjamarama
 
         private ActionController _actionController = null!;
 
-	    private ZX.Game.IFlags _flags = null!;
+        private ZX.Game.IFlags _flags = null!;
 
         private IBindingManager _bindingManager = null!;
 
@@ -72,13 +59,14 @@ namespace Pyjamarama
         {
             requests.AddRequest("ZX.Drawing.Screen", typeof(ZX.Drawing.IScreen));
             requests.AddRequest("ZX.Drawing.IFactory", typeof(ZX.Drawing.IFactory));
-		    requests.AddRequest("ZX.Platform.IFactory", typeof(ZX.Platform.IFactory));
+            requests.AddRequest("ZX.Platform.IFactory", typeof(ZX.Platform.IFactory));
             requests.AddRequest(Game.ClassNames.GameProvider, typeof(Game.IGameProvider));
-    		requests.AddRequest("ZX.Game.Flags",
-				typeof(ZX.Game.IFlags));
-		    requests.AddRequest("ZX.Game.Factory",
-				typeof(ZX.Game.IFactory));
+            requests.AddRequest("ZX.Game.Flags",
+                typeof(ZX.Game.IFlags));
+            requests.AddRequest("ZX.Game.Factory",
+                typeof(ZX.Game.IFactory));
             requests.AddRequest(Bindings.ClassNames.BindingManager, typeof(IBindingManager));
+            requests.AddRequest(Logging.ClassNames.Factory, typeof(Logging.IFactory));
         }
 
         IList<IBuildable>? IBuildable.CreateBuildables()
@@ -131,50 +119,55 @@ namespace Pyjamarama
                 ?? throw new InvalidOperationException("Unable to get dependency ZX.Game.IGameProvider.");
 
             _flags = dependencies.TryGetInstance("ZX.Game.Flags",
-				typeof(ZX.Game.IFlags))
-				as ZX.Game.IFlags
-				?? throw new NullReferenceException("Unable to get ZX.Game.IFlags dependency.");
+                typeof(ZX.Game.IFlags))
+                as ZX.Game.IFlags
+                ?? throw new NullReferenceException("Unable to get ZX.Game.IFlags dependency.");
 
-		    _gameFactory = dependencies.TryGetInstance("ZX.Game.Factory",
-				typeof(ZX.Game.IFactory))
-				as ZX.Game.IFactory
-				?? throw new NullReferenceException("Unable to get ZX.Game.IFactory dependency.");
+            _gameFactory = dependencies.TryGetInstance("ZX.Game.Factory",
+                typeof(ZX.Game.IFactory))
+                as ZX.Game.IFactory
+                ?? throw new NullReferenceException("Unable to get ZX.Game.IFactory dependency.");
 
             _bindingManager = dependencies.TryGetInstance<IBindingManager>(Bindings.ClassNames.BindingManager);
+
+            Logging.IFactory factory = dependencies.TryGetInstance<Logging.IFactory>(Logging.ClassNames.Factory);
+            _logger = factory.GetLogger("House");
+            _logger.Enabled = true;
+            _logger.WriteLog(LogLevel.Info, "House", "House logging started.");
 
         }
 
         void IBuildable.EndBuild()
         {
             _bindingManager.Bind(BoundValueNames.RoomIndex, RoomIndexValueChanged);
-           CreateFlags();  
-           SetupWally();
-           CreateAnimationLayer();
+            CreateFlags();
+            SetupWally();
+            CreateAnimationLayer();
 
             _screen.AddLayer(_wallyController.Layer);
-            _screen.AddLayer(_animationLayer as ILayer 
+            _screen.AddLayer(_animationLayer as ILayer
                ?? throw new InvalidOperationException(nameof(_animationLayer)));
-            
+
             _gameProvider.AddItem(_wallyController);
             _gameProvider.AddItem(this);
             _gameProvider.AddItem(_roomProvider);
             _gameProvider.AddItem(_inventoryController);
-            _gameProvider.AddItem(_animationLayer as IGameStatic 
+            _gameProvider.AddItem(_animationLayer as IGameStatic
                 ?? throw new InvalidOperationException("Animation layer should be based on IGameStatic"));
         }
 
         #endregion
 
         #region Private helpers
-        private void RoomIndexValueChanged(string name,  Type  type, object? value)
+        private void RoomIndexValueChanged(string name, Type type, object? value)
         {
-            if(name == BoundValueNames.RoomIndex &&
+            if (name == BoundValueNames.RoomIndex &&
                 value is not null)
-            { 
+            {
                 _roomIndex = (int)value;
             }
         }
-        
+
         private void CreateFlags()
         {
             _flags.RegisterFlag(FlagsNames.LiftCount, _gameFactory.CreateFlag(1, -1));
@@ -194,8 +187,8 @@ namespace Pyjamarama
 
             ISurface surface = _platformFactory.CreateSurface();
             IDrawer drawer = _drawFactory.CreateBitmapDrawer(MemoryChunkNames.WallyBitmaps, ww, wh);
-            surface.Create(ww, wh*2);
-            
+            surface.Create(ww, wh * 2);
+
             Wally.DrawLayer layer = new Wally.DrawLayer(drawer, surface, (int)LayerZOrders.Wally)
             {
                 X = 64,
@@ -229,7 +222,7 @@ namespace Pyjamarama
 
         void IGameStatic.NewLevel()
         {
-   
+
         }
 
         #endregion

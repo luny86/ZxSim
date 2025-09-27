@@ -31,15 +31,15 @@ namespace Pyjamarama
         };
 
         private readonly IDrawer _tileDrawer;
-        private readonly IChunk _data;
+        private readonly IChunk _furnitureData;
         private readonly IAttributeTable _attributeTable;
         #endregion
 
         #region Construction
-        public FurnitureDrawer(IDrawer tileDrawer, IChunk data, IAttributeTable attributeTable)
+        public FurnitureDrawer(IDrawer tileDrawer, IChunk furnitureData, IAttributeTable attributeTable)
         {
             _tileDrawer = tileDrawer ?? throw new ArgumentNullException(nameof(tileDrawer));
-            _data = data ?? throw new ArgumentNullException(nameof(data));
+            _furnitureData = furnitureData ?? throw new ArgumentNullException(nameof(furnitureData));
             _attributeTable = attributeTable;
         }
         #endregion
@@ -66,14 +66,14 @@ namespace Pyjamarama
         #region IDrawer
         void IDrawer.Draw(ISurface surface, int itemIndex, int x, int y)
         {
-            IAttribute attribute = _tileDrawer as IAttribute 
+            IAttribute attribute = _tileDrawer as IAttribute
                 ?? throw new InvalidCastException("Tile drawer should implement IAttribute.");
 
             FurnitureDrawLogic logic = new FurnitureDrawLogic()
             {
                 Surface = surface,
                 TileDrawer = _tileDrawer,
-                Data = _data,
+                Data = _furnitureData,
                 X = x,
                 Y = y,
                 Index = Table[itemIndex],
@@ -82,17 +82,17 @@ namespace Pyjamarama
 
             bool done = false;
 
-            while(!done)
+            while (!done)
             {
                 byte code = logic.CurrentCode;
 
-                if(code < CmdFlag)
+                if (code < CmdFlag)
                 {
                     logic.DrawTileAtCurrentPosition(logic.CurrentAsTileIndex);
                 }
                 else
                 {
-                    switch(code)
+                    switch (code)
                     {
                         case CmdEnd:
                             logic.Index++;
@@ -100,11 +100,11 @@ namespace Pyjamarama
                             break;
 
                         case CmdColor:
-                        {
-                            byte colour = logic.GetAttributeCommand();
-                            Palette.SetAttribute(colour, attribute);
-                            
-                        }
+                            {
+                                byte colour = logic.GetAttributeCommand();
+                                Palette.SetAttribute(colour, attribute);
+
+                            }
                             break;
 
                         case CmdPosition:
@@ -117,7 +117,7 @@ namespace Pyjamarama
 
                         case CmdRepeat:
                         default:
-                            logic.DrawRepeatedTileCommand(); 
+                            logic.DrawRepeatedTileCommand();
                             break;
                     }
                 }

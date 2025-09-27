@@ -27,7 +27,6 @@ namespace Pyjamarama.House
 
         bool IAction.Invoke(IList<byte> data)
         {
-            Console.WriteLine("Action pickup");
             IRoom room = _roomProvider.CurrentRoom;
             _player.JustPickedUp = true;
 
